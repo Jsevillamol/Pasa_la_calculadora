@@ -85,6 +85,8 @@ int bot_dificil(int ultimo);
 
 
 int main(){
-
+	saludar();
+	pasaCalculadora();
+	despedirse();
 	return 0;
 	}
