@@ -113,9 +113,12 @@ tJugador pasaCalculadora(){
 			turno = Jugador;
 		}
 		total += ultimoDigito;
+		std::cout << "Total = " << total;
 	}while ((total < META) && (ultimoDigito != 0));
 	
-	if (ultimoDigito == 0) turno = Nadie; //Si el jugador abandona, no gana nadie
+	if (ultimoDigito == 0) turno = Nadie; 
+	//Si el jugador abandona, no gana nadie
+
 	return turno;
 }
 
@@ -125,7 +128,10 @@ int digitoAutomata(int ultimo){
 
 	do{
 	digito = digitoAleatorio();
-	} while ((ultimo != 0) && (!digitoValido(ultimo, digito))); //Si el ultimo es 0, este es el primer digito de la partida
+	} while ((ultimo != 0) && (!digitoValido(ultimo, digito))); 
+	//Si ultimo == 0, este es el primer digito de la partida
+
+	std::cout << "Elijo el numero " << digito;
 
 	return digito;
 }
