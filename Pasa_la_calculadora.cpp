@@ -27,7 +27,7 @@ void despedirse(); //to do Victor
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona devuelve Nadie.
-tJugador pasaCalculadora(); //to do Jaime
+tJugador pasaCalculadora();
 
 //Decide aleatoriamente quien empieza.
 tJugador quienEmpieza(); //to do Victor
@@ -43,25 +43,25 @@ bool digitoValido(int ultimo, int nuevo); //to do Victor
 
 
 //FUNCIONES DE IA NIVEL 1
-//Devuelve un dígito.
+//Devuelve un dígito del 1 al 9
 int digitoAleatorio(); //to do Victor
 
-//Devuelve un dígito que cumpla las reglas del juego con respecto a ultimo.
-int digitoAutomata(int ultimo); //to do Jaime
+//Devuelve un digito que cumpla las reglas del juego con respecto a ultimo.
+int digitoAutomata(int ultimo);
 
 //FUNCIONES DE JUGADOR
 //Pide un dígito al jugador. Sólo devolverá un valor válido (entre 0 y 9).
 //Para un valor no válido, mostrará un error.
 int digitoPersona(); //to do Jaime
 
-//Pide un dígito al jugador mostrando el teclado. Sólo devolverá un valor 
-//que cumpla las reglas del juego o 0. Para un valor no válido, mostrará un error.
+//Pide un digito al jugador mostrando el teclado. Solo devolvera un valor 
+//que cumpla las reglas del juego o 0. Para un valor no valido, mostrara un error.
 int digitoPersona(int ultimo); //to do Jaime
 
 /* Las funciones a continuacion se implementaran en un futuro
 //FUNCIONES DE MENÚ
-//Muestra el menú, pide la opción y la devuelve como resultado. Sólo
-//devolverá una opción válida. Para cada valor no válido, mostrará un error.
+//Muestra el menu, pide la opcion y la devuelve como resultado. Solo
+//devolvera una opción valida. Para cada valor no valido, mostrará un error.
 int menu();
 
 //Muestra en la consola el contenido del archivo de texto nombArch. 
@@ -117,4 +117,15 @@ tJugador pasaCalculadora(){
 	
 	if (ultimoDigito == 0) turno = Nadie; //Si el jugador abandona, no gana nadie
 	return turno;
+}
+
+//Devuelve un digito que cumpla las reglas del juego con respecto a ultimo.
+int digitoAutomata(int ultimo){
+	int digito;
+
+	do{
+	digito = digitoAleatorio();
+	} while ((ultimo != 0) && (!digitoValido(ultimo, digito))); //Si el ultimo es 0, este es el primer digito de la partida
+
+	return digito;
 }
