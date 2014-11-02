@@ -2,7 +2,7 @@
 PASA LA CALCULADORA
 Autores: 
 Jaime Sevilla Molina
-Victor
+Victor Gonzalez
 Fecha
 2014/11
 Version: 1.0
@@ -10,10 +10,7 @@ Version: 1.0
 
 //BIBLIOTECAS
 #include <iostream>
-#include <string>
 #include <cstdlib>
-
-const int META = 31;
 
 typedef enum tJugador
 {
@@ -90,3 +87,34 @@ int main(){
 	despedirse();
 	return 0;
 	}
+
+//Conduce el desarrollo del juego y devuelve el ganador. 
+//Si se abandona devuelve Nadie.
+tJugador pasaCalculadora(){
+	//Variables
+	tJugador turno;
+	int total = 0, ultimoDigito = 0;
+	const int META=31;
+
+	//Inicializar partida
+	turno = quienEmpieza();
+	//Semilla aleatoria aqui
+
+	//Bucle de juego
+	do{
+		//Turno jugador
+		if (turno == Jugador){
+			ultimoDigito = digitoPersona(ultimoDigito);
+			turno = Automata;
+		}
+		//Turno bot
+		else if (turno == Automata){
+			ultimoDigito = digitoAutomata(ultimoDigito);
+			turno = Jugador;
+		}
+		total += ultimoDigito;
+	}while ((total < META) && (ultimoDigito != 0));
+	
+	if (ultimoDigito == 0) turno = Nadie; //Si el jugador abandona, no gana nadie
+	return turno;
+}
