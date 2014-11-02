@@ -39,6 +39,7 @@ bool mismaFila(int ultimo, int nuevo); //to do Victor
 bool mismaColumna(int ultimo, int nuevo); //to do Victor
 
 //Devuelve true si nuevo cumple las reglas del juego con respecto a ultimo
+//Si ultimo == 0, este es el primer digito de la partida, y devuelve true
 bool digitoValido(int ultimo, int nuevo); //to do Victor
 
 
@@ -58,6 +59,9 @@ int digitoPersona(); //to do Jaime
 //que cumpla las reglas del juego o 0. Para un valor no valido, mostrara un error.
 int digitoPersona(int ultimo); //to do Jaime
 
+//Muestra los botones de la calculadora
+void mostrarCalculadora(); //To do Victor
+
 /* Las funciones a continuacion se implementaran en un futuro
 //FUNCIONES DE MENÚ
 //Muestra el menu, pide la opcion y la devuelve como resultado. Solo
@@ -76,7 +80,7 @@ bool actInforme(int jugadas, int ganadas, int abandonos);
 
 
 //FUNCIONES DE DIFICULTAD AVANZADA
-int bot_dificil(int ultimo);
+int botDificil(int ultimo);
 
 -----------------------------------------------------------------------------------*/
 
@@ -128,10 +132,39 @@ int digitoAutomata(int ultimo){
 
 	do{
 	digito = digitoAleatorio();
-	} while ((ultimo != 0) && (!digitoValido(ultimo, digito))); 
-	//Si ultimo == 0, este es el primer digito de la partida
+	}while (!digitoValido(ultimo, digito));
 
 	std::cout << "Elijo el numero " << digito;
+
+	return digito;
+}
+
+//Pide un dígito al jugador. Sólo devolverá un valor válido (entre 0 y 9).
+//Para un valor no válido, mostrará un error.
+int digitoPersona(){
+	int digito;
+
+	mostrarCalculadora();
+
+	do{
+		std::cout << "Elige un numero";
+		std::cin >> digito; //To do error handling
+	}while (digito<0 || digito>9);
+
+	return digito;
+}
+
+//Pide un digito al jugador mostrando el teclado. Solo devolvera un valor 
+//que cumpla las reglas del juego o 0. Para un valor no valido, mostrara un error.
+int digitoPersona(int ultimo){
+	int digito;
+
+	digito = digitoPersona();
+
+	while(!digitoValido(ultimo, digito)){
+		std::cout << "Digito no valido";
+		digito = digitoPersona();
+	}
 
 	return digito;
 }
