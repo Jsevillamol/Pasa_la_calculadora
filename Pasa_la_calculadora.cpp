@@ -23,7 +23,9 @@ typedef enum tJugador
 //FUNCIONES DE JUEGO
 
 void saludar(); //to do Victor
-void despedirse(); //to do Victor
+
+//Dependiendo de quien gane, la despedida sera distinta
+void despedirse(tJugador ganador); //to do Victor
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona devuelve Nadie.
@@ -86,9 +88,11 @@ int botDificil(int ultimo);
 
 
 int main(){
+	tJugador ganador;
+
 	saludar();
-	pasaCalculadora();
-	despedirse();
+	ganador = pasaCalculadora();
+	despedirse(ganador);
 	return 0;
 	}
 
@@ -101,8 +105,8 @@ tJugador pasaCalculadora(){
 	const int META=31;
 
 	//Inicializar partida
-	turno = quienEmpieza();
 	//Semilla aleatoria aqui
+	turno = quienEmpieza();
 
 	//Bucle de juego
 	do{
@@ -112,7 +116,7 @@ tJugador pasaCalculadora(){
 			turno = Automata;
 		}
 		//Turno bot
-		else if (turno == Automata){
+		else /*if (turno == Automata)*/{
 			ultimoDigito = digitoAutomata(ultimoDigito);
 			turno = Jugador;
 		}
@@ -139,17 +143,23 @@ int digitoAutomata(int ultimo){
 	return digito;
 }
 
-//Pide un dígito al jugador. Sólo devolverá un valor válido (entre 0 y 9).
+//Pide un digito al jugador. Solo devolvera un valor valido (entre 0 y 9).
 //Para un valor no válido, mostrará un error.
 int digitoPersona(){
-	int digito;
+	int digito = -1;
 
 	mostrarCalculadora();
 
-	do{
-		std::cout << "Elige un numero";
-		std::cin >> digito; //To do error handling
-	}while (digito<0 || digito>9);
+	while (digito == -1){
+		try{
+			std::cin.sync(); //Por si quedan datos basura en el buffer
+			std::cin >> digito;
+			if (digito < 0 || digito > 9) throw;
+		}catch(...){
+			std::cout << "Error! Introduce un digito entre 0-9";
+			digito = -1;
+		}
+	}
 
 	return digito;
 }
@@ -157,14 +167,19 @@ int digitoPersona(){
 //Pide un digito al jugador mostrando el teclado. Solo devolvera un valor 
 //que cumpla las reglas del juego o 0. Para un valor no valido, mostrara un error.
 int digitoPersona(int ultimo){
-	int digito;
+	int digito = -1; //-1 es mi error flag
 
-	digito = digitoPersona();
-
-	while(!digitoValido(ultimo, digito)){
-		std::cout << "Digito no valido";
-		digito = digitoPersona();
+	while (digito == -1){
+		try{
+			digito = digitoPersona();
+			if (!digitoValido(ultimo, digito)) throw;
+		}catch(...){
+			std::cout << "Error! El digito debe estar en la misma fila y columna que el ultimo";
+			digito = -1;
+		}
 	}
+
+	std::cout << "Has elegido el" << digito;
 
 	return digito;
 }
