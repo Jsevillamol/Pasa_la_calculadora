@@ -102,7 +102,7 @@ int main(){
 	return 0;
 	}
 //Saluda al jugador y le pregunta su nombre
-saludar{
+void saludar{
 	string nombre;
 	std::cout << "¡Bienvenido a Pasa la calculadora!" << endl;
 	std::cout << "¿Como te llamas?";
@@ -110,7 +110,7 @@ saludar{
 	std::cout << "Hola" << nombre;
 }
 //Se despide del jugador, la despedida varia segun gane el jugador, el autómata o ninguno de ellos (el jugador abandone)
-despedirse{
+void despedirse{
 	string nombre;
 	if (ganador == Nadie){
 		std::cout << "¿Abandonas? Ohhh..." << endl;
@@ -159,7 +159,7 @@ tJugador pasaCalculadora(){
 }
 
 //Decide aleatoriamente quien empieza la partida, si el automata o el jugador
-quienEmpieza(){
+tJugador quienEmpieza(){
 	if (cstlib::rand() % 2){
 		cout << "Tu empiezas";
 		return Jugador;
@@ -170,25 +170,25 @@ quienEmpieza(){
 	}
 }
 //Define que números se encuentran en la misma fila que el ultimo pulsado
-mismaFila(int ultimo, int nuevo){
+bool mismaFila(int ultimo, int nuevo){
 	double filaUltimo, filaNuevo;
 	filaUltimo = (ultimo/3);
 	filaNuevo = (nuevo/3);
 	return ceil(filaUltimo) == ceil(filaNuevo);
 }
 //Define que números se encuentran en la misma columna que el ultimo
-mismaColumna(int ultimo, int nuevo){
+bool mismaColumna(int ultimo, int nuevo){
 	int columnaUltimo, columnaNuevo;
 	columnaUltimo = (ultimo % 3);
 	columnaNuevo = (nuevo % 3);
 	return columnaUltimo == columnaNuevo;
 }
 //Determina que digitos se pueden pulsar en función de las reglas del juego
-digitoValido(int ultimo, int nuevo){
+bool digitoValido(int ultimo, int nuevo){
 	return ((mismaFila(int ultimo, int nuevo))||(mismaColumna(int ultimo, int nuevo)))&&(ultimo!=nuevo);
 }
 //Genera un dígito aleatorio
-digitoAleatorio(){
+int digitoAleatorio(){
 	return (cstlib::rand() % 9) + 1;
 }
 //Devuelve un digito que cumpla las reglas del juego con respecto a ultimo.
