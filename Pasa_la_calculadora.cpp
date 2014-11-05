@@ -53,8 +53,7 @@ bool digitoValido(int ultimo, int nuevo);//Implementada
 
 //FUNCIONES DE IA NIVEL 1
 //Devuelve un dígito del 1 al 9
-int digitoAleatorio();
-}//Implementada
+int digitoAleatorio();//Implementada
 
 //Devuelve un digito que cumpla las reglas del juego con respecto a ultimo.
 int digitoAutomata(int ultimo);
