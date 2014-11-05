@@ -40,32 +40,21 @@ tJugador pasaCalculadora();
 //Decide aleatoriamente quien empieza.
 tJugador quienEmpieza();//Implementada
 //Devuelve true si nuevo está en la misma fila que ultimo
-bool mismaFila(int ultimo, int nuevo){
-	filaUltimo = (ultimo/3);
-	filaNuevo = (nuevo/3);
-	return ceil(filaUltimo) == ceil(filaNuevo);
-}//Implementada (no la muevo, ya que no la encuentro en el int main)
+bool mismaFila(int ultimo, int nuevo);//Implementada
 
 
 //Devuelve true si nuevo está en la misma columna que ultimo
-bool mismaColumna(int ultimo, int nuevo){
-	columnaUltimo = (ultimo % 3);
-	columnaNuevo = (nuevo % 3);
-	return columnaUltimo == columnaNuevo;
-}//Implementada (no la muevo, ya que no la encuentro en el int main)
+bool mismaColumna(int ultimo, int nuevo);//Implementada
 
 //Devuelve true si nuevo cumple las reglas del juego con respecto a ultimo
 //Si ultimo == 0, este es el primer digito de la partida, y devuelve true
-bool digitoValido(int ultimo, int nuevo){
-	return ((mismaFila(int ultimo, int nuevo))||(mismaColumna(int ultimo, int nuevo)))&&(ultimo!=nuevo);
-}//Implementada (no la muevo, ya que no la encuentro en el int main)
+bool digitoValido(int ultimo, int nuevo);//Implementada
 
 
 //FUNCIONES DE IA NIVEL 1
 //Devuelve un dígito del 1 al 9
-int digitoAleatorio(){
-	return (cstlib::rand() % 9) + 1;
-}//Implementada (no la muevo, ya que no la encuentro en el int main)
+int digitoAleatorio();
+}//Implementada
 
 //Devuelve un digito que cumpla las reglas del juego con respecto a ultimo.
 int digitoAutomata(int ultimo);
@@ -112,14 +101,17 @@ int botDificil(int ultimo);
 int main(){
 	tJugador ganador;
 
-	saludar(){
+	saludar();
+}
+//Saluda al jugador y le pregunta su nombre
+saludar{
 	std::cout << "¡Bienvenido a Pasa la calculadora!" << endl;
 	std::cout << "¿Como te llamas?";
 	std::cin >> nombre;
 	std::cout << "Hola" << nombre;
 }
-	ganador = pasaCalculadora();
-	despedirse(ganador){
+//Se despide del jugador, la despedida varia segun gane el jugador, el autómata o ninguno de ellos (el jugador abandone)
+despedirse{
 	if (ganador == Nadie){
 		std::cout << "¿Abandonas? Ohhh..." << endl;
 		std::cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
@@ -133,9 +125,10 @@ int main(){
 		std::cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
 	}
 }
+	ganador = pasaCalculadora();
+	despedirse(ganador)
 	return 0;
 	}
-
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona devuelve Nadie.
 tJugador pasaCalculadora(){
@@ -143,14 +136,38 @@ tJugador pasaCalculadora(){
 	tJugador turno;
 	int total = 0, ultimoDigito = 0;
 	const int META=31;
-
+}
+//Decide aleatoriamente quien empieza la partida, si el automata o el jugador
+quienEmpieza(){
+	if (cstlib::rand() % 2)
+	cout << "Tu empiezas";
+	return Jugador;
+	else cout"Empiezo yo"; 
+	return Automata;
+}
+//Define que números se encuentran en la misma fila que el ultimo pulsado
+mismaFila(int ultimo, int nuevo){
+	filaUltimo = (ultimo/3);
+	filaNuevo = (nuevo/3);
+	return ceil(filaUltimo) == ceil(filaNuevo);
+}
+//Define que números se encuentran en la misma columna que el ultimo
+mismaColumna(int ultimo, int nuevo){
+	columnaUltimo = (ultimo % 3);
+	columnaNuevo = (nuevo % 3);
+	return columnaUltimo == columnaNuevo;
+}
+//Determina que digitos se pueden pulsar en función de las reglas del juego
+digitoValido(int ultimo, int nuevo){
+	return ((mismaFila(int ultimo, int nuevo))||(mismaColumna(int ultimo, int nuevo)))&&(ultimo!=nuevo);
+}
+//Genera un dígito aleatorio
+digitoAleatorio(){
+	return (cstlib::rand() % 9) + 1;
+}
 	//Inicializar partida
 	cstlib::srand(time(NULL))//Semilla
-	turno = quienEmpieza(){
-	if (cstlib::rand() % 2)
-	return Jugador;
-	else return Automata;
-}
+	turno = quienEmpieza();
 
 	//Bucle de juego
 	do{
