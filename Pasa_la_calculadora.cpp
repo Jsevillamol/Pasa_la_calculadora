@@ -28,40 +28,17 @@ typedef enum tJugador
 //FUNCIONES
 //FUNCIONES DE JUEGO
 
-void saludar (){
-	cout << "¡Bienvenido a Pasa la calculadora!" << endl;
-	cout << "¿Como te llamas?";
-	cin >> nombre;
-	cout << Hola nombre;
-}
+void saludar ();
 
 //Dependiendo de quien gane, la despedida sera distinta
-void despedirse (tJugador ganador){
-	if (ganador == Nadie){
-		cout << "¿Abandonas? Ohhh..." << endl;
-		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
-	}
-	else if (ganador == jugador){
-		cout << "Enhorabuena, has ganado" << endl;
-		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
-	}
-	else {
-		cout << "Lo siento, he ganado" << endl;
-		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
-	}
-}
+void despedirse (tJugador ganador);
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona devuelve Nadie.
 tJugador pasaCalculadora();
 
 //Decide aleatoriamente quien empieza.
-tJugador quienEmpieza(){
-	if (rand() % 2)
-	return Jugador;
-	else return Automata;
-}
-
+tJugador quienEmpieza();
 //Devuelve true si nuevo está en la misma fila que ultimo
 bool mismaFila(int ultimo, int nuevo){
 	filaUltimo = (ultimo/3);
@@ -86,10 +63,9 @@ bool digitoValido(int ultimo, int nuevo){
 
 //FUNCIONES DE IA NIVEL 1
 //Devuelve un dígito del 1 al 9
-/*int digitoAleatorio(){
-	if (digitoValido == true)
-	return (rand() % 9) + 1;
-}Esta no se si está bien del todo*/
+int digitoAleatorio(){
+	return (cstlib::rand() % 9) + 1;
+}
 
 //Devuelve un digito que cumpla las reglas del juego con respecto a ultimo.
 int digitoAutomata(int ultimo);
@@ -136,9 +112,27 @@ int botDificil(int ultimo);
 int main(){
 	tJugador ganador;
 
-	saludar();
+	saludar(){
+	std::cout << "¡Bienvenido a Pasa la calculadora!" << endl;
+	std::cout << "¿Como te llamas?";
+	std::cin >> nombre;
+	std::cout << "Hola" << nombre;
+}
 	ganador = pasaCalculadora();
-	despedirse(ganador);
+	despedirse(ganador){
+	if (ganador == Nadie){
+		std::cout << "¿Abandonas? Ohhh..." << endl;
+		std::cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
+	}
+	else if (ganador == jugador){
+		std::cout << "Enhorabuena, has ganado" << endl;
+		std::cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
+	}
+	else {
+		std::cout << "Lo siento, he ganado" << endl;
+		std::cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
+	}
+}
 	return 0;
 	}
 
@@ -151,8 +145,12 @@ tJugador pasaCalculadora(){
 	const int META=31;
 
 	//Inicializar partida
-	srand(time(NULL))
-	turno = quienEmpieza();
+	cstlib::srand(time(NULL))
+	turno = quienEmpieza(){
+	if (cstlib::rand() % 2)
+	return Jugador;
+	else return Automata;
+}
 
 	//Bucle de juego
 	do{
