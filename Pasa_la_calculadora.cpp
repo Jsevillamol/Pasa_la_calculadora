@@ -22,39 +22,75 @@ typedef enum tJugador
 //FUNCIONES
 //FUNCIONES DE JUEGO
 
-void saludar(); //to do Victor
+void saludar (){
+	cout << "Â¡Bienvenido a Pasa la calculadora!" << endl;
+	cout << "Â¿Como te llamas?";
+	cin >> nombre;
+	cout << Hola nombre;
+}
 
 //Dependiendo de quien gane, la despedida sera distinta
-void despedirse(tJugador ganador); //to do Victor
+void despedirse (tJugador ganador){
+	if (ganador == Nadie){
+		cout << "Â¿Abandonas? Ohhh..." << endl;
+		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
+	}
+	else if (ganador == jugador){
+		cout << "Enhorabuena, has ganado" << endl;
+		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
+	}
+	else {
+		cout << "Lo siento, he ganado" << endl;
+		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
+	}
+}
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona devuelve Nadie.
 tJugador pasaCalculadora();
 
 //Decide aleatoriamente quien empieza.
-tJugador quienEmpieza(); //to do Victor
+tJugador quienEmpieza(){
+	if (rand() % 2)
+	return Jugador;
+	else return Automata;
+}
 
-//Devuelve true si nuevo está en la misma fila que ultimo
-bool mismaFila(int ultimo, int nuevo); //to do Victor
+//Devuelve true si nuevo estÃ¡ en la misma fila que ultimo
+bool mismaFila(int ultimo, int nuevo){
+	filaUltimo = (ultimo/3);
+	filaNuevo = (nuevo/3);
+	return ceil(filaUltimo) == ceil(filaNuevo);
+} 
 
-//Devuelve true si nuevo está en la misma columna que ultimo
-bool mismaColumna(int ultimo, int nuevo); //to do Victor
+
+//Devuelve true si nuevo estÃ¡ en la misma columna que ultimo
+bool mismaColumna(int ultimo, int nuevo){
+	columnaUltimo = (ultimo % 3);
+	columnaNuevo = (nuevo % 3);
+	return columnaUltimo == columnaNuevo;
+}
 
 //Devuelve true si nuevo cumple las reglas del juego con respecto a ultimo
 //Si ultimo == 0, este es el primer digito de la partida, y devuelve true
-bool digitoValido(int ultimo, int nuevo); //to do Victor
+bool digitoValido(int ultimo, int nuevo){
+	return ((mismaFila(int ultimo, int nuevo))||(mismaColumna(int ultimo, int nuevo)))&&(ultimo!=nuevo);
+}
 
 
 //FUNCIONES DE IA NIVEL 1
-//Devuelve un dígito del 1 al 9
-int digitoAleatorio(); //to do Victor
+//Devuelve un dÃ­gito del 1 al 9
+/*int digitoAleatorio(){
+	if (digitoValido == true)
+	return (rand() % 9) + 1;
+}Esta no se si estÃ¡ bien del todo*/
 
 //Devuelve un digito que cumpla las reglas del juego con respecto a ultimo.
 int digitoAutomata(int ultimo);
 
 //FUNCIONES DE JUGADOR
-//Pide un dígito al jugador. Sólo devolverá un valor válido (entre 0 y 9).
-//Para un valor no válido, mostrará un error.
+//Pide un dÃ­gito al jugador. SÃ³lo devolverÃ¡ un valor vÃ¡lido (entre 0 y 9).
+//Para un valor no vÃ¡lido, mostrarÃ¡ un error.
 int digitoPersona(); //to do Jaime
 
 //Pide un digito al jugador mostrando el teclado. Solo devolvera un valor 
@@ -62,12 +98,16 @@ int digitoPersona(); //to do Jaime
 int digitoPersona(int ultimo); //to do Jaime
 
 //Muestra los botones de la calculadora
-void mostrarCalculadora(); //To do Victor
+/*void mostrarCalculadora(){
+	cout << "7     8     9" << endl;
+	cout << "4     5     6" << endl;
+	cout << "1     2     3";
+} Estoy casi seguro de que esta estÃ¡ mal*/
 
 /* Las funciones a continuacion se implementaran en un futuro
-//FUNCIONES DE MENÚ
+//FUNCIONES DE MENÃš
 //Muestra el menu, pide la opcion y la devuelve como resultado. Solo
-//devolvera una opción valida. Para cada valor no valido, mostrará un error.
+//devolvera una opciÃ³n valida. Para cada valor no valido, mostrarÃ¡ un error.
 int menu();
 
 //Muestra en la consola el contenido del archivo de texto nombArch. 
@@ -144,7 +184,7 @@ int digitoAutomata(int ultimo){
 }
 
 //Pide un digito al jugador. Solo devolvera un valor valido (entre 0 y 9).
-//Para un valor no válido, mostrará un error.
+//Para un valor no vÃ¡lido, mostrarÃ¡ un error.
 int digitoPersona(){
 	int digito = -1;
 
