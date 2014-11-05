@@ -28,23 +28,23 @@ typedef enum tJugador
 //FUNCIONES
 //FUNCIONES DE JUEGO
 
-void saludar ();
+void saludar ();//Implementada
 
 //Dependiendo de quien gane, la despedida sera distinta
-void despedirse (tJugador ganador);
+void despedirse (tJugador ganador);//Implementada
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona devuelve Nadie.
 tJugador pasaCalculadora();
 
 //Decide aleatoriamente quien empieza.
-tJugador quienEmpieza();
+tJugador quienEmpieza();//Implementada
 //Devuelve true si nuevo está en la misma fila que ultimo
 bool mismaFila(int ultimo, int nuevo){
 	filaUltimo = (ultimo/3);
 	filaNuevo = (nuevo/3);
 	return ceil(filaUltimo) == ceil(filaNuevo);
-} 
+}//Implementada (no la muevo, ya que no la encuentro en el int main)
 
 
 //Devuelve true si nuevo está en la misma columna que ultimo
@@ -52,20 +52,20 @@ bool mismaColumna(int ultimo, int nuevo){
 	columnaUltimo = (ultimo % 3);
 	columnaNuevo = (nuevo % 3);
 	return columnaUltimo == columnaNuevo;
-}
+}//Implementada (no la muevo, ya que no la encuentro en el int main)
 
 //Devuelve true si nuevo cumple las reglas del juego con respecto a ultimo
 //Si ultimo == 0, este es el primer digito de la partida, y devuelve true
 bool digitoValido(int ultimo, int nuevo){
 	return ((mismaFila(int ultimo, int nuevo))||(mismaColumna(int ultimo, int nuevo)))&&(ultimo!=nuevo);
-}
+}//Implementada (no la muevo, ya que no la encuentro en el int main)
 
 
 //FUNCIONES DE IA NIVEL 1
 //Devuelve un dígito del 1 al 9
 int digitoAleatorio(){
 	return (cstlib::rand() % 9) + 1;
-}
+}//Implementada (no la muevo, ya que no la encuentro en el int main)
 
 //Devuelve un digito que cumpla las reglas del juego con respecto a ultimo.
 int digitoAutomata(int ultimo);
@@ -145,7 +145,7 @@ tJugador pasaCalculadora(){
 	const int META=31;
 
 	//Inicializar partida
-	cstlib::srand(time(NULL))
+	cstlib::srand(time(NULL))//Semilla
 	turno = quienEmpieza(){
 	if (cstlib::rand() % 2)
 	return Jugador;
