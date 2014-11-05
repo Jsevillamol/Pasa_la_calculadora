@@ -121,7 +121,7 @@ despedirse{
 		std::cout << "Enhorabuena, has ganado" << endl;
 		std::cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
 	}
-	else {
+	else{
 		std::cout << "Lo siento, he ganado" << endl;
 		std::cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
 	}
