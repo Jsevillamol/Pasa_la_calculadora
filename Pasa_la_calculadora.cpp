@@ -151,7 +151,7 @@ tJugador pasaCalculadora(){
 	const int META=31;
 
 	//Inicializar partida
-	//Semilla aleatoria aqui
+	srand(time(NULL))
 	turno = quienEmpieza();
 
 	//Bucle de juego
