@@ -11,6 +11,12 @@ Version: 1.0
 //BIBLIOTECAS
 #include <iostream>
 #include <cstdlib>
+#include <string>
+#include <ctime>
+ 
+string nombre;
+int columnaUltimo, columnaNuevo, x;
+double filaUltimo, filaNuevo;
 
 typedef enum tJugador
 {
