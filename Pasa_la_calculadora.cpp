@@ -66,12 +66,9 @@ int digitoPersona(int ultimo); //to do Jaime
 //Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
 char mNumero(int ultimo, int n);
 
-//Muestra los botones de la calculadora
-/*void mostrarCalculadora(ultimo){
-	cout << foo(ultimo,7)<< "     " << if(digitoValido(ultimo, 8)) return 8     if(digitoValido(ultimo, 9)) return 9" << endl;
-	cout << "4     5     6" << endl;
-	cout << "1     2     3";
-} Estoy casi seguro de que esta está mal*/
+//Muestra los botones de la calculadora (solo los que se pueden pulsar en cada turno)
+void mostrarCalculadora(ultimo);
+
 
 /* Las funciones a continuacion se implementaran en un futuro
 //FUNCIONES DE MENÚ
@@ -251,4 +248,19 @@ int digitoPersona(int ultimo){
 char mNumero(int ultimo, int n){
 	if(digitoValido(ultimo, n) return char (n+int('0'));
 	else return ' ';
+}
+
+void mostrarCalculadora(ultimo){
+	for (int i = 7; i<10; i++){
+		cout << setw(3) << mNumero(ultimo, i);
+	}
+	cout << endl;
+	for (int i = 4; i<7; i++){
+		cout << setw(3) << mNumero(ultimo, i);
+	}
+	cout << endl;
+	for (int i = 1; i<4; i++){
+		cout << setw(3) << mNumero(ultimo, i);
+	}
+	cout << endl;
 }
