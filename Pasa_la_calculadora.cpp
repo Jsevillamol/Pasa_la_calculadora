@@ -13,6 +13,7 @@ Version: 1.0
 #include <cstdlib>
 #include <string>
 #include <ctime>
+#include <cmath>
 
 using namespace std;
 
@@ -209,11 +210,9 @@ int digitoAutomata(int ultimo){
 //Pide un digito al jugador. Solo devolvera un valor valido (entre 0 y 9).
 //Para un valor no válido, mostrará un error.
 int digitoPersona(){
-	int digito = -1;
+	int digito;
 
-	mostrarCalculadora();
-
-	while (digito == -1){
+	do{
 		try{
 			cin.sync(); //Por si quedan datos basura en el buffer
 			cin >> digito;
@@ -222,7 +221,7 @@ int digitoPersona(){
 			cout << "Error! Introduce un digito entre 0-9";
 			digito = -1;
 		}
-	}
+	}while (digito == -1);
 
 	return digito;
 }
@@ -230,9 +229,11 @@ int digitoPersona(){
 //Pide un digito al jugador mostrando el teclado. Solo devolvera un valor 
 //que cumpla las reglas del juego o 0. Para un valor no valido, mostrara un error.
 int digitoPersona(int ultimo){
-	int digito = -1; //-1 es mi error flag
+	int digito; //-1 es mi error flag
+	
+	mostrarCalculadora(ultimo);
 
-	while (digito == -1){
+	do{
 		try{
 			digito = digitoPersona();
 			if (!digitoValido(ultimo, digito)) throw;
@@ -240,7 +241,7 @@ int digitoPersona(int ultimo){
 			cout << "Error! El digito debe estar en la misma fila y columna que el ultimo";
 			digito = -1;
 		}
-	}
+	}while (digito == -1);
 
 	cout << "Has elegido el" << digito;
 
