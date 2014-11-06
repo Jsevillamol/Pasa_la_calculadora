@@ -218,7 +218,7 @@ int digitoPersona(){
 			cin >> digito;
 			if (digito < 0 || digito > 9) throw;
 		}catch(...){
-			cout << "Error! Introduce un digito entre 0-9";
+			cout << "Error! Introduce un digito entre 0 y 9";
 			digito = -1;
 		}
 	}while (digito == -1);
