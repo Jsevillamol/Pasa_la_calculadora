@@ -70,7 +70,7 @@ int digitoPersona(int ultimo); //to do Jaime
 char mNumero(int ultimo, int n);
 
 //Muestra los botones de la calculadora (solo los que se pueden pulsar en cada turno)
-void mostrarCalculadora(ultimo);
+void mostrarCalculadora(int ultimo);
 
 
 /* Las funciones a continuacion se implementaran en un futuro
@@ -101,11 +101,11 @@ int main(){
 
 	saludar();
 	ganador = pasaCalculadora();
-	despedirse(ganador)
+	despedirse(ganador);
 	return 0;
 	}
 //Saluda al jugador y le pregunta su nombre
-void saludar{
+void saludar(){
 	string nombre;
 	cout << "¡Bienvenido a Pasa la calculadora!" << endl;
 	cout << "¿Como te llamas?";
@@ -113,7 +113,7 @@ void saludar{
 	cout << "Hola" << nombre;
 }
 //Se despide del jugador, la despedida varia segun gane el jugador, el autómata o ninguno de ellos (el jugador abandone)
-void despedirse{
+void despedirse(tJugador ganador){
 	string nombre;
 	if (ganador == Nadie){
 		cout << "¿Abandonas? Ohhh..." << endl;
