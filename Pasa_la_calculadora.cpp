@@ -98,10 +98,17 @@ int botDificil(int ultimo);
 
 int main(){
 	tJugador ganador;
-
+	
 	saludar();
-	ganador = pasaCalculadora();
-	despedirse(ganador);
+	do{
+		opcion = menu();
+		ganador = pasaCalculadora();
+		despedirse(ganador);
+	}
+	while(opcion!= 0);
+	if(opcion == 0){
+		cout << "Hasta la proxima";	
+	}
 	return 0;
 	}
 //Saluda al jugador y le pregunta su nombre
@@ -125,8 +132,29 @@ void despedirse(tJugador ganador){
 	}
 	else{
 		cout << "Lo siento, he ganado" << endl;
-		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
+		cout << "Hasta la proxima " << nombre << " " << "(pulsa una tecla)";
 	}
+}
+
+//Proporciona al jugador la posibilidad de jugar, ver las instrucciones del juego o salir
+int menu(){
+	int seleccionar;
+	cout << "1 - Jugar" << endl;
+	//cout << "2 - Acerca de" << endl; (no implementada todavia)
+	cout << "0 - Salir";
+	
+	do{
+		try{
+			cin.sync(); //Por si quedan datos basura en el buffer
+			cin >> seleccionar;
+			if (seleccionar < 0 || seleccionar > 2) throw;
+		}catch(...){
+			cout << "Error! Introduce un digito entre 0 y 2";
+			seleccionar = -1;
+		}
+	}while (seleccionar == -1);
+
+	return seleccionar;
 }
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona devuelve Nadie.
