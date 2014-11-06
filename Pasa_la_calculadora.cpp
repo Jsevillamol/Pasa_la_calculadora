@@ -63,9 +63,12 @@ int digitoPersona(); //to do Jaime
 //que cumpla las reglas del juego o 0. Para un valor no valido, mostrara un error.
 int digitoPersona(int ultimo); //to do Jaime
 
+//Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
+char mNumero(int ultimo, int n);
+
 //Muestra los botones de la calculadora
-/*void mostrarCalculadora(){
-	cout << "7     8     9" << endl;
+/*void mostrarCalculadora(ultimo){
+	cout << foo(ultimo,7)<< "     " << if(digitoValido(ultimo, 8)) return 8     if(digitoValido(ultimo, 9)) return 9" << endl;
 	cout << "4     5     6" << endl;
 	cout << "1     2     3";
 } Estoy casi seguro de que esta está mal*/
@@ -243,4 +246,9 @@ int digitoPersona(int ultimo){
 	std::cout << "Has elegido el" << digito;
 
 	return digito;
+}
+
+char mNumero(int ultimo, int n){
+	if(digitoValido(ultimo, n) return char (n+int('0'));
+	else return ' ';
 }
