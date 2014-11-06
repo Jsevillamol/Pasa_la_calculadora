@@ -14,6 +14,8 @@ Version: 1.0
 #include <string>
 #include <ctime>
 
+using namespace std;
+
 typedef enum tJugador
 {
 	Nadie,
@@ -63,12 +65,12 @@ int digitoPersona(); //to do Jaime
 //que cumpla las reglas del juego o 0. Para un valor no valido, mostrara un error.
 int digitoPersona(int ultimo); //to do Jaime
 
-//Muestra los botones de la calculadora
-/*void mostrarCalculadora(){
-	cout << "7     8     9" << endl;
-	cout << "4     5     6" << endl;
-	cout << "1     2     3";
-} Estoy casi seguro de que esta está mal*/
+//Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
+char mNumero(int ultimo, int n);
+
+//Muestra los botones de la calculadora (solo los que se pueden pulsar en cada turno)
+void mostrarCalculadora(ultimo);
+
 
 /* Las funciones a continuacion se implementaran en un futuro
 //FUNCIONES DE MENÚ
@@ -104,25 +106,25 @@ int main(){
 //Saluda al jugador y le pregunta su nombre
 void saludar{
 	string nombre;
-	std::cout << "¡Bienvenido a Pasa la calculadora!" << endl;
-	std::cout << "¿Como te llamas?";
-	std::cin >> nombre;
-	std::cout << "Hola" << nombre;
+	cout << "¡Bienvenido a Pasa la calculadora!" << endl;
+	cout << "¿Como te llamas?";
+	cin >> nombre;
+	cout << "Hola" << nombre;
 }
 //Se despide del jugador, la despedida varia segun gane el jugador, el autómata o ninguno de ellos (el jugador abandone)
 void despedirse{
 	string nombre;
 	if (ganador == Nadie){
-		std::cout << "¿Abandonas? Ohhh..." << endl;
-		std::cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
+		cout << "¿Abandonas? Ohhh..." << endl;
+		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
 	}
 	else if (ganador == jugador){
-		std::cout << "Enhorabuena, has ganado" << endl;
-		std::cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
+		cout << "Enhorabuena, has ganado" << endl;
+		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
 	}
 	else{
-		std::cout << "Lo siento, he ganado" << endl;
-		std::cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
+		cout << "Lo siento, he ganado" << endl;
+		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
 	}
 }
 //Conduce el desarrollo del juego y devuelve el ganador. 
@@ -133,7 +135,7 @@ tJugador pasaCalculadora(){
 	int total = 0, ultimoDigito = 0;
 	const int META=31;
 		//Inicializar partida
-	cstlib::srand(time(NULL))//Semilla
+	srand(time(NULL))//Semilla
 	turno = quienEmpieza();
 
 	//Bucle de juego
@@ -149,7 +151,7 @@ tJugador pasaCalculadora(){
 			turno = Jugador;
 		}
 		total += ultimoDigito;
-		std::cout << "Total = " << total;
+		cout << "Total = " << total;
 	}while ((total < META) && (ultimoDigito != 0));
 	
 	if (ultimoDigito == 0) turno = Nadie; 
@@ -160,7 +162,7 @@ tJugador pasaCalculadora(){
 
 //Decide aleatoriamente quien empieza la partida, si el automata o el jugador
 tJugador quienEmpieza(){
-	if (cstlib::rand() % 2){
+	if (rand() % 2){
 		cout << "Tu empiezas";
 		return Jugador;
 	}
@@ -189,7 +191,7 @@ bool digitoValido(int ultimo, int nuevo){
 }
 //Genera un dígito aleatorio
 int digitoAleatorio(){
-	return (cstlib::rand() % 9) + 1;
+	return (rand() % 9) + 1;
 }
 //Devuelve un digito que cumpla las reglas del juego con respecto a ultimo.
 int digitoAutomata(int ultimo){
@@ -199,7 +201,7 @@ int digitoAutomata(int ultimo){
 	digito = digitoAleatorio();
 	}while (!digitoValido(ultimo, digito));
 
-	std::cout << "Elijo el numero " << digito;
+	cout << "Elijo el numero " << digito;
 
 	return digito;
 }
@@ -213,11 +215,11 @@ int digitoPersona(){
 
 	while (digito == -1){
 		try{
-			std::cin.sync(); //Por si quedan datos basura en el buffer
-			std::cin >> digito;
+			cin.sync(); //Por si quedan datos basura en el buffer
+			cin >> digito;
 			if (digito < 0 || digito > 9) throw;
 		}catch(...){
-			std::cout << "Error! Introduce un digito entre 0-9";
+			cout << "Error! Introduce un digito entre 0-9";
 			digito = -1;
 		}
 	}
@@ -235,12 +237,32 @@ int digitoPersona(int ultimo){
 			digito = digitoPersona();
 			if (!digitoValido(ultimo, digito)) throw;
 		}catch(...){
-			std::cout << "Error! El digito debe estar en la misma fila y columna que el ultimo";
+			cout << "Error! El digito debe estar en la misma fila y columna que el ultimo";
 			digito = -1;
 		}
 	}
 
-	std::cout << "Has elegido el" << digito;
+	cout << "Has elegido el" << digito;
 
 	return digito;
+}
+
+char mNumero(int ultimo, int n){
+	if(digitoValido(ultimo, n) return char (n+int('0'));
+	else return ' ';
+}
+
+void mostrarCalculadora(ultimo){
+	for (int i = 7; i<10; i++){
+		cout << setw(3) << mNumero(ultimo, i);
+	}
+	cout << endl;
+	for (int i = 4; i<7; i++){
+		cout << setw(3) << mNumero(ultimo, i);
+	}
+	cout << endl;
+	for (int i = 1; i<4; i++){
+		cout << setw(3) << mNumero(ultimo, i);
+	}
+	cout << endl;
 }
