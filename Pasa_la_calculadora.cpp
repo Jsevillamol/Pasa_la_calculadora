@@ -14,6 +14,7 @@ Version: 1.0
 #include <string>
 #include <ctime>
 #include <cmath>
+#include <fstream>
 
 using namespace std;
 
@@ -31,6 +32,12 @@ void saludar ();//Implementada
 
 //Dependiendo de quien gane, la despedida sera distinta
 void despedirse (tJugador ganador);//Implementada
+
+//Muestra un menu que permite al jugador jugar, salir, o ver las reglas del juego
+int menu();
+
+//Muestra las instrucciones del juego, siempre que su archivo no contenga errores
+bool acerca()
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona devuelve Nadie.
@@ -102,10 +109,11 @@ int main(){
 	saludar();
 	do{
 		opcion = menu();
+		if(opcion == 2)acerca();
 		ganador = pasaCalculadora();
 		despedirse(ganador);
 	}
-	while(opcion!= 0);
+	while(opcion != 0);
 	if(opcion == 0){
 		cout << "Hasta la proxima";	
 	}
@@ -140,7 +148,7 @@ void despedirse(tJugador ganador){
 int menu(){
 	int seleccionar;
 	cout << "1 - Jugar" << endl;
-	//cout << "2 - Acerca de" << endl; (no implementada todavia)
+	cout << "2 - Acerca de" << endl;
 	cout << "0 - Salir";
 	
 	do{
@@ -156,6 +164,30 @@ int menu(){
 
 	return seleccionar;
 }
+
+//Muestra el archivo "acerca.txt" siempre que este no contenga errores
+bool acerca(){
+
+bool = ok;
+ifstream acerca;
+char word;
+
+acerca.open("acerca.txt");
+if(acerca.is_open()){
+	acerca.get(word);
+	while(!acerca.fail()){
+		cout << word;
+		acerca.get(word);
+		ok = true;
+	}
+}
+else{
+	ok = false;
+	cout << "Error, falta contenido en el archivo 'acerca.txt'"
+}
+return ok;
+}
+
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona devuelve Nadie.
 tJugador pasaCalculadora(){
