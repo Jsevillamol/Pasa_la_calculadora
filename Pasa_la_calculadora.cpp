@@ -123,24 +123,24 @@ int main(){
 void saludar(){
 	string nombre;
 	cout << "¡Bienvenido a Pasa la calculadora!" << endl;
-	cout << "¿Como te llamas?";
+	cout << "¿Como te llamas? ";
 	cin >> nombre;
-	cout << "Hola" << nombre;
+	cout << "Hola " << nombre;
 }
 //Se despide del jugador, la despedida varia segun gane el jugador, el autómata o ninguno de ellos (el jugador abandone)
 void despedirse(tJugador ganador){
 	string nombre;
 	if (ganador == Nadie){
 		cout << "¿Abandonas? Ohhh..." << endl;
-		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
+		cout << "Hasta la proxima " << nombre << " (pulsa una tecla)";
 	}
 	else if (ganador == jugador){
 		cout << "Enhorabuena, has ganado" << endl;
-		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
+		cout << "Hasta la proxima " << nombre << " (pulsa una tecla)";
 	}
 	else{
 		cout << "Lo siento, he ganado" << endl;
-		cout << "Hasta la proxima " << nombre << " " << "(pulsa una tecla)";
+		cout << "Hasta la proxima " << nombre << " (pulsa una tecla)";
 	}
 }
 
