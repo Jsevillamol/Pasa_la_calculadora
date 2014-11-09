@@ -66,7 +66,7 @@ int digitoAutomata(int ultimo);
 
 //FUNCIONES DE JUGADOR
 //Pide un digito al jugador. Solo devolvera un valor valido (entre 0 y 9).
-//Para un valor no válido, mostrará un error.
+//Para un valor no valido, mostrara un error.
 int digitoPersona();
 
 //Pide un digito al jugador mostrando el teclado. Solo devolvera un valor 
@@ -81,16 +81,6 @@ void mostrarCalculadora(int ultimo);
 
 
 /* Las funciones a continuacion se implementaran en un futuro
-//FUNCIONES DE MENU
-//Muestra el menu, pide la opcion y la devuelve como resultado. Solo
-//devolvera una opcion valida. Para cada valor no valido, mostrara un error.
-int menu();
-
-//Muestra en la consola el contenido del archivo de texto nombArch. 
-//Si el archivo no se encuentra, devuelve false, en otro caso true.
-bool mostrar(string nombArch);
-
-
 //FUNCIONES DE INFORME
 //Actualiza el archivo informePC.txt con los tres argumentos. En caso de no encontrar
 //el archivo, lo crea y devuelve false; en otro caso devuelve true.
@@ -107,6 +97,8 @@ int main(){
 	tJugador ganador;
 	
 	saludar();
+	
+	//Bucle Menu
 	do{
 		opcion = menu();
 		if(opcion == 1){	
@@ -150,12 +142,12 @@ void despedirse(tJugador ganador){
 	}
 }
 
-//Proporciona al jugador la posibilidad de jugar, ver las instrucciones del juego o salir
+//Proporciona al jugador la posibilidad de jugar, ver las instrucciones del juego o salir.
 int menu(){
 	int seleccionar;
 	cout << "1 - Jugar" << endl;
 	cout << "2 - Acerca de" << endl;
-	cout << "0 - Salir";
+	cout << "0 - Salir" << endl;
 	
 	do{
 		try{
@@ -176,21 +168,21 @@ bool acerca(){
 
 	bool = ok;
 	ifstream acerca;
-	char word;
+	char c;
 
 	acerca.open("acerca.txt");
 	
 	if(acerca.is_open()){
-		acerca.get(word);
-		while(!acerca.fail()){
-			cout << word;
-			acerca.get(word);
+		acerca.get(c);
+		while(!acerca.fail()){//Mientras la lectura no falle
+			cout << c;
+			acerca.get(c);
 			ok = true;
 		}
-		if(acerca.fail()){
+	}else{
 		ok = false;
 		cout << "Error, el archivo 'acerca.txt' no existe"
-		}
+	}
 	}
 	return ok;
 }
@@ -231,14 +223,15 @@ tJugador pasaCalculadora(){
 //Decide aleatoriamente quien empieza la partida, si el automata o el jugador
 tJugador quienEmpieza(){
 	if (rand() % 2){
-		cout << "Tu empiezas";
+		cout << "Tu empiezas" << endl;
 		return Jugador;
 	}
 	else{ 
-		cout"Empiezo yo"; 
+		cout << "Empiezo yo" << endl; 
 		return Automata;
 	}
 }
+
 //Define que numeros se encuentran en la misma fila que el ultimo pulsado
 bool mismaFila(int ultimo, int nuevo){
 	double filaUltimo, filaNuevo;
@@ -246,6 +239,7 @@ bool mismaFila(int ultimo, int nuevo){
 	filaNuevo = (nuevo/3);
 	return ceil(filaUltimo) == ceil(filaNuevo);
 }
+
 //Define que numeros se encuentran en la misma columna que el ultimo
 bool mismaColumna(int ultimo, int nuevo){
 	int columnaUltimo, columnaNuevo;
@@ -253,14 +247,18 @@ bool mismaColumna(int ultimo, int nuevo){
 	columnaNuevo = (nuevo % 3);
 	return columnaUltimo == columnaNuevo;
 }
+
 //Determina que digitos se pueden pulsar en funcion de las reglas del juego
 bool digitoValido(int ultimo, int nuevo){
+	if (ultimo == 0) return true;
 	return ((mismaFila(int ultimo, int nuevo))||(mismaColumna(int ultimo, int nuevo)))&&(ultimo!=nuevo);
 }
+
 //Genera un digito aleatorio
 int digitoAleatorio(){
 	return (rand() % 9) + 1;
 }
+
 //Devuelve un digito que cumpla las reglas del juego con respecto a ultimo.
 int digitoAutomata(int ultimo){
 	int digito;
@@ -269,7 +267,7 @@ int digitoAutomata(int ultimo){
 	digito = digitoAleatorio();
 	}while (!digitoValido(ultimo, digito));
 
-	cout << "Elijo el numero " << digito;
+	cout << "Elijo el numero " << digito << endl;
 
 	return digito;
 }
@@ -305,12 +303,12 @@ int digitoPersona(int ultimo){
 			digito = digitoPersona();
 			if (!digitoValido(ultimo, digito)) throw;
 		}catch(...){
-			cout << "Error! El digito debe estar en la misma fila y columna que el ultimo";
+			cout << "Error! El digito debe estar en la misma fila y columna que el ultimo" << endl;
 			digito = -1;
 		}
 	}while (digito == -1);
 
-	cout << "Has elegido el" << digito;
+	cout << "Has elegido el" << digito << endl;
 
 	return digito;
 }
