@@ -28,10 +28,10 @@ typedef enum tJugador
 //FUNCIONES
 //FUNCIONES DE JUEGO
 
-void saludar ();//Implementada
+void saludar ();
 
 //Dependiendo de quien gane, la despedida sera distinta
-void despedirse (tJugador ganador);//Implementada
+void despedirse (tJugador ganador);
 
 //Muestra un menu que permite al jugador jugar, salir, o ver las reglas del juego
 int menu();
@@ -40,38 +40,38 @@ int menu();
 bool acerca()
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
-//Si se abandona devuelve Nadie.
+//Si se abandona, devuelve Nadie.
 tJugador pasaCalculadora();
 
 //Decide aleatoriamente quien empieza.
-tJugador quienEmpieza();//Implementada
-//Devuelve true si nuevo está en la misma fila que ultimo
-bool mismaFila(int ultimo, int nuevo);//Implementada
+tJugador quienEmpieza();
+//Devuelve true si nuevo esta en la misma fila que ultimo
+bool mismaFila(int ultimo, int nuevo);
 
 
-//Devuelve true si nuevo está en la misma columna que ultimo
-bool mismaColumna(int ultimo, int nuevo);//Implementada
+//Devuelve true si nuevo esta en la misma columna que ultimo
+bool mismaColumna(int ultimo, int nuevo);
 
 //Devuelve true si nuevo cumple las reglas del juego con respecto a ultimo
 //Si ultimo == 0, este es el primer digito de la partida, y devuelve true
-bool digitoValido(int ultimo, int nuevo);//Implementada
+bool digitoValido(int ultimo, int nuevo);
 
 
 //FUNCIONES DE IA NIVEL 1
-//Devuelve un dígito del 1 al 9
-int digitoAleatorio();//Implementada
+//Devuelve un digito del 1 al 9
+int digitoAleatorio();
 
 //Devuelve un digito que cumpla las reglas del juego con respecto a ultimo.
 int digitoAutomata(int ultimo);
 
 //FUNCIONES DE JUGADOR
-//Pide un dígito al jugador. Sólo devolverá un valor válido (entre 0 y 9).
+//Pide un digito al jugador. Solo devolvera un valor valido (entre 0 y 9).
 //Para un valor no válido, mostrará un error.
-int digitoPersona(); //to do Jaime
+int digitoPersona();
 
 //Pide un digito al jugador mostrando el teclado. Solo devolvera un valor 
 //que cumpla las reglas del juego o 0. Para un valor no valido, mostrara un error.
-int digitoPersona(int ultimo); //to do Jaime
+int digitoPersona(int ultimo);
 
 //Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
 char mNumero(int ultimo, int n);
@@ -81,9 +81,9 @@ void mostrarCalculadora(int ultimo);
 
 
 /* Las funciones a continuacion se implementaran en un futuro
-//FUNCIONES DE MENÚ
+//FUNCIONES DE MENU
 //Muestra el menu, pide la opcion y la devuelve como resultado. Solo
-//devolvera una opción valida. Para cada valor no valido, mostrará un error.
+//devolvera una opcion valida. Para cada valor no valido, mostrara un error.
 int menu();
 
 //Muestra en la consola el contenido del archivo de texto nombArch. 
@@ -109,36 +109,42 @@ int main(){
 	saludar();
 	do{
 		opcion = menu();
-		if(opcion == 2)acerca();
-		ganador = pasaCalculadora();
-		despedirse(ganador);
+		if(opcion == 1){	
+			ganador = pasaCalculadora();
+			despedirse(ganador);
+			
+		}
+		if(opcion == 2) acerca();
+	
 	}
 	while(opcion != 0);
-	if(opcion == 0){
-		cout << "Hasta la proxima";	
+	
+	cout << "Hasta la proxima";	
 	}
 	return 0;
-	}
+}
+	
 //Saluda al jugador y le pregunta su nombre
 void saludar(){
 	string nombre;
 	cout << "¡Bienvenido a Pasa la calculadora!" << endl;
 	cout << "¿Como te llamas? ";
 	cin >> nombre;
-	cout << "Hola " << nombre;
+	cout << "Hola " << nombre << endl;
 }
-//Se despide del jugador, la despedida varia segun gane el jugador, el autómata o ninguno de ellos (el jugador abandone)
+
+//Se despide del jugador, la despedida varia segun gane el jugador, el automata o ninguno de ellos (el jugador abandone)
 void despedirse(tJugador ganador){
 	string nombre;
 	if (ganador == Nadie){
 		cout << "¿Abandonas? Ohhh..." << endl;
 		cout << "Hasta la proxima " << nombre << " (pulsa una tecla)";
 	}
-	else if (ganador == jugador){
+	else if (ganador == Jugador){
 		cout << "Enhorabuena, has ganado" << endl;
 		cout << "Hasta la proxima " << nombre << " (pulsa una tecla)";
 	}
-	else{
+	else{ /*(ganador == Automata)*/
 		cout << "Lo siento, he ganado" << endl;
 		cout << "Hasta la proxima " << nombre << " (pulsa una tecla)";
 	}
@@ -168,28 +174,29 @@ int menu(){
 //Muestra el archivo "acerca.txt" siempre que este no contenga errores
 bool acerca(){
 
-bool = ok;
-ifstream acerca;
-char word;
+	bool = ok;
+	ifstream acerca;
+	char word;
 
-acerca.open("acerca.txt");
-if(acerca.is_open()){
-	acerca.get(word);
-	while(!acerca.fail()){
-		cout << word;
+	acerca.open("acerca.txt");
+	
+	if(acerca.is_open()){
 		acerca.get(word);
-		ok = true;
+		while(!acerca.fail()){
+			cout << word;
+			acerca.get(word);
+			ok = true;
+		}
+		if(acerca.fail()){
+		ok = false;
+		cout << "Error, el archivo 'acerca.txt' no existe"
+		}
 	}
-	if(acerca.fail()){
-	ok = false;
-	cout << "Error, falta contenido en el archivo 'acerca.txt'"
-	}
-}
-return ok;
+	return ok;
 }
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
-//Si se abandona devuelve Nadie.
+//Si se abandona, devuelve Nadie.
 tJugador pasaCalculadora(){
 	//Variables
 	tJugador turno;
@@ -232,25 +239,25 @@ tJugador quienEmpieza(){
 		return Automata;
 	}
 }
-//Define que números se encuentran en la misma fila que el ultimo pulsado
+//Define que numeros se encuentran en la misma fila que el ultimo pulsado
 bool mismaFila(int ultimo, int nuevo){
 	double filaUltimo, filaNuevo;
 	filaUltimo = (ultimo/3);
 	filaNuevo = (nuevo/3);
 	return ceil(filaUltimo) == ceil(filaNuevo);
 }
-//Define que números se encuentran en la misma columna que el ultimo
+//Define que numeros se encuentran en la misma columna que el ultimo
 bool mismaColumna(int ultimo, int nuevo){
 	int columnaUltimo, columnaNuevo;
 	columnaUltimo = (ultimo % 3);
 	columnaNuevo = (nuevo % 3);
 	return columnaUltimo == columnaNuevo;
 }
-//Determina que digitos se pueden pulsar en función de las reglas del juego
+//Determina que digitos se pueden pulsar en funcion de las reglas del juego
 bool digitoValido(int ultimo, int nuevo){
 	return ((mismaFila(int ultimo, int nuevo))||(mismaColumna(int ultimo, int nuevo)))&&(ultimo!=nuevo);
 }
-//Genera un dígito aleatorio
+//Genera un digito aleatorio
 int digitoAleatorio(){
 	return (rand() % 9) + 1;
 }
@@ -268,7 +275,7 @@ int digitoAutomata(int ultimo){
 }
 
 //Pide un digito al jugador. Solo devolvera un valor valido (entre 0 y 9).
-//Para un valor no válido, mostrará un error.
+//Para un valor no valido, mostrara un error.
 int digitoPersona(){
 	int digito;
 
