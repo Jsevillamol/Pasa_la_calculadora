@@ -180,10 +180,10 @@ if(acerca.is_open()){
 		acerca.get(word);
 		ok = true;
 	}
-}
-else{
+	if(acerca.fail()){
 	ok = false;
 	cout << "Error, falta contenido en el archivo 'acerca.txt'"
+	}
 }
 return ok;
 }
