@@ -15,6 +15,7 @@ Version: 1.0
 #include <ctime>
 #include <cmath>
 #include <fstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -195,7 +196,7 @@ tJugador pasaCalculadora(){
 	int total = 0, ultimoDigito = 0;
 	const int META=31;
 		//Inicializar partida
-	srand(time(NULL))//Semilla
+	srand(time(NULL));//Semilla
 	turno = quienEmpieza();
 
 	//Bucle de juego
@@ -226,8 +227,8 @@ tJugador quienEmpieza(){
 		cout << "Tu empiezas" << endl;
 		return Jugador;
 	}
-	else{ 
-		cout << "Empiezo yo" << endl; 
+	else{
+		cout << "Empiezo yo" << endl;
 		return Automata;
 	}
 }
@@ -251,7 +252,7 @@ bool mismaColumna(int ultimo, int nuevo){
 //Determina que digitos se pueden pulsar en funcion de las reglas del juego
 bool digitoValido(int ultimo, int nuevo){
 	if (ultimo == 0) return true;
-	return ((mismaFila(int ultimo, int nuevo))||(mismaColumna(int ultimo, int nuevo)))&&(ultimo!=nuevo);
+	return ((mismaFila(ultimo, nuevo))||(mismaColumna(ultimo, nuevo)))&&(ultimo!=nuevo);
 }
 
 //Genera un digito aleatorio
@@ -314,11 +315,11 @@ int digitoPersona(int ultimo){
 }
 
 char mNumero(int ultimo, int n){
-	if(digitoValido(ultimo, n) return char (n+int('0'));
+	if(digitoValido(ultimo, n)) return char (n+int('0'));
 	else return ' ';
 }
 
-void mostrarCalculadora(ultimo){
+void mostrarCalculadora(int ultimo){
 	for (int i = 7; i<10; i++){
 		cout << setw(3) << mNumero(ultimo, i);
 	}
