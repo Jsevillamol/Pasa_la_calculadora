@@ -19,6 +19,7 @@ Version: 1.0
 
 using namespace std;
 
+//TIPOS PROPIOS
 typedef enum tJugador
 {
 	Nadie,
@@ -38,7 +39,7 @@ void despedirse (tJugador ganador);
 int menu();
 
 //Muestra las instrucciones del juego, siempre que su archivo no contenga errores
-bool acerca()
+bool acerca();
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona, devuelve Nadie.
@@ -96,6 +97,7 @@ int botDificil(int ultimo);
 
 int main(){
 	tJugador ganador;
+	int opcion;
 	
 	saludar();
 	
@@ -105,25 +107,24 @@ int main(){
 		if(opcion == 1){	
 			ganador = pasaCalculadora();
 			despedirse(ganador);
-			
 		}
-		if(opcion == 2) acerca();
+		else if(opcion == 2) acerca();
 	
-	}
-	while(opcion != 0);
+	}while(opcion != 0);
 	
-	cout << "Hasta la proxima";	
-	}
+	cout << "Hasta la proxima (pulsa enter)";
+	cin;
+
 	return 0;
 }
 	
 //Saluda al jugador y le pregunta su nombre
 void saludar(){
 	string nombre;
-	cout << "¡Bienvenido a Pasa la calculadora!" << endl;
-	cout << "¿Como te llamas? ";
+	cout << "Bienvenido a Pasa la calculadora!" << endl;
+	cout << "Como te llamas? ";
 	cin >> nombre;
-	cout << "Hola " << nombre << endl;
+	cout << "Hola " << nombre << endl << endl;
 }
 
 //Se despide del jugador, la despedida varia segun gane el jugador, el automata o ninguno de ellos (el jugador abandone)
@@ -131,15 +132,12 @@ void despedirse(tJugador ganador){
 	string nombre;
 	if (ganador == Nadie){
 		cout << "¿Abandonas? Ohhh..." << endl;
-		cout << "Hasta la proxima " << nombre << " (pulsa una tecla)";
 	}
 	else if (ganador == Jugador){
 		cout << "Enhorabuena, has ganado" << endl;
-		cout << "Hasta la proxima " << nombre << " (pulsa una tecla)";
 	}
-	else{ /*(ganador == Automata)*/
+	else /*if (ganador == Automata)*/{
 		cout << "Lo siento, he ganado" << endl;
-		cout << "Hasta la proxima " << nombre << " (pulsa una tecla)";
 	}
 }
 
@@ -154,7 +152,7 @@ int menu(){
 		try{
 			cin.sync(); //Por si quedan datos basura en el buffer
 			cin >> seleccionar;
-			if (seleccionar < 0 || seleccionar > 2) throw;
+			if (seleccionar < 0 || seleccionar > 2) throw; //No funciona como se esperaba
 		}catch(...){
 			cout << "Error! Introduce un digito entre 0 y 2";
 			seleccionar = -1;
@@ -167,24 +165,31 @@ int menu(){
 //Muestra el archivo "acerca.txt" siempre que este no contenga errores
 bool acerca(){
 
-	bool = ok;
+	bool ok;
 	ifstream acerca;
 	char c;
 
 	acerca.open("acerca.txt");
 	
-	if(acerca.is_open()){
-		acerca.get(c);
-		while(!acerca.fail()){//Mientras la lectura no falle
+	if(acerca.is_open())
+	{
+		acerca.get(c); //Lee el primer caracter
+
+		while(!acerca.fail()) //Mientras la lectura no falle
+		{
 			cout << c;
-			acerca.get(c);
-			ok = true;
+			acerca.get(c); //Lee el siguiente caracter
 		}
-	}else{
+
+		ok = true;
+
+	}
+	else
+	{
 		ok = false;
-		cout << "Error, el archivo 'acerca.txt' no existe"
+		cout << "Error, el archivo 'acerca.txt' no existe" << endl;
 	}
-	}
+
 	return ok;
 }
 
@@ -200,20 +205,24 @@ tJugador pasaCalculadora(){
 	turno = quienEmpieza();
 
 	//Bucle de juego
-	do{
+	do
+	{
 		//Turno jugador
-		if (turno == Jugador){
+		if (turno == Jugador)
+		{
 			ultimoDigito = digitoPersona(ultimoDigito);
 			turno = Automata;
 		}
 		//Turno bot
-		else /*if (turno == Automata)*/{
+		else /*if (turno == Automata)*/
+		{
 			ultimoDigito = digitoAutomata(ultimoDigito);
 			turno = Jugador;
 		}
 		total += ultimoDigito;
-		cout << "Total = " << total;
-	}while ((total < META) && (ultimoDigito != 0));
+		cout << "Total = " << total << endl;
+	}
+	while ((total < META) && (ultimoDigito != 0));
 	
 	if (ultimoDigito == 0) turno = Nadie; 
 	//Si el jugador abandona, no gana nadie
@@ -223,18 +232,21 @@ tJugador pasaCalculadora(){
 
 //Decide aleatoriamente quien empieza la partida, si el automata o el jugador
 tJugador quienEmpieza(){
-	if (rand() % 2){
+	if (rand() % 2)
+	{
 		cout << "Tu empiezas" << endl;
 		return Jugador;
 	}
-	else{
+	else
+	{
 		cout << "Empiezo yo" << endl;
 		return Automata;
 	}
 }
 
 //Define que numeros se encuentran en la misma fila que el ultimo pulsado
-bool mismaFila(int ultimo, int nuevo){
+bool mismaFila(int ultimo, int nuevo)
+{
 	double filaUltimo, filaNuevo;
 	filaUltimo = (ultimo/3);
 	filaNuevo = (nuevo/3);
@@ -242,7 +254,8 @@ bool mismaFila(int ultimo, int nuevo){
 }
 
 //Define que numeros se encuentran en la misma columna que el ultimo
-bool mismaColumna(int ultimo, int nuevo){
+bool mismaColumna(int ultimo, int nuevo)
+{
 	int columnaUltimo, columnaNuevo;
 	columnaUltimo = (ultimo % 3);
 	columnaNuevo = (nuevo % 3);
@@ -250,23 +263,28 @@ bool mismaColumna(int ultimo, int nuevo){
 }
 
 //Determina que digitos se pueden pulsar en funcion de las reglas del juego
-bool digitoValido(int ultimo, int nuevo){
-	if (ultimo == 0) return true;
+bool digitoValido(int ultimo, int nuevo)  //hay un bug
+{
+	if (ultimo == 0) return true;//Si es el primer turno, todos los numeros valen
 	return ((mismaFila(ultimo, nuevo))||(mismaColumna(ultimo, nuevo)))&&(ultimo!=nuevo);
 }
 
 //Genera un digito aleatorio
-int digitoAleatorio(){
+int digitoAleatorio()
+{
 	return (rand() % 9) + 1;
 }
 
 //Devuelve un digito que cumpla las reglas del juego con respecto a ultimo.
-int digitoAutomata(int ultimo){
+int digitoAutomata(int ultimo)
+{
 	int digito;
 
-	do{
+	do
+	{
 	digito = digitoAleatorio();
-	}while (!digitoValido(ultimo, digito));
+	}
+	while (!digitoValido(ultimo, digito));
 
 	cout << "Elijo el numero " << digito << endl;
 
@@ -275,60 +293,82 @@ int digitoAutomata(int ultimo){
 
 //Pide un digito al jugador. Solo devolvera un valor valido (entre 0 y 9).
 //Para un valor no valido, mostrara un error.
-int digitoPersona(){
-	int digito;
+int digitoPersona()
+{
+	int digito = -1;
 
-	do{
-		try{
-			cin.sync(); //Por si quedan datos basura en el buffer
-			cin >> digito;
-			if (digito < 0 || digito > 9) throw;
-		}catch(...){
-			cout << "Error! Introduce un digito entre 0 y 9";
-			digito = -1;
+	do
+	{
+		cin.sync(); //Por si quedan datos basura en el buffer
+		cin >> digito;
+
+		if (digito < 0 || digito > 9) 
+		{
+		cout << "Error! Introduce un digito entre 0 y 9";
+		digito = -1;
 		}
-	}while (digito == -1);
+
+		else if (cin.fail())
+		{
+			cout << "Error! Introduce un digito";
+			cin.clear();
+		}
+	}
+	while (digito == -1);
 
 	return digito;
 }
 
 //Pide un digito al jugador mostrando el teclado. Solo devolvera un valor 
 //que cumpla las reglas del juego o 0. Para un valor no valido, mostrara un error.
-int digitoPersona(int ultimo){
+int digitoPersona(int ultimo)
+{
 	int digito; //-1 es mi error flag
 	
 	mostrarCalculadora(ultimo);
 
-	do{
-		try{
+	do
+	{
+		try
+		{
 			digito = digitoPersona();
 			if (!digitoValido(ultimo, digito)) throw;
-		}catch(...){
+		}
+		catch(...)
+		{
 			cout << "Error! El digito debe estar en la misma fila y columna que el ultimo" << endl;
 			digito = -1;
 		}
-	}while (digito == -1);
+	}
+	while (digito == -1);
 
-	cout << "Has elegido el" << digito << endl;
+	cout << "Has elegido el " << digito << endl;
 
 	return digito;
 }
 
-char mNumero(int ultimo, int n){
+//Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
+char mNumero(int ultimo, int n)
+{
 	if(digitoValido(ultimo, n)) return char (n+int('0'));
 	else return ' ';
 }
 
-void mostrarCalculadora(int ultimo){
-	for (int i = 7; i<10; i++){
+//Muestra los botones de la calculadora (solo los que se pueden pulsar en cada turno)
+void mostrarCalculadora(int ultimo)
+{
+	for (int i = 7; i<10; i++)
+	{
 		cout << setw(3) << mNumero(ultimo, i);
 	}
 	cout << endl;
-	for (int i = 4; i<7; i++){
+	for (int i = 4; i<7; i++)
+	{
 		cout << setw(3) << mNumero(ultimo, i);
 	}
 	cout << endl;
-	for (int i = 1; i<4; i++){
+	for (int i = 1; i<4; i++)
+	{
 		cout << setw(3) << mNumero(ultimo, i);
 	}
 	cout << endl;
