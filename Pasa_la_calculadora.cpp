@@ -14,6 +14,7 @@ Version: 1.0
 #include <string>
 #include <ctime>
 #include <cmath>
+#include <iomanip>
 
 using namespace std;
 
@@ -119,7 +120,7 @@ void despedirse(tJugador ganador){
 		cout << "¿Abandonas? Ohhh..." << endl;
 		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
 	}
-	else if (ganador == jugador){
+	else if (ganador == Jugador){
 		cout << "Enhorabuena, has ganado" << endl;
 		cout << "Hasta la proxima " << nombre << "(pulsa una tecla)";
 	}
@@ -136,7 +137,7 @@ tJugador pasaCalculadora(){
 	int total = 0, ultimoDigito = 0;
 	const int META=31;
 		//Inicializar partida
-	srand(time(NULL))//Semilla
+	srand(time(NULL));//Semilla
 	turno = quienEmpieza();
 
 	//Bucle de juego
@@ -168,7 +169,7 @@ tJugador quienEmpieza(){
 		return Jugador;
 	}
 	else{ 
-		cout"Empiezo yo"; 
+		cout << "Empiezo yo"; 
 		return Automata;
 	}
 }
@@ -188,7 +189,7 @@ bool mismaColumna(int ultimo, int nuevo){
 }
 //Determina que digitos se pueden pulsar en función de las reglas del juego
 bool digitoValido(int ultimo, int nuevo){
-	return ((mismaFila(int ultimo, int nuevo))||(mismaColumna(int ultimo, int nuevo)))&&(ultimo!=nuevo);
+	return ((mismaFila(ultimo, nuevo))||(mismaColumna(ultimo, nuevo)))&&(ultimo!=nuevo);
 }
 //Genera un dígito aleatorio
 int digitoAleatorio(){
@@ -249,11 +250,11 @@ int digitoPersona(int ultimo){
 }
 
 char mNumero(int ultimo, int n){
-	if(digitoValido(ultimo, n) return char (n+int('0'));
+	if(digitoValido(ultimo, n)) return char (n+int('0'));
 	else return ' ';
 }
 
-void mostrarCalculadora(ultimo){
+void mostrarCalculadora(int ultimo){
 	for (int i = 7; i<10; i++){
 		cout << setw(3) << mNumero(ultimo, i);
 	}
