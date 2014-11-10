@@ -149,13 +149,18 @@ int menu(){
 	cout << "0 - Salir" << endl;
 	
 	do{
-		try{
-			cin.sync(); //Por si quedan datos basura en el buffer
-			cin >> seleccionar;
-			if (seleccionar < 0 || seleccionar > 2) throw; //No funciona como se esperaba
-		}catch(...){
-			cout << "Error! Introduce un digito entre 0 y 2";
+		cin.sync(); //Por si quedan datos basura en el buffer
+		cin >> seleccionar;
+
+		if (seleccionar < 0 || seleccionar > 2)
+		{
+			cout << "Error! Introduce un digito entre 0 y 2" << endl;
 			seleccionar = -1;
+		}
+		else if(cin.fail())
+		{
+			cout << "Error! Introduce un digito" << endl;
+			cin.clear();
 		}
 	}while (seleccionar == -1);
 
@@ -182,6 +187,7 @@ bool acerca(){
 		}
 
 		ok = true;
+		acerca.close();
 
 	}
 	else
@@ -266,6 +272,7 @@ bool mismaColumna(int ultimo, int nuevo)
 bool digitoValido(int ultimo, int nuevo)  //hay un bug
 {
 	if (ultimo == 0) return true;//Si es el primer turno, todos los numeros valen
+
 	return ((mismaFila(ultimo, nuevo))||(mismaColumna(ultimo, nuevo)))&&(ultimo!=nuevo);
 }
 
@@ -304,13 +311,13 @@ int digitoPersona()
 
 		if (digito < 0 || digito > 9) 
 		{
-		cout << "Error! Introduce un digito entre 0 y 9";
+		cout << "Error! Introduce un digito entre 0 y 9" << endl;
 		digito = -1;
 		}
 
 		else if (cin.fail())
 		{
-			cout << "Error! Introduce un digito";
+			cout << "Error! Introduce un digito" << endl;
 			cin.clear();
 		}
 	}
@@ -329,12 +336,8 @@ int digitoPersona(int ultimo)
 
 	do
 	{
-		try
-		{
-			digito = digitoPersona();
-			if (!digitoValido(ultimo, digito)) throw;
-		}
-		catch(...)
+		digito = digitoPersona();
+		if (!digitoValido(ultimo, digito))
 		{
 			cout << "Error! El digito debe estar en la misma fila y columna que el ultimo" << endl;
 			digito = -1;
