@@ -5,7 +5,7 @@ Jaime Sevilla Molina
 Victor Gonzalez
 Fecha
 2014/11
-Version: 1.0
+Version: 2.0
 ---------------------------------*/
 
 //BIBLIOTECAS
@@ -131,7 +131,7 @@ void saludar(){
 void despedirse(tJugador ganador){
 	string nombre;
 	if (ganador == Nadie){
-		cout << "¿Abandonas? Ohhh..." << endl;
+		cout << "Abandonas? Ohhh..." << endl;
 	}
 	else if (ganador == Jugador){
 		cout << "Enhorabuena, has ganado" << endl;
@@ -143,7 +143,7 @@ void despedirse(tJugador ganador){
 
 //Proporciona al jugador la posibilidad de jugar, ver las instrucciones del juego o salir.
 int menu(){
-	int seleccionar;
+	int seleccionar = -1; //Error flag
 	cout << "1 - Jugar" << endl;
 	cout << "2 - Acerca de" << endl;
 	cout << "0 - Salir" << endl;
@@ -152,16 +152,18 @@ int menu(){
 		cin.sync(); //Por si quedan datos basura en el buffer
 		cin >> seleccionar;
 
-		if (seleccionar < 0 || seleccionar > 2)
-		{
-			cout << "Error! Introduce un digito entre 0 y 2" << endl;
-			seleccionar = -1;
-		}
-		else if(cin.fail())
+		if(cin.fail())
 		{
 			cout << "Error! Introduce un digito" << endl;
 			cin.clear();
 		}
+
+		else if (seleccionar < 0 || seleccionar > 2)
+		{
+			cout << "Error! Introduce un digito entre 0 y 2" << endl;
+			seleccionar = -1;
+		}
+		
 	}while (seleccionar == -1);
 
 	return seleccionar;
@@ -309,17 +311,18 @@ int digitoPersona()
 		cin.sync(); //Por si quedan datos basura en el buffer
 		cin >> digito;
 
-		if (digito < 0 || digito > 9) 
-		{
-		cout << "Error! Introduce un digito entre 0 y 9" << endl;
-		digito = -1;
-		}
-
-		else if (cin.fail())
+		if (cin.fail())
 		{
 			cout << "Error! Introduce un digito" << endl;
 			cin.clear();
 		}
+
+		else if (digito < 0 || digito > 9) 
+		{
+		cout << "Error! Introduce un digito entre 0 y 9" << endl;
+		digito = -1;
+		}
+		
 	}
 	while (digito == -1);
 
@@ -330,7 +333,7 @@ int digitoPersona()
 //que cumpla las reglas del juego o 0. Para un valor no valido, mostrara un error.
 int digitoPersona(int ultimo)
 {
-	int digito; //-1 es mi error flag
+	int digito = -1; //-1 es mi error flag
 	
 	mostrarCalculadora(ultimo);
 
