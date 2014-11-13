@@ -29,10 +29,10 @@ typedef enum tJugador
 //FUNCIONES
 //FUNCIONES DE JUEGO
 
-void saludar ();
+string saludar ();
 
 //Dependiendo de quien gane, la despedida sera distinta
-void despedirse (tJugador ganador);
+void despedirse (tJugador ganador, string nombre);
 
 //Muestra un menu que permite al jugador jugar, salir, o ver las reglas del juego
 int menu();
@@ -94,60 +94,66 @@ int botDificil(int ultimo);
 -----------------------------------------------------------------------------------*/
 
 
-int main(){
+int main()
+{
 	tJugador ganador;
 	int opcion;
 	
-	saludar();
-	
+	string nombre = saludar();	
 	//Bucle Menu
-	do{
+	do
+	{
 		opcion = menu();
 		if(opcion == 1){	
 			ganador = pasaCalculadora();
-			despedirse(ganador);
+			despedirse(ganador, nombre);
 		}
 		else if(opcion == 2) acerca();
 	
-	}while(opcion != 0);
+	}
+	while(opcion != 0);
 	
-	cout << "Hasta la proxima (pulsa enter)";
+	cout << "Hasta la proxima " << nombre << "(pulsa enter)";
 	cin;
 
 	return 0;
 }
 	
 //Saluda al jugador y le pregunta su nombre
-void saludar(){
+string saludar()
+{
 	string nombre;
 	cout << "Bienvenido a Pasa la calculadora!" << endl;
 	cout << "Como te llamas? ";
 	cin >> nombre;
 	cout << "Hola " << nombre << endl << endl;
+	return nombre;
 }
 
 //Se despide del jugador, la despedida varia segun gane el jugador, el automata o ninguno de ellos (el jugador abandone)
-void despedirse(tJugador ganador){
-	string nombre;
+void despedirse(tJugador ganador, string nombre)
+{
 	if (ganador == Nadie){
-		cout << "Abandonas? Ohhh..." << endl << endl;
+		cout << "Abandonas, " << nombre << "? Ohhh..." << endl << endl;
 	}
 	else if (ganador == Jugador){
-		cout << "Enhorabuena, has ganado" << endl << endl;
+		cout << "Enhorabuena " << nombre << ", has ganado!" << endl << endl;
 	}
 	else /*if (ganador == Automata)*/{
-		cout << "Lo siento, he ganado" << endl << endl;
+		cout << "Lo siento " << nombre << ", he ganado" << endl << endl;
 	}
 }
 
 //Proporciona al jugador la posibilidad de jugar, ver las instrucciones del juego o salir.
-int menu(){
+int menu()
+{
 	int seleccionar = -1; //Error flag
 	cout << "1 - Jugar" << endl;
 	cout << "2 - Acerca de" << endl;
 	cout << "0 - Salir" << endl;
 	
-	do{
+	do
+	{
 		cin.sync(); //Por si quedan datos basura en el buffer
 		cin >> seleccionar;
 
@@ -163,13 +169,15 @@ int menu(){
 			seleccionar = -1;
 		}
 		
-	}while (seleccionar == -1);
+	}
+	while (seleccionar == -1);
 
 	return seleccionar;
 }
 
 //Muestra el archivo "acerca.txt" siempre que este no contenga errores
-bool acerca(){
+bool acerca()
+{
 
 	bool ok;
 	ifstream acerca;
@@ -202,7 +210,8 @@ bool acerca(){
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona, devuelve Nadie.
-tJugador pasaCalculadora(){
+tJugador pasaCalculadora()
+{
 	//Variables
 	tJugador turno;
 	int total = 0, ultimoDigito = 0;
@@ -238,7 +247,8 @@ tJugador pasaCalculadora(){
 }
 
 //Decide aleatoriamente quien empieza la partida, si el automata o el jugador
-tJugador quienEmpieza(){
+tJugador quienEmpieza()
+{
 	if (rand() % 2)
 	{
 		cout << "Tu empiezas" << endl;
@@ -355,8 +365,17 @@ int digitoPersona(int ultimo)
 //Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
 char mNumero(int ultimo, int n)
 {
-	if(digitoValido(ultimo, n)) return char (n+int('0'));
-	else return ' ';
+	if(digitoValido(ultimo, n))
+	{
+		//system ("color 02");
+		return char (n+int('0'));
+		
+	}
+	else
+	{
+		//system ("color 04");
+		return ' ';
+	}
 }
 
 //Muestra los botones de la calculadora (solo los que se pueden pulsar en cada turno)
@@ -377,4 +396,5 @@ void mostrarCalculadora(int ultimo)
 		cout << setw(3) << mNumero(ultimo, i);
 	}
 	cout << endl;
+	//system ("color 07");
 }
