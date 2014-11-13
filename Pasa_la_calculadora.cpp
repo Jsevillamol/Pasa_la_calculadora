@@ -130,13 +130,13 @@ void saludar(){
 void despedirse(tJugador ganador){
 	string nombre;
 	if (ganador == Nadie){
-		cout << "Abandonas? Ohhh..." << endl;
+		cout << "Abandonas? Ohhh..." << endl << endl;
 	}
 	else if (ganador == Jugador){
-		cout << "Enhorabuena, has ganado" << endl;
+		cout << "Enhorabuena, has ganado" << endl << endl;
 	}
 	else /*if (ganador == Automata)*/{
-		cout << "Lo siento, he ganado" << endl;
+		cout << "Lo siento, he ganado" << endl << endl;
 	}
 }
 
