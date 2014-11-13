@@ -13,7 +13,6 @@ Version: 2.0
 #include <cstdlib>
 #include <string>
 #include <ctime>
-#include <cmath>
 #include <fstream>
 #include <iomanip>
 
@@ -47,9 +46,10 @@ tJugador pasaCalculadora();
 
 //Decide aleatoriamente quien empieza.
 tJugador quienEmpieza();
+
+
 //Devuelve true si nuevo esta en la misma fila que ultimo
 bool mismaFila(int ultimo, int nuevo);
-
 
 //Devuelve true si nuevo esta en la misma columna que ultimo
 bool mismaColumna(int ultimo, int nuevo);
@@ -57,7 +57,6 @@ bool mismaColumna(int ultimo, int nuevo);
 //Devuelve true si nuevo cumple las reglas del juego con respecto a ultimo
 //Si ultimo == 0, este es el primer digito de la partida, y devuelve true
 bool digitoValido(int ultimo, int nuevo);
-
 
 //FUNCIONES DE IA NIVEL 1
 //Devuelve un digito del 1 al 9
@@ -255,10 +254,10 @@ tJugador quienEmpieza(){
 //Define que numeros se encuentran en la misma fila que el ultimo pulsado
 bool mismaFila(int ultimo, int nuevo)
 {
-	double filaUltimo, filaNuevo;
-	filaUltimo = (ultimo/3);
-	filaNuevo = (nuevo/3);
-	return ceil(filaUltimo) == ceil(filaNuevo);
+	int filaUltimo, filaNuevo;
+	filaUltimo = ((ultimo - 1)/3);
+	filaNuevo = ((nuevo - 1)/3);
+	return (filaUltimo) == (filaNuevo);
 }
 
 //Define que numeros se encuentran en la misma columna que el ultimo
