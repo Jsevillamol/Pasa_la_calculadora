@@ -32,7 +32,7 @@ typedef enum tJugador
 string saludar ();
 
 //Dependiendo de quien gane, la despedida sera distinta
-int despedirse (tJugador ganador, string nombre);
+void despedirse (tJugador ganador, string nombre);
 
 //Muestra un menu que permite al jugador jugar, salir, o ver las reglas del juego
 int menu();
@@ -134,7 +134,7 @@ string saludar()
 }
 
 //Se despide del jugador, la despedida varia segun gane el jugador, el automata o ninguno de ellos (el jugador abandone)
-int despedirse(tJugador ganador, string nombre)
+void despedirse(tJugador ganador, string nombre)
 {
 	int ganadas = 0, perdidas = 0;
 	if (ganador == Nadie){
@@ -142,13 +142,10 @@ int despedirse(tJugador ganador, string nombre)
 	}
 	else if (ganador == Jugador){
 		cout << "Enhorabuena " << nombre << ", has ganado!" << endl << endl;
-		ganadas = ganadas++;
 	}
 	else /*if (ganador == Automata)*/{
 		cout << "Lo siento " << nombre << ", he ganado" << endl << endl;
-		perdidas = perdidas++;
 	}
-	return ganadas, perdidas;
 }
 
 //Proporciona al jugador la posibilidad de jugar, ver las instrucciones del juego o salir.
