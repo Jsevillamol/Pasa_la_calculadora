@@ -32,13 +32,16 @@ typedef enum tJugador
 string saludar ();
 
 //Dependiendo de quien gane, la despedida sera distinta
-void despedirse (tJugador ganador, string nombre);
+int despedirse (tJugador ganador, string nombre, int ganadas = 0, int perdidas = 0);
 
 //Muestra un menu que permite al jugador jugar, salir, o ver las reglas del juego
 int menu();
 
 //Muestra las instrucciones del juego, siempre que su archivo no contenga errores
 bool acerca();
+
+//Anota el numero de partidas ganadas y perdidas del jugador
+bool stats(int ganadas, int perdidas);
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona, devuelve Nadie.
@@ -131,17 +134,20 @@ string saludar()
 }
 
 //Se despide del jugador, la despedida varia segun gane el jugador, el automata o ninguno de ellos (el jugador abandone)
-void despedirse(tJugador ganador, string nombre)
+int despedirse(tJugador ganador, string nombre, int ganadas = 0, int perdidas = 0)
 {
 	if (ganador == Nadie){
 		cout << "Abandonas, " << nombre << "? Ohhh..." << endl << endl;
 	}
 	else if (ganador == Jugador){
 		cout << "Enhorabuena " << nombre << ", has ganado!" << endl << endl;
+		ganadas = ganadas++;
 	}
 	else /*if (ganador == Automata)*/{
 		cout << "Lo siento " << nombre << ", he ganado" << endl << endl;
+		perdidas = perdidas++;
 	}
+	return ganadas, perdidas;
 }
 
 //Proporciona al jugador la posibilidad de jugar, ver las instrucciones del juego o salir.
@@ -203,6 +209,33 @@ bool acerca()
 	{
 		ok = false;
 		cout << "Error, el archivo 'acerca.txt' no existe" << endl;
+	}
+
+	return ok;
+}
+
+bool stats(int ganadas, int perdidas)
+{
+
+	bool ok;
+	ofstream stats;
+
+	stats.open("stats.txt");
+	
+	if(stats.is_open())
+	{
+		stats << "Partidas Jugadas: " << (ganadas + perdidas) << endl;
+		stats << "	Partidas Ganadas: " << ganadas << endl;
+		stats << "	Partidas Perdidas: " << perdidas << endl;
+
+		ok = true;
+		stats.close();
+
+	}
+	else
+	{
+		ok = false;
+		cout << "Error, el archivo 'stats.txt' no existe" << endl;
 	}
 
 	return ok;
