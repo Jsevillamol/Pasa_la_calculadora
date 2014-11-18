@@ -401,13 +401,11 @@ char mNumero(int ultimo, int n)
 {
 	if(digitoValido(ultimo, n))
 	{
-		//system ("color 02");
 		return char (n+int('0'));
 		
 	}
 	else
 	{
-		//system ("color 04");
 		return ' ';
 	}
 }
@@ -430,5 +428,4 @@ void mostrarCalculadora(int ultimo)
 		cout << setw(3) << mNumero(ultimo, i);
 	}
 	cout << endl;
-	//system ("color 07");
 }
