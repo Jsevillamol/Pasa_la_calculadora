@@ -26,58 +26,41 @@ typedef enum tJugador
 	Automata
 };
 
+typedef enum tDificultad
+{
+		Facil,
+		Dificil,
+		Imposible
+};
+
 //FUNCIONES
 //FUNCIONES DE JUEGO
 
 string saludar ();
-
-//Dependiendo de quien gane, la despedida sera distinta
 void despedirse (tJugador ganador, string nombre);
-
-//Muestra un menu que permite al jugador jugar, salir, o ver las reglas del juego
 int menu();
-
-//Muestra las instrucciones del juego, siempre que su archivo no contenga errores
 bool acerca();
-
-//Conduce el desarrollo del juego y devuelve el ganador. 
-//Si se abandona, devuelve Nadie.
 tJugador pasaCalculadora();
-
-//Decide aleatoriamente quien empieza.
 tJugador quienEmpieza();
 
-
-//Devuelve true si nuevo esta en la misma fila que ultimo
+tDificultad seleccionar_dificultad();
 bool mismaFila(int ultimo, int nuevo);
-
-//Devuelve true si nuevo esta en la misma columna que ultimo
 bool mismaColumna(int ultimo, int nuevo);
-
-//Devuelve true si nuevo cumple las reglas del juego con respecto a ultimo
-//Si ultimo == 0, este es el primer digito de la partida, y devuelve true
 bool digitoValido(int ultimo, int nuevo);
 
 //FUNCIONES DE IA NIVEL 1
-//Devuelve un digito del 1 al 9
 int digitoAleatorio();
 
-//Devuelve un digito que cumpla las reglas del juego con respecto a ultimo.
 int digitoAutomata(int ultimo);
 
 //FUNCIONES DE JUGADOR
-//Pide un digito al jugador. Solo devolvera un valor valido (entre 0 y 9).
-//Para un valor no valido, mostrara un error.
+
 int digitoPersona();
 
-//Pide un digito al jugador mostrando el teclado. Solo devolvera un valor 
-//que cumpla las reglas del juego o 0. Para un valor no valido, mostrara un error.
 int digitoPersona(int ultimo);
 
-//Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
 char mNumero(int ultimo, int n);
 
-//Muestra los botones de la calculadora (solo los que se pueden pulsar en cada turno)
 void mostrarCalculadora(int ultimo);
 
 
@@ -86,12 +69,10 @@ void mostrarCalculadora(int ultimo);
 //Actualiza el archivo informePC.txt con los tres argumentos. En caso de no encontrar
 //el archivo, lo crea y devuelve false; en otro caso devuelve true.
 bool actInforme(int jugadas, int ganadas, int abandonos);
-
+*/
 
 //FUNCIONES DE DIFICULTAD AVANZADA
 int botDificil(int ultimo);
-
------------------------------------------------------------------------------------*/
 
 
 int main()
@@ -213,10 +194,13 @@ bool acerca()
 tJugador pasaCalculadora()
 {
 	//Variables
-	tJugador turno;
+	tJugador turno; tDificultad dificultad;
 	int total = 0, ultimoDigito = 0;
 	const int META=31;
 		//Inicializar partida
+
+	dificultad = seleccionar_dificultad();
+
 	srand(time(NULL));//Semilla
 	turno = quienEmpieza();
 
@@ -397,4 +381,29 @@ void mostrarCalculadora(int ultimo)
 	}
 	cout << endl;
 	//system ("color 07");
+}
+
+tDificultad seleccionar_dificultad(){
+	cout << "Elige dificultad:" << endl;
+	cout << "1 - Facil" << endl;
+	cout << "2 - Dificil" << endl;
+	cout << "3 - Imposible" << endl;
+
+	if 
+
+
+int botDificil(int total, int ultimo)
+{
+	for (int i=1, i<10, i++)
+	{
+		if digitoValido(ultimo, i)
+		{
+			if (total + i == 30) return i; //Intenta ganar dejando la suma en 30
+			else if ((total + i == 29) && (!digitoValido(i, 1))) return i; 
+			//Si la suma queda en 29 y el adversario no puede coger el 1, ganamos
+			else if ((total + i == 28) && (i==6 || i==9)) return i; 
+			//Si la suma queda en 28 y el adv no puede coger el 1 o el 2, ganamos
+		}
+	}
+	return digitoAutomata(ultimo);
 }
