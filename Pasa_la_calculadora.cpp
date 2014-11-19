@@ -40,18 +40,20 @@ string saludar();
 void despedirse (tJugador ganador, string nombre);
 int menu();
 bool acerca();
-tJugador pasaCalculadora();
+
+tJugador pasaCalculadora(bool cheats);
 tJugador quienEmpieza();
 
 tDificultad seleccionar_dificultad();
+
 bool mismaFila(int ultimo, int nuevo);
 bool mismaColumna(int ultimo, int nuevo);
 bool digitoValido(int ultimo, int nuevo);
 
-//FUNCIONES DE IA NIVEL 1
+//FUNCIONES DE IA
 int digitoAleatorio();
-
 int digitoAutomata(int ultimo);
+int botDificil(int total, int ultimo);
 
 //FUNCIONES DE JUGADOR
 
@@ -60,7 +62,6 @@ int digitoEntre(int a, int b);
 int digitoPersona(int ultimo);
 
 char mNumero(int ultimo, int n);
-
 void mostrarCalculadora(int ultimo);
 
 
@@ -71,14 +72,13 @@ void mostrarCalculadora(int ultimo);
 bool actInforme(int jugadas, int ganadas, int abandonos);
 */
 
-//FUNCIONES DE DIFICULTAD AVANZADA
-int botDificil(int ultimo);
 
 
 int main()
 {
 	tJugador ganador;
 	int opcion;
+	bool cheats = false;
 	
 	string nombre = saludar();	
 	//Bucle Menu
@@ -86,10 +86,15 @@ int main()
 	{
 		opcion = menu();
 		if(opcion == 1){	
-			ganador = pasaCalculadora();
+			ganador = pasaCalculadora(cheats);
 			despedirse(ganador, nombre);
 		}
 		else if(opcion == 2) acerca();
+		else if (opcion == 3) 
+		{
+			cheats = true;
+			cout << "Trampas activadas" << endl;
+		}
 	
 	}
 	while(opcion != 0);
@@ -133,7 +138,7 @@ int menu()
 	cout << "2 - Acerca de" << endl;
 	cout << "0 - Salir" << endl;
 	
-	seleccionar = digitoEntre(0,2);
+	seleccionar = digitoEntre(0,3);
 
 	return seleccionar;
 }
@@ -173,18 +178,24 @@ bool acerca()
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona, devuelve Nadie.
-tJugador pasaCalculadora()
+tJugador pasaCalculadora(bool cheats)
 {
 	//Variables
 	tJugador turno; tDificultad dificultad;
 	int total = 0, ultimoDigito = 0;
 	const int META=31;
-		//Inicializar partida
 
+	//Inicializar partida
 	dificultad = seleccionar_dificultad();
 
 	srand(time(NULL));//Semilla
 	turno = quienEmpieza();
+
+	//Trampas
+	if (cheats) turno = Jugador;
+
+	//La estrategia ganadora requiere empezar
+	if (dificultad == Imposible) turno = Automata;
 
 	//Bucle de juego
 	do
@@ -198,7 +209,14 @@ tJugador pasaCalculadora()
 		//Turno bot
 		else /*if (turno == Automata)*/
 		{
-			ultimoDigito = digitoAutomata(ultimoDigito);
+			if (dificultad == Facil)
+			{
+				ultimoDigito = digitoAutomata(ultimoDigito);
+			}
+			else if (dificultad == Dificil)
+			{
+				ultimoDigito = botDificil(total, ultimoDigito);
+			}
 			turno = Jugador;
 		}
 		total += ultimoDigito;
@@ -246,14 +264,14 @@ bool mismaColumna(int ultimo, int nuevo)
 }
 
 //Determina que digitos se pueden pulsar en funcion de las reglas del juego
-bool digitoValido(int ultimo, int nuevo)  //hay un bug
+bool digitoValido(int ultimo, int nuevo)
 {
 	if (ultimo == 0) return true;//Si es el primer turno, todos los numeros valen
 
 	return ((mismaFila(ultimo, nuevo))||(mismaColumna(ultimo, nuevo)))&&(ultimo!=nuevo);
 }
 
-//Genera un digito aleatorio
+//Genera un digito aleatorio del 1 al 9
 int digitoAleatorio()
 {
 	return (rand() % 9) + 1;
@@ -381,16 +399,25 @@ tDificultad seleccionar_dificultad()
 
 int botDificil(int total, int ultimo)
 {
-	for (int i=1; i<10; i++)
+	int n = 0, i = 1;
+
+	//Busqueda de un digito que nos haga ganar
+	while (!n && i<10)
 	{
 		if (digitoValido(ultimo, i))
 		{
-			if (total + i == 30) return i; //Intenta ganar dejando la suma en 30
-			else if ((total + i == 29) && (!digitoValido(i, 1))) return i; 
+			if (total + i == 30) n = i; //Intenta ganar dejando la suma en 30
+			else if ((total + i == 29) && (!digitoValido(i, 1))) n = i; 
 			//Si la suma queda en 29 y el adversario no puede coger el 1, ganamos
-			else if ((total + i == 28) && (i==6 || i==9)) return i; 
+			else if ((total + i == 28) && (i==6 || i==9)) n = i; 
 			//Si la suma queda en 28 y el adv no puede coger el 1 o el 2, ganamos
 		}
+		i++;
 	}
-	return digitoAutomata(ultimo);
+
+	//To do: Evitar que la maquina pierda si tiene otra opcion
+
+	//Si la busqueda tiene exito, devolvemos el resultado. En otro caso, jugamos aleatoriamente.
+	if (n) cout << "Elijo el numero " << n;
+	return n ?n :digitoAutomata(ultimo);
 }
