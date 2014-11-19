@@ -36,7 +36,7 @@ typedef enum tDificultad
 //FUNCIONES
 //FUNCIONES DE JUEGO
 
-string saludar ();
+string saludar();
 void despedirse (tJugador ganador, string nombre);
 int menu();
 bool acerca();
@@ -55,7 +55,7 @@ int digitoAutomata(int ultimo);
 
 //FUNCIONES DE JUGADOR
 
-int digitoPersona();
+int digitoEntre(int a, int b);
 
 int digitoPersona(int ultimo);
 
@@ -133,25 +133,7 @@ int menu()
 	cout << "2 - Acerca de" << endl;
 	cout << "0 - Salir" << endl;
 	
-	do
-	{
-		cin.sync(); //Por si quedan datos basura en el buffer
-		cin >> seleccionar;
-
-		if(cin.fail())
-		{
-			cout << "Error! Introduce un digito" << endl;
-			cin.clear();
-		}
-
-		else if (seleccionar < 0 || seleccionar > 2)
-		{
-			cout << "Error! Introduce un digito entre 0 y 2" << endl;
-			seleccionar = -1;
-		}
-		
-	}
-	while (seleccionar == -1);
+	seleccionar = digitoEntre(0,2);
 
 	return seleccionar;
 }
@@ -295,7 +277,7 @@ int digitoAutomata(int ultimo)
 
 //Pide un digito al jugador. Solo devolvera un valor valido (entre 0 y 9).
 //Para un valor no valido, mostrara un error.
-int digitoPersona()
+int digitoEntre(int a, int b)
 {
 	int digito = -1;
 
@@ -310,9 +292,9 @@ int digitoPersona()
 			cin.clear();
 		}
 
-		else if (digito < 0 || digito > 9) 
+		else if (digito < a || digito > b)
 		{
-		cout << "Error! Introduce un digito entre 0 y 9" << endl;
+		cout << "Error! Introduce un digito entre " << a << " y " << b << endl;
 		digito = -1;
 		}
 		
@@ -332,7 +314,7 @@ int digitoPersona(int ultimo)
 
 	do
 	{
-		digito = digitoPersona();
+		digito = digitoEntre(0,9);
 		if (!digitoValido(ultimo, digito))
 		{
 			cout << "Error! El digito debe estar en la misma fila y columna que el ultimo" << endl;
@@ -383,20 +365,25 @@ void mostrarCalculadora(int ultimo)
 	//system ("color 07");
 }
 
-tDificultad seleccionar_dificultad(){
+tDificultad seleccionar_dificultad()
+{
 	cout << "Elige dificultad:" << endl;
 	cout << "1 - Facil" << endl;
 	cout << "2 - Dificil" << endl;
 	cout << "3 - Imposible" << endl;
 
-	if 
+	int opcion = digitoEntre(1,3);
 
+	if (opcion == 1) return Facil;
+	else if (opcion == 2) return Dificil;
+	else /*if (opcion == 3)*/ return Imposible;
+}
 
 int botDificil(int total, int ultimo)
 {
-	for (int i=1, i<10, i++)
+	for (int i=1; i<10; i++)
 	{
-		if digitoValido(ultimo, i)
+		if (digitoValido(ultimo, i))
 		{
 			if (total + i == 30) return i; //Intenta ganar dejando la suma en 30
 			else if ((total + i == 29) && (!digitoValido(i, 1))) return i; 
