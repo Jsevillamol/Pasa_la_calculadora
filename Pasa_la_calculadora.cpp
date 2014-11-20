@@ -188,7 +188,6 @@ int menu()
 //Muestra el archivo "acerca.txt" siempre que este no contenga errores
 bool acerca()
 {
-
 	bool ok;
 	ifstream acerca;
 	char c;
@@ -278,8 +277,8 @@ bool stats()
 	}
 	else
 	{
-	ok = false;
-	cout << "Error, el archivo 'stats.txt' no existe";
+		ok = false;
+		cout << "Error, el archivo 'stats.txt' no existe";
 	}
 	return ok;
 }
