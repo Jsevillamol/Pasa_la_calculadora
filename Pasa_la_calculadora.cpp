@@ -18,6 +18,9 @@ Version: 2.0
 
 using namespace std;
 
+//VARIABLES GLOBALES
+const int META=31;
+
 //TIPOS PROPIOS
 typedef enum tJugador
 {
@@ -183,7 +186,6 @@ tJugador pasaCalculadora(bool cheats)
 	//Variables
 	tJugador turno; tDificultad dificultad;
 	int total = 0, ultimoDigito = 0;
-	const int META=31;
 
 	//Inicializar partida
 	dificultad = seleccionar_dificultad();
@@ -217,6 +219,8 @@ tJugador pasaCalculadora(bool cheats)
 			{
 				ultimoDigito = botDificil(total, ultimoDigito);
 			}
+			cout << "Elijo el numero " << ultimoDigito << endl;
+
 			turno = Jugador;
 		}
 		total += ultimoDigito;
@@ -287,8 +291,6 @@ int digitoAutomata(int ultimo)
 	digito = digitoAleatorio();
 	}
 	while (!digitoValido(ultimo, digito));
-
-	cout << "Elijo el numero " << digito << endl;
 
 	return digito;
 }
@@ -399,25 +401,34 @@ tDificultad seleccionar_dificultad()
 
 int botDificil(int total, int ultimo)
 {
-	int n = 0, i = 1;
+	int ganamos = 0, menos_da_una_piedra = 0;
 
-	//Busqueda de un digito que nos haga ganar
-	while (!n && i<10)
+	//Empezamos a jugar en serio cuando la partida esta a punto de acabarse
+	if (total > 20)
 	{
-		if (digitoValido(ultimo, i))
+		//Busqueda de un digito que nos haga ganar
+		for (int i=1; !ganamos && i<10; i++)
 		{
-			if (total + i == 30) n = i; //Intenta ganar dejando la suma en 30
-			else if ((total + i == 29) && (!digitoValido(i, 1))) n = i; 
-			//Si la suma queda en 29 y el adversario no puede coger el 1, ganamos
-			else if ((total + i == 28) && (i==6 || i==9)) n = i; 
-			//Si la suma queda en 28 y el adv no puede coger el 1 o el 2, ganamos
+			if (digitoValido(ultimo, i))
+			{
+				if (total + i == 30) ganamos = i; //Intenta ganar dejando la suma en 30
+				else if ((total + i == 29) && (!digitoValido(i, 1))) ganamos = i; 
+				//Si la suma queda en 29 y el adversario no puede coger el 1, ganamos
+				else if ((total + i == 28) && (i==6 || i==9)) ganamos = i; 
+				//Si la suma queda en 28 y el adv no puede coger el 1 o el 2, ganamos
+
+				//Si la suma es menor que 30, al menos no perdemos. 
+				//En caso de que la busqueda no de resultado, usaremos esto.
+				else if (total + i < META) menos_da_una_piedra = i;
+			}
 		}
-		i++;
 	}
-
-	//To do: Evitar que la maquina pierda si tiene otra opcion
-
-	//Si la busqueda tiene exito, devolvemos el resultado. En otro caso, jugamos aleatoriamente.
-	if (n) cout << "Elijo el numero " << n;
-	return n ?n :digitoAutomata(ultimo);
+	//Si la busqueda tiene exito, devolvemos el resultado. 
+	//En otro caso, jugamos aleatoriamente.
+	if (ganamos)
+		return ganamos;
+	else if (menos_da_una_piedra)
+		return menos_da_una_piedra;
+	else
+		return digitoAutomata(ultimo);
 }
