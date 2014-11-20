@@ -40,6 +40,12 @@ int menu();
 //Muestra las instrucciones del juego, siempre que su archivo no contenga errores
 bool acerca();
 
+//Actualiza las estadisticas
+bool actualizar_stats(tJugador ganador);
+
+//Muestra las estadisticas
+bool stats();
+
 //Anota el numero de partidas ganadas y perdidas del jugador
 bool stats(int ganadas, int perdidas);
 
@@ -212,31 +218,57 @@ bool acerca()
 	return ok;
 }
 
-bool stats(int ganadas, int perdidas)
+//Actualiza las estadisticas
+bool actualizar_stats(tJugador ganador)
 {
-
 	bool ok;
-	ofstream stats;
-
-	stats.open("stats.txt");
+	int ganadas, perdidas, abandonadas;
+	ifstream stats;
+	ofstream actualizar;
 	
+	stats.open("stats.txt");
 	if(stats.is_open())
 	{
-		stats << "Partidas Jugadas: " << (ganadas + perdidas) << endl;
-		stats << "	Partidas Ganadas: " << ganadas << endl;
-		stats << "	Partidas Perdidas: " << perdidas << endl;
-
+		stats >> ganadas;
+		stats >> perdidas;
+		stats >> abandonadas;
+		
 		ok = true;
-		stats.close();
-
 	}
 	else
 	{
+		ganadas = 0;
+		perdidas = 0;
+		abandonadas = 0;
+		
 		ok = false;
-		cout << "Error, el archivo 'stats.txt' no existe" << endl;
 	}
-
+	
+	if(ganador == Jugador) ganadas += 1;
+	else if (ganador == Automata) perdidas += 1;
+	else abandonadas += 1;
+	
+	stats.close();
+	
+	actualizar.open("stats.txt")
+	
+	actualizar >> ganadas;
+	actualizar >> perdidas;
+	actualizar >> abandonadas;
+	
 	return ok;
+}
+
+//Muestra las estadisticas
+bool stats()
+{
+	actualizar_stats(ganador);
+	ifstream stats;
+	
+	stats << "Partidas jugadas: " << (ganadas+perdidas+abandonadas) << endl;
+	stats << "	Partidas ganadas: " << ganadas << endl;
+	stats << "	Partidas perdidas: " << perdidas << endl;
+	stats << "	Partidas abandonadas: " << abandonadas << endl;
 }
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
