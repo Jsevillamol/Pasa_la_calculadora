@@ -57,7 +57,8 @@ bool digitoValido(int ultimo, int nuevo);
 int digitoAleatorio();
 int digitoAutomata(int ultimo);
 int botDificil(int total, int ultimo);
-int botImposible(int turno, int ultimoDigito, int total);
+int botImposible(int ultimoDigito, int total);
+bool minimax(int ultimoDigito, int total, bool maximizing);
 
 //FUNCIONES DE JUGADOR
 
@@ -187,7 +188,7 @@ tJugador pasaCalculadora(bool cheats)
 	//Variables
 	tJugador turno; tDificultad dificultad;
 
-	int total = 0, ultimoDigito = 0, ronda = 1;
+	int total = 0, ultimoDigito = 0;
 
 	//Inicializar partida
 	dificultad = seleccionar_dificultad();
@@ -198,7 +199,6 @@ tJugador pasaCalculadora(bool cheats)
 	//Bucle de juego
 	do
 	{
-		cout << "Turno: " << ronda << endl;
 		//Turno jugador
 		if (turno == Jugador)
 		{
@@ -218,7 +218,7 @@ tJugador pasaCalculadora(bool cheats)
 			}
 			else /*if dificultad == Imposible*/
 			{
-				ultimoDigito = botImposible(ronda, ultimoDigito, total);
+				ultimoDigito = botImposible(ultimoDigito, total);
 			}
 
 			cout << "Elijo el numero " << ultimoDigito << endl;
@@ -227,7 +227,6 @@ tJugador pasaCalculadora(bool cheats)
 		}
 		total += ultimoDigito;
 		cout << "Total = " << total << endl << endl;
-		ronda++;
 	}
 	while ((total < META) && (ultimoDigito != 0));
 	
@@ -436,48 +435,56 @@ int botDificil(int total, int ultimo)
 		return digitoAutomata(ultimo);
 }
 
-int botImposible(int turno, int ultimoDigito, int total)
+int botImposible(int ultimoDigito, int total)
 {
-	int digito;
-	
-	switch(turno){
-	case 1:
-		digito = 9;
-		break;
-
-	case 3:
-		if      (ultimoDigito == 8) digito = 9;
-		else if (ultimoDigito == 7) digito = 9;
-		else if (ultimoDigito == 6) digito = 3;
-		else if (ultimoDigito == 3) digito = 6;
-		break;
-
-	case 5:
-		if (total = 29) digito = 1;
-		else if (total = 28) digito = 2;
-		else
+	for (int digito=1; digito<10; digito++)
+	{
+		if (digitoValido(ultimoDigito, digito))
 		{
-			if      (ultimoDigito == 1) digito = 3;
-			else if (ultimoDigito == 2) digito = 5;
-			else if (ultimoDigito == 3) digito = 9;
-			else if (ultimoDigito == 4) digito = 6;
-			else if (ultimoDigito == 5) digito = 6;
-			else if (ultimoDigito == 6) digito = 5;
-			else if (ultimoDigito == 9) digito = 3;
+			cout << "Empezando minimax" << endl;
+			if (minimax(digito, total+digito, true))
+				return digito;
+			cout << "Minimax acabado. Minimax acabado. Minimax acabado. Minimax acabado." << endl;
 		}
-		break;
+	}
+}
 
-	case 7:
-		if      (ultimoDigito == 1) digito = 4;
-		else if (ultimoDigito == 2) digito = 3;
-		else if (ultimoDigito == 4) digito = 1;
-		break;
-
-	case 9:
-		if      (ultimoDigito == 1) digito = 2;
-		else if (ultimoDigito == 2) digito = 1;
-		break;
+//Lets start the backtracking party.
+//Esta funcion devuelve true si el movimiento es optimo
+bool minimax(int ultimoDigito, int total, bool maximizing)
+{
+	if (total >= META) {
+		cout << "Encontrado nodo terminal " << maximizing << endl;
+		return maximizing;
+	}
+	if (maximizing)
+	{
+		bool bestValue = false;
+		for (int i=1; i<10 && !bestValue; i++)
+		{
+			if (digitoValido(ultimoDigito, i))
+			{
+				cout << "Maximizando" << endl;
+				bestValue = minimax(i, total+i, false);
+			}
+		}
+		cout << "Nodo maximo analizado" << endl;
+		return bestValue;
 	}
 
-	return digito;
+	else /*if minimizing*/
+	{
+		bool worseValue = true;
+		for (int i=1; i<10 && worseValue; i++)
+		{
+			if (digitoValido(ultimoDigito, i))
+			{
+				cout << "Minimizando" << endl;
+				worseValue = minimax(i, total+i, true);
+			}
+		}
+
+		cout << "Nodo minimo analizado" << endl;
+		return worseValue;
+	}
 }
