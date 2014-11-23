@@ -437,16 +437,18 @@ int botDificil(int total, int ultimo)
 
 int botImposible(int ultimoDigito, int total)
 {
+	if (total == 0) return 9;
 	for (int digito=1; digito<10; digito++)
 	{
 		if (digitoValido(ultimoDigito, digito))
 		{
-			cout << "Empezando minimax" << endl;
-			if (minimax(digito, total+digito, true))
+			cout << "Empezando minimax para " << digito << endl;
+			if (!minimax(digito, total+digito, false))
 				return digito;
 			cout << "Minimax acabado. Minimax acabado. Minimax acabado. Minimax acabado." << endl;
 		}
 	}
+	return digitoAutomata(ultimoDigito);
 }
 
 //Lets start the backtracking party.
@@ -454,8 +456,8 @@ int botImposible(int ultimoDigito, int total)
 bool minimax(int ultimoDigito, int total, bool maximizing)
 {
 	if (total >= META) {
-		cout << "Encontrado nodo terminal " << maximizing << endl;
-		return maximizing;
+		//cout << "Encontrado nodo terminal " << maximizing << endl;
+		return !maximizing;
 	}
 	if (maximizing)
 	{
@@ -464,11 +466,11 @@ bool minimax(int ultimoDigito, int total, bool maximizing)
 		{
 			if (digitoValido(ultimoDigito, i))
 			{
-				cout << "Maximizando" << endl;
+				//cout << "Maximizando" << endl;
 				bestValue = minimax(i, total+i, false);
 			}
 		}
-		cout << "Nodo maximo analizado" << endl;
+		//cout << "Nodo maximo analizado" << endl;
 		return bestValue;
 	}
 
@@ -479,12 +481,12 @@ bool minimax(int ultimoDigito, int total, bool maximizing)
 		{
 			if (digitoValido(ultimoDigito, i))
 			{
-				cout << "Minimizando" << endl;
+				//cout << "Minimizando" << endl;
 				worseValue = minimax(i, total+i, true);
 			}
 		}
 
-		cout << "Nodo minimo analizado" << endl;
+		//cout << "Nodo minimo analizado" << endl;
 		return worseValue;
 	}
 }
