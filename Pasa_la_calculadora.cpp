@@ -113,13 +113,14 @@ int main()
 	do
 	{
 		opcion = menu();
-		if(opcion == 1){	
+		if(opcion == 1)
+		{	
 			ganador = pasaCalculadora();
 			actualizar_stats(ganador);
 			despedirse(ganador, nombre);
 		}
 		else if(opcion == 2) acerca();
-	
+		else if(opcion == 3) stats();
 	}
 	while(opcion != 0);
 	
@@ -161,6 +162,7 @@ int menu()
 	int seleccionar = -1; //Error flag
 	cout << "1 - Jugar" << endl;
 	cout << "2 - Acerca de" << endl;
+	cout << "3 - Estadísticas" << endl;
 	cout << "0 - Salir" << endl;
 	
 	do
@@ -174,9 +176,9 @@ int menu()
 			cin.clear();
 		}
 
-		else if (seleccionar < 0 || seleccionar > 2)
+		else if (seleccionar < 0 || seleccionar > 3)
 		{
-			cout << "Error! Introduce un digito entre 0 y 2" << endl;
+			cout << "Error! Introduce un digito entre 0 y 3" << endl;
 			seleccionar = -1;
 		}
 		
