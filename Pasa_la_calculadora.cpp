@@ -15,6 +15,7 @@ Version: 2.0
 #include <ctime>
 #include <fstream>
 #include <iomanip>
+#include <system>
 
 using namespace std;
 
@@ -39,6 +40,15 @@ int menu();
 
 //Muestra las instrucciones del juego, siempre que su archivo no contenga errores
 bool acerca();
+
+//Actualiza las estadisticas
+bool actualizar_stats(tJugador ganador);
+
+//Muestra las estadisticas
+bool stats();
+
+//Anota el numero de partidas ganadas y perdidas del jugador
+bool stats(int ganadas, int perdidas);
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona, devuelve Nadie.
@@ -74,6 +84,9 @@ int digitoPersona();
 //que cumpla las reglas del juego o 0. Para un valor no valido, mostrara un error.
 int digitoPersona(int ultimo);
 
+//Permite poner el juego en pausa
+void pausa();
+
 //Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
 char mNumero(int ultimo, int n);
 
@@ -104,16 +117,19 @@ int main()
 	do
 	{
 		opcion = menu();
-		if(opcion == 1){	
+		if(opcion == 1)
+		{	
 			ganador = pasaCalculadora();
+			actualizar_stats(ganador);
 			despedirse(ganador, nombre);
+			pausa();
 		}
 		else if(opcion == 2) acerca();
-	
+		else if(opcion == 3) stats();
 	}
 	while(opcion != 0);
 	
-	cout << "Hasta la proxima " << nombre << "(pulsa enter)";
+	cout << "Hasta la proxima " << nombre << " (pulsa enter)";
 	cin;
 
 	return 0;
@@ -150,6 +166,7 @@ int menu()
 	int seleccionar = -1; //Error flag
 	cout << "1 - Jugar" << endl;
 	cout << "2 - Acerca de" << endl;
+	cout << "3 - Estadísticas" << endl;
 	cout << "0 - Salir" << endl;
 	
 	do
@@ -163,9 +180,9 @@ int menu()
 			cin.clear();
 		}
 
-		else if (seleccionar < 0 || seleccionar > 2)
+		else if (seleccionar < 0 || seleccionar > 3)
 		{
-			cout << "Error! Introduce un digito entre 0 y 2" << endl;
+			cout << "Error! Introduce un digito entre 0 y 3" << endl;
 			seleccionar = -1;
 		}
 		
@@ -178,7 +195,6 @@ int menu()
 //Muestra el archivo "acerca.txt" siempre que este no contenga errores
 bool acerca()
 {
-
 	bool ok;
 	ifstream acerca;
 	char c;
@@ -206,6 +222,70 @@ bool acerca()
 	}
 
 	return ok;
+}
+
+//Actualiza las estadisticas
+bool actualizar_stats(tJugador ganador)
+{
+	bool ok;
+	int ganadas, perdidas, abandonadas;
+	ifstream stats;
+	ofstream actualizar;
+	
+	stats.open("stats.txt");
+	if(stats.is_open())
+	{
+		stats >> ganadas;
+		stats >> perdidas;
+		stats >> abandonadas;
+		
+		ok = true;
+	}
+	else
+	{
+		ganadas = 0;
+		perdidas = 0;
+		abandonadas = 0;
+		
+		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo"
+		
+		ok = false;
+	}
+	
+	if(ganador == Jugador) ganadas += 1;
+	else if(ganador == Automata) perdidas += 1;
+	else if(ganador == Nadie) abandonadas += 1;
+	
+	stats.close();
+	
+	actualizar.open("stats.txt")
+	
+	actualizar << ganadas << endl;
+	actualizar << perdidas << endl;
+	actualizar << abandonadas << endl;
+	
+	actualizar.close();
+	return ok;
+}
+
+//Muestra las estadisticas
+void stats()
+{
+	ifstream stats;
+	int ganadas, perdidas, abandonadas;
+	
+	stats.open("stats.txt")
+	
+	stats >> ganadas;
+	stats >> perdidas;
+	stats >> abandonadas;
+	
+	cout << "Partidas jugadas: " << (ganadas+perdidas+abandonadas) << endl;
+	cout << "	Partidas ganadas: " << ganadas << endl;
+	cout << "	Partidas perdidas: " << perdidas << endl;
+	cout << "	Partidas abandonadas: " << abandonadas << endl;
+	
+	stats.close();
 }
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
@@ -362,18 +442,22 @@ int digitoPersona(int ultimo)
 	return digito;
 }
 
+//Permite al jugador poner en pausa el juego
+void pausa()
+{
+	system("pausa");
+}
+
 //Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
 char mNumero(int ultimo, int n)
 {
 	if(digitoValido(ultimo, n))
 	{
-		//system ("color 02");
 		return char (n+int('0'));
 		
 	}
 	else
 	{
-		//system ("color 04");
 		return ' ';
 	}
 }
@@ -396,5 +480,4 @@ void mostrarCalculadora(int ultimo)
 		cout << setw(3) << mNumero(ultimo, i);
 	}
 	cout << endl;
-	//system ("color 07");
 }
