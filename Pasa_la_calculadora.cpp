@@ -115,6 +115,7 @@ int main()
 		opcion = menu();
 		if(opcion == 1){	
 			ganador = pasaCalculadora();
+			actualizar_stats(ganador);
 			despedirse(ganador, nombre);
 		}
 		else if(opcion == 2) acerca();
@@ -262,15 +263,14 @@ bool actualizar_stats(tJugador ganador)
 //Muestra las estadisticas
 void stats()
 {
-	actualizar_stats(ganador);
 	ifstream stats;
 	
 	stats.open("stats.txt")
 	
-	stats << "Partidas jugadas: " << (ganadas+perdidas+abandonadas) << endl;
-	stats << "	Partidas ganadas: " << ganadas << endl;
-	stats << "	Partidas perdidas: " << perdidas << endl;
-	stats << "	Partidas abandonadas: " << abandonadas << endl;
+	cout << "Partidas jugadas: " << (ganadas+perdidas+abandonadas) << endl;
+	cout << "	Partidas ganadas: " << ganadas << endl;
+	cout << "	Partidas perdidas: " << perdidas << endl;
+	cout << "	Partidas abandonadas: " << abandonadas << endl;
 	
 	stats.close();
 }
