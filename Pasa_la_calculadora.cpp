@@ -251,10 +251,11 @@ bool actualizar_stats(tJugador ganador)
 	
 	actualizar.open("stats.txt")
 	
-	actualizar >> ganadas;
-	actualizar >> perdidas;
-	actualizar >> abandonadas;
+	actualizar << ganadas;
+	actualizar << perdidas;
+	actualizar << abandonadas;
 	
+	actualizar.close();
 	return ok;
 }
 
@@ -270,6 +271,8 @@ void stats()
 	stats << "	Partidas ganadas: " << ganadas << endl;
 	stats << "	Partidas perdidas: " << perdidas << endl;
 	stats << "	Partidas abandonadas: " << abandonadas << endl;
+	
+	stats.close();
 }
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
