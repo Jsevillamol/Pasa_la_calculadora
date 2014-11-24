@@ -437,7 +437,7 @@ int botDificil(int total, int ultimo)
 
 int botImposible(int ultimoDigito, int total)
 {
-	if (total == 0) return 9;
+	//if (total == 0) return 9;
 	for (int digito=1; digito<10; digito++)
 	{
 		if (digitoValido(ultimoDigito, digito))
@@ -457,7 +457,7 @@ bool minimax(int ultimoDigito, int total, bool maximizing)
 {
 	if (total >= META) {
 		//cout << "Encontrado nodo terminal " << maximizing << endl;
-		return !maximizing;
+		return maximizing;
 	}
 	if (maximizing)
 	{
