@@ -84,6 +84,9 @@ int digitoPersona();
 //que cumpla las reglas del juego o 0. Para un valor no valido, mostrara un error.
 int digitoPersona(int ultimo);
 
+//Permite poner el juego en pausa
+void pausa();
+
 //Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
 char mNumero(int ultimo, int n);
 
@@ -119,13 +122,14 @@ int main()
 			ganador = pasaCalculadora();
 			actualizar_stats(ganador);
 			despedirse(ganador, nombre);
+			pausa();
 		}
 		else if(opcion == 2) acerca();
 		else if(opcion == 3) stats();
 	}
 	while(opcion != 0);
 	
-	cout << "Hasta la proxima " << nombre << "(pulsa enter)";
+	cout << "Hasta la proxima " << nombre << " (pulsa enter)";
 	cin;
 
 	return 0;
@@ -437,6 +441,12 @@ int digitoPersona(int ultimo)
 	cout << "Has elegido el " << digito << endl;
 
 	return digito;
+}
+
+//Permite al jugador poner en pausa el juego
+void pausa()
+{
+	system("pausa");
 }
 
 //Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
