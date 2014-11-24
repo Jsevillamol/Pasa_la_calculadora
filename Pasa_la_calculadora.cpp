@@ -15,6 +15,7 @@ Version: 2.0
 #include <ctime>
 #include <fstream>
 #include <iomanip>
+#include <system>
 
 using namespace std;
 
@@ -242,6 +243,8 @@ bool actualizar_stats(tJugador ganador)
 		ganadas = 0;
 		perdidas = 0;
 		abandonadas = 0;
+		
+		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo"
 		
 		ok = false;
 	}
