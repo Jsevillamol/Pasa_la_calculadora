@@ -15,7 +15,6 @@ Version: 2.0
 #include <ctime>
 #include <fstream>
 #include <iomanip>
-#include <system>
 
 using namespace std;
 
@@ -43,17 +42,6 @@ typedef enum tDificultad
 string saludar();
 void despedirse (tJugador ganador, string nombre);
 int menu();
-bool acerca();
-
-//Actualiza las estadisticas
-bool actualizar_stats(tJugador ganador);
-
-//Muestra las estadisticas
-bool stats();
-
-//Anota el numero de partidas ganadas y perdidas del jugador
-bool stats(int ganadas, int perdidas);
-
 
 tJugador pasaCalculadora(bool cheats);
 tJugador quienEmpieza(tDificultad dificultad, bool cheats);
@@ -77,11 +65,17 @@ int digitoEntre(int a, int b);
 
 int digitoPersona(int ultimo);
 
-//Permite poner el juego en pausa
-void pausa();
-
 char mNumero(int ultimo, int n);
 void mostrarCalculadora(int ultimo);
+
+//FUNCIONES DE ARCHIVO
+bool acerca();
+
+bool actualizar_stats(tJugador ganador);
+void stats();
+
+//FUNCIONES DE SISTEMA
+void pausa();
 
 int main()
 {
@@ -151,10 +145,10 @@ int menu()
 {
 	cout << "1 - Jugar" << endl;
 	cout << "2 - Acerca de" << endl;
-	cout << "3 - Estadísticas" << endl;
+	cout << "3 - Estadisticas" << endl;
 	cout << "0 - Salir" << endl;
 	
-	seleccionar = digitoEntre(0,4);
+	int seleccionar = digitoEntre(0,4);
 
 	return seleccionar;
 }
@@ -214,7 +208,7 @@ bool actualizar_stats(tJugador ganador)
 		perdidas = 0;
 		abandonadas = 0;
 		
-		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo"
+		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo" << endl;
 		
 		ok = false;
 	}
@@ -225,7 +219,7 @@ bool actualizar_stats(tJugador ganador)
 	
 	stats.close();
 	
-	actualizar.open("stats.txt")
+	actualizar.open("stats.txt");
 	
 	actualizar << ganadas << endl;
 	actualizar << perdidas << endl;
@@ -241,7 +235,7 @@ void stats()
 	ifstream stats;
 	int ganadas, perdidas, abandonadas;
 	
-	stats.open("stats.txt")
+	stats.open("stats.txt");
 	
 	stats >> ganadas;
 	stats >> perdidas;
