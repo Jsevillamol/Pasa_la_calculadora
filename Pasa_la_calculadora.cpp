@@ -267,6 +267,10 @@ void stats()
 	
 	stats.open("stats.txt")
 	
+	stats >> ganadas;
+	stats >> perdidas;
+	stats >> abandonadas;
+	
 	cout << "Partidas jugadas: " << (ganadas+perdidas+abandonadas) << endl;
 	cout << "	Partidas ganadas: " << ganadas << endl;
 	cout << "	Partidas perdidas: " << perdidas << endl;
