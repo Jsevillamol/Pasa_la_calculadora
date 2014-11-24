@@ -264,6 +264,7 @@ bool actualizar_stats(tJugador ganador)
 void stats()
 {
 	ifstream stats;
+	int ganadas, perdidas, abandonadas;
 	
 	stats.open("stats.txt")
 	
