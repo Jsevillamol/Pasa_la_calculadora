@@ -149,7 +149,6 @@ string saludar()
 //Se despide del jugador, la despedida varia segun gane el jugador, el automata o ninguno de ellos (el jugador abandone)
 void despedirse(tJugador ganador, string nombre)
 {
-	int ganadas = 0, perdidas = 0;
 	if (ganador == Nadie){
 		cout << "Abandonas, " << nombre << "? Ohhh..." << endl << endl;
 	}
