@@ -254,9 +254,9 @@ bool actualizar_stats(tJugador ganador)
 	
 	actualizar.open("stats.txt")
 	
-	actualizar << ganadas;
-	actualizar << perdidas;
-	actualizar << abandonadas;
+	actualizar << ganadas << endl;
+	actualizar << perdidas << endl;
+	actualizar << abandonadas << endl;
 	
 	actualizar.close();
 	return ok;
