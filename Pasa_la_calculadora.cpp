@@ -442,10 +442,10 @@ int botImposible(int ultimoDigito, int total)
 	{
 		if (digitoValido(ultimoDigito, digito))
 		{
-			cout << "Empezando minimax para " << digito << endl;
-			if (!minimax(digito, total+digito, false))
+			//cout << "Empezando minimax para " << digito << endl;
+			if (minimax(digito, total+digito, false))
 				return digito;
-			cout << "Minimax acabado. Minimax acabado. Minimax acabado. Minimax acabado." << endl;
+			//cout << "Minimax acabado. Movimiento no optimo" << endl;
 		}
 	}
 	return digitoAutomata(ultimoDigito);
