@@ -71,8 +71,10 @@ void mostrarCalculadora(int ultimo);
 //FUNCIONES DE ARCHIVO
 bool acerca();
 
-bool actualizar_stats(tJugador ganador);
-void stats();
+bool actualizar_stats(tJugador ganador, string usuario);
+void stats(string usuario);
+
+void fcopy(string origen, string destino);
 
 //FUNCIONES DE SISTEMA
 void pausa();
@@ -92,7 +94,7 @@ int main()
 		if(opcion == 1)
 		{
 			ganador = pasaCalculadora(cheats);
-			actualizar_stats(ganador);
+			actualizar_stats(ganador, nombre);
 			despedirse(ganador, nombre);
 
 		}
@@ -186,46 +188,93 @@ bool acerca()
 }
 
 //Actualiza las estadisticas
-bool actualizar_stats(tJugador ganador)
+bool actualizar_stats(tJugador ganador, string usuario)
 {
 	bool ok;
 	int ganadas, perdidas, abandonadas;
+	string linea;
 	ifstream stats;
 	ofstream actualizar;
 	
 	stats.open("stats.txt");
+
+	//Restauracion con el backup, si es necesaria
+	if (!stats.is_open())
+	{
+		cout << "Error! stats.txt no existe. Buscando backup..."<<endl;
+		stats.close();
+		stats.open("backup.txt");
+		if (stats.is_open())
+		{
+			cout << "backup encontrado. Restaurando stats"<<endl;
+			fcopy("backup.txt", "stats.txt");
+		}
+		else
+		{
+			cout << "No pudo encontrarse el backup. Un nuevo archivo sera creado."<<endl;
+		}
+		stats.close();
+		stats.open("stats.txt");
+	}
+	actualizar.open("backup.txt");
+
 	if(stats.is_open())
 	{
+		//Copia de stats a backup, hasta la info del usuario
+		do
+		{
+			getline(stats, linea);
+			actualizar << linea;
+		}
+		while(linea != usuario);
+
+		//Actualizacion de datos
 		stats >> ganadas;
 		stats >> perdidas;
 		stats >> abandonadas;
+
+		if     (ganador == Jugador)   ganadas += 1;
+		else if(ganador == Automata) perdidas += 1;
+		else if(ganador == Nadie) abandonadas += 1;
+
+		actualizar << ganadas     << endl;
+		actualizar << perdidas    << endl;
+		actualizar << abandonadas << endl;
+		actualizar << endl;
 		
+		//Copia el resto del archivo
+		getline(stats, linea);
+		while (!stats.eof())
+		{
+			getline(stats, linea);
+			actualizar << linea;
+		}
+
 		ok = true;
 	}
 	else
 	{
-		ganadas = 0;
-		perdidas = 0;
-		abandonadas = 0;
+		ganadas =   (ganador == Jugador) ?1 :0;
+		perdidas = (ganador == Automata) ?1 :0;
+		abandonadas = (ganador == Nadie) ?1 :0;
+
+		actualizar << usuario     << endl;
+		actualizar << ganadas     << endl;
+		actualizar << perdidas    << endl;
+		actualizar << abandonadas << endl;
+		actualizar << endl;
 		
 		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo" << endl;
 		
 		ok = false;
 	}
 	
-	if(ganador == Jugador) ganadas += 1;
-	else if(ganador == Automata) perdidas += 1;
-	else if(ganador == Nadie) abandonadas += 1;
+	//Ahora copiamos la informacion actualizada en el archivo original
+	fcopy("backup.txt", "stats.txt");
 	
 	stats.close();
-	
-	actualizar.open("stats.txt");
-	
-	actualizar << ganadas << endl;
-	actualizar << perdidas << endl;
-	actualizar << abandonadas << endl;
-	
 	actualizar.close();
+
 	return ok;
 }
 
