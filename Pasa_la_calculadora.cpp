@@ -37,16 +37,17 @@ typedef enum tDificultad
 };
 
 //FUNCIONES
-//FUNCIONES DE JUEGO
 
-string saludar();
+
 void despedirse (tJugador ganador, string nombre);
-int menu();
 
+//MENUS
+int menu();
+tDificultad seleccionar_dificultad();
+
+//FUNCIONES DE JUEGO
 tJugador pasaCalculadora(bool cheats);
 tJugador quienEmpieza(tDificultad dificultad, bool cheats);
-
-tDificultad seleccionar_dificultad();
 
 bool mismaFila(int ultimo, int nuevo);
 bool mismaColumna(int ultimo, int nuevo);
@@ -71,6 +72,7 @@ void mostrarCalculadora(int ultimo);
 //FUNCIONES DE ARCHIVO
 bool acerca();
 
+string saludar();
 bool actualizar_stats(tJugador ganador, string usuario);
 void stats(string usuario);
 
@@ -101,7 +103,7 @@ int main()
 
 		else if(opcion == 2) acerca();
 
-		else if(opcion == 3) stats();
+		else if(opcion == 3) stats(nombre);
 
 		else if (opcion == 4) 
 		{
