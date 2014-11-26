@@ -72,11 +72,12 @@ void mostrarCalculadora(int ultimo);
 //FUNCIONES DE ARCHIVO
 bool acerca();
 
-string saludar();
+string iniciar_sesion();
 bool actualizar_stats(tJugador ganador, string usuario);
 void stats(string usuario);
 
 void fcopy(string origen, string destino);
+bool restore_from_backup();
 
 //FUNCIONES DE SISTEMA
 void pause();
@@ -87,7 +88,7 @@ int main()
 	int opcion;
 	bool cheats = false;
 	
-	string nombre = saludar();	
+	string nombre = iniciar_sesion();	
 	//Bucle Menu
 	do
 	{
@@ -120,13 +121,70 @@ int main()
 }
 	
 //Saluda al jugador y le pregunta su nombre
-string saludar()
+string iniciar_sesion()
 {
+	//Conseguimos el nombre de usuario
 	string nombre;
 	cout << "Bienvenido a Pasa la calculadora!" << endl;
 	cout << "Como te llamas? ";
 	cin >> nombre;
 	cout << "Hola " << nombre << endl << endl;
+
+	string line;
+	ofstream backup;
+	//Abrimos el archivo stats
+	ifstream stats;
+	stats.open("stats.txt");
+
+	//Restauracion del backup, si es necesaria
+	if (!stats.is_open())
+	{
+		restore_from_backup();
+	}
+
+	
+
+	if (stats.is_open())
+	{
+		//Busqueda de la info del usuario
+		getline(stats,line);
+		while (line!=nombre && !stats.eof())
+		{
+			getline(stats,line);
+		}
+
+		//Si el usuario no existe, creamos un nuevo perfil de usuario.
+		if (stats.eof())
+		{
+			cout << "Usuario no encontrado. Se creara un nuevo perfil" << endl;
+			
+			backup.open("backup",ios::app);
+				backup << nombre;
+				backup << 0;
+				backup << 0;
+				backup << 0;
+				backup << endl;
+			backup.close();
+		}
+		else
+		{
+			cout << "Bienvenido de nuevo " << nombre << endl;
+		}
+
+		stats.close();
+	}
+	else
+		//Si el archivo stats no existe y no hay backup, creamos un nuevo archivo
+	{
+		backup.open("backup",ios::app);
+			backup << nombre;
+			backup << 0;
+			backup << 0;
+			backup << 0;
+			backup << endl;
+		backup.close();
+	}
+
 	return nombre;
 }
 
