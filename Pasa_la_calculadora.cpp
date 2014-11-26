@@ -120,7 +120,8 @@ int main()
 	return 0;
 }
 	
-//Saluda al jugador y le pregunta su nombre
+//Devuelve el nombre de usuario, y crea su perfil 
+//en las estadisticas si no existe
 string iniciar_sesion()
 {
 	//Conseguimos el nombre de usuario
@@ -136,15 +137,18 @@ string iniciar_sesion()
 	ifstream stats;
 	stats.open("stats.txt");
 
-	//Restauracion del backup, si es necesaria
-	if (!stats.is_open())
+	//Restauracion desde backup, si es necesaria
+	if (!stats.good())
 	{
+		cout << "stats.txt no existe. Buscando backup." << endl;
+		stats.close();
 		restore_from_backup();
+		stats.open("stats.txt");
 	}
 
 	
 
-	if (stats.is_open())
+	if (stats.good())
 	{
 		//Busqueda de la info del usuario
 		getline(stats,line);
@@ -174,7 +178,8 @@ string iniciar_sesion()
 		stats.close();
 	}
 	else
-		//Si el archivo stats no existe y no hay backup, creamos un nuevo archivo
+		//Si el archivo stats no existe y no hay backup, creamos un nuevo archivo 
+		//y agregamos el perfil del nuevo usuario
 	{
 		backup.open("backup",ios::app);
 			backup << nombre;
@@ -185,10 +190,13 @@ string iniciar_sesion()
 		backup.close();
 	}
 
+	fcopy("backup.txt", "stats.txt");
+
 	return nombre;
 }
 
-//Se despide del jugador, la despedida varia segun gane el jugador, el automata o ninguno de ellos (el jugador abandone)
+//Se despide del jugador, la despedida varia segun gane el jugador, 
+//el automata o ninguno de ellos (el jugador abandone)
 void despedirse(tJugador ganador, string nombre)
 {
 	if (ganador == Nadie){
@@ -259,21 +267,13 @@ bool actualizar_stats(tJugador ganador, string usuario)
 	stats.open("stats.txt");
 
 	//Restauracion con el backup, si es necesaria
-	if (!stats.is_open())
+	if (!stats.good())
 	{
 		cout << "Error! stats.txt no existe. Buscando backup..."<<endl;
 		stats.close();
-		stats.open("backup.txt");
-		if (stats.is_open())
-		{
-			cout << "backup encontrado. Restaurando stats"<<endl;
-			fcopy("backup.txt", "stats.txt");
-		}
-		else
-		{
-			cout << "No pudo encontrarse el backup. Un nuevo archivo sera creado."<<endl;
-		}
-		stats.close();
+
+		restore_from_backup();
+
 		stats.open("stats.txt");
 	}
 	actualizar.open("backup.txt");
@@ -341,7 +341,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 //Muestra las estadisticas de cada jugador
 void stats(string nombre) 
 { 
-	ifstream stats; 
+	/*ifstream stats; 
 	string line;
 	int ganadas, perdidas, abandonadas; 
 	 
@@ -361,7 +361,7 @@ void stats(string nombre)
 	cout << "	  abandonadas: " <<  abandonadas 		   << endl; 
 	cout <<								      endl;
  
-	stats.close(); 
+	stats.close(); */
 }
 
 //Copia el contenido de un archivo en otro 
@@ -693,4 +693,27 @@ bool minimax(int ultimoDigito, int total, bool maximizing)
 		//cout << "Nodo minimo analizado" << endl;
 		return worseValue;
 	}
+}
+
+
+//Copia backup.txt en stats.txt. Si backup no existe devuelve false
+bool restore_from_backup()
+{
+	ifstream backup; bool ok;
+
+	backup.open("backup.txt");
+	if (backup.good())
+	{
+		backup.close();
+		fcopy("backup.txt", "stats.txt");
+		ok = true;
+	}
+	else
+	{
+		backup.close();
+		cout << "El backup no ha sido encontrado" << endl;
+		ok = false;
+	}
+
+	return ok;
 }
