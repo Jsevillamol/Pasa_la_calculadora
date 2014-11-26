@@ -2,7 +2,7 @@
 PASA LA CALCULADORA
 Autores: 
 Jaime Sevilla Molina
-Victor Gonzalez
+Victor Gonzalez del Hierro
 Fecha
 2014/11
 Version: 2.0
@@ -344,18 +344,22 @@ bool actualizar_stats(tJugador ganador, string usuario)
 //Muestra las estadisticas de cada jugador
 void stats(string nombre) 
 { 
-	/*ifstream stats; 
+	ifstream stats; 
 	string line;
 	int ganadas, perdidas, abandonadas; 
 	 
-	stats.open("stats.txt") 
+	stats.open("stats.txt"); 
 
-	stats.getline(stats, line);
+	getline(stats, line);
 	
 	while(line != nombre)
 	{
 		getline(stats, line);
 	}
+	
+	stats >>     ganadas;
+	stats >>    perdidas;
+	stats >> abandonadas;
 	
 	cout <<  nombre 		 <<  ":" 			   << endl;
 	cout << "Partidas jugadas: " 	 << (ganadas+perdidas+abandonadas) << endl; 
@@ -364,7 +368,7 @@ void stats(string nombre)
 	cout << "	  abandonadas: " <<  abandonadas 		   << endl; 
 	cout <<								      endl;
  
-	stats.close(); */
+	stats.close();
 }
 
 //Copia el contenido de un archivo en otro 
