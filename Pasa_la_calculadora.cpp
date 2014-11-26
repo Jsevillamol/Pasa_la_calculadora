@@ -226,7 +226,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		do
 		{
 			getline(stats, linea);
-			actualizar << linea;
+			actualizar <<   linea;
 		}
 		while(linea != usuario);
 
@@ -249,7 +249,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		while (!stats.eof())
 		{
 			getline(stats, linea);
-			actualizar << linea;
+			actualizar <<   linea;
 		}
 
 		ok = true;
@@ -264,7 +264,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		actualizar << ganadas     << endl;
 		actualizar << perdidas    << endl;
 		actualizar << abandonadas << endl;
-		actualizar << endl;
+		actualizar << 		     endl;
 		
 		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo" << endl;
 		
@@ -280,24 +280,34 @@ bool actualizar_stats(tJugador ganador, string usuario)
 	return ok;
 }
 
-//Muestra las estadisticas
-void stats()
-{
-	ifstream stats;
-	int ganadas, perdidas, abandonadas;
+//Muestra las estadisticas de cada jugador
+void stats(string nombre) 
+{ 
+	ifstream stats; 
+	string line;
+	int ganadas, perdidas, abandonadas; 
+	 
+	stats.open("stats.txt") 
+
+	stats.getline(nombre);
+	stats <<      ganadas; 
+	stats <<     perdidas; 
+	stats <<  abandonadas; 
+	stats <<         endl;
 	
-	stats.open("stats.txt");
+	while(line != nombre)
+	{
+		stats.getline(line);
+	}
 	
-	stats >> ganadas;
-	stats >> perdidas;
-	stats >> abandonadas;
-	
-	cout << "Partidas jugadas: " << (ganadas+perdidas+abandonadas) << endl;
-	cout << "	Partidas ganadas: "     << ganadas     << endl;
-	cout << "	Partidas perdidas: "    << perdidas    << endl;
-	cout << "	Partidas abandonadas: " << abandonadas << endl;
-	
-	stats.close();
+	cout <<  nombre 		 <<  ":" 			   << endl;
+	cout << "Partidas jugadas: " 	 << (ganadas+perdidas+abandonadas) << endl; 
+	cout << "	  ganadas: "     <<  ganadas    		   << endl; 
+	cout << "	  perdidas: "    <<  perdidas    		   << endl; 
+	cout << "	  abandonadas: " <<  abandonadas 		   << endl; 
+	cout <<								      endl;
+ 
+	stats.close(); 
 }
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
