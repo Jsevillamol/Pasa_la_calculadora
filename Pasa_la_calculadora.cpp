@@ -289,7 +289,7 @@ void stats(string nombre)
 	 
 	stats.open("stats.txt") 
 
-	stats.getline(nombre);
+	stats.getline(stats, line);
 	stats <<      ganadas; 
 	stats <<     perdidas; 
 	stats <<  abandonadas; 
@@ -297,7 +297,7 @@ void stats(string nombre)
 	
 	while(line != nombre)
 	{
-		stats.getline(line);
+		getline(stats, line);
 	}
 	
 	cout <<  nombre 		 <<  ":" 			   << endl;
