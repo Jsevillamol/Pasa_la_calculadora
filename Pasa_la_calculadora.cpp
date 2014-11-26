@@ -79,7 +79,7 @@ void stats(string usuario);
 void fcopy(string origen, string destino);
 
 //FUNCIONES DE SISTEMA
-void pausa();
+void pause();
 
 int main()
 {
@@ -114,7 +114,7 @@ int main()
 	while(opcion != 0);
 	
 	cout << "Hasta la proxima " << nombre << " (pulsa enter)";
-	pausa();
+	pause();
 
 	return 0;
 }
@@ -480,9 +480,9 @@ int digitoPersona(int ultimo)
 }
 
 //Permite al jugador poner en pausa el juego
-void pausa()
+void pause()
 {
-	system("pausa");
+	system("pause");
 }
 
 //Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
