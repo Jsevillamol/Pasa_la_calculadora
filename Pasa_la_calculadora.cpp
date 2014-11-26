@@ -106,7 +106,9 @@ int main()
 
 		else if(opcion == 3) stats(nombre);
 
-		else if (opcion == 4) 
+		else if(opcion == 4) iniciar_sesion();
+
+		else if (opcion == 5) 
 		{
 			cheats = true;
 			cout << "Trampas activadas" << endl;
@@ -174,8 +176,6 @@ string iniciar_sesion()
 		{
 			cout << "Bienvenido de nuevo " << nombre << endl;
 		}
-
-		stats.close();
 	}
 	else
 		//Si el archivo stats no existe y no hay backup, creamos un nuevo archivo 
@@ -189,6 +189,8 @@ string iniciar_sesion()
 			backup << endl;
 		backup.close();
 	}
+
+	stats.close();
 
 	fcopy("backup.txt", "stats.txt");
 
@@ -216,9 +218,10 @@ int menu()
 	cout << "1 - Jugar" << endl;
 	cout << "2 - Acerca de" << endl;
 	cout << "3 - Estadisticas" << endl;
+	cout << "4 - Iniciar sesion con otro usuario" << endl;
 	cout << "0 - Salir" << endl;
 	
-	int seleccionar = digitoEntre(0,4);
+	int seleccionar = digitoEntre(0,5);
 
 	return seleccionar;
 }
