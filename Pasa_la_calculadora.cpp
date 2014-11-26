@@ -290,10 +290,6 @@ void stats(string nombre)
 	stats.open("stats.txt") 
 
 	stats.getline(stats, line);
-	stats <<      ganadas; 
-	stats <<     perdidas; 
-	stats <<  abandonadas; 
-	stats <<         endl;
 	
 	while(line != nombre)
 	{
@@ -310,6 +306,24 @@ void stats(string nombre)
 	stats.close(); 
 }
 
+//Copia el contenido de un archivo en otro 
+//por si fuera necesario restaurar un archivo
+void fcopy(string origen, string destino)
+{
+	string content;
+	ifstream paso1;
+	ofstream paso2;
+	
+	paso1.open(origen);
+	paso2.open(destino);	
+	while(!origen.eof)
+	{
+		getline(paso1, content);
+		paso2 << content;
+	}
+	paso1.close();
+	paso2.close();
+}
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona, devuelve Nadie.
 tJugador pasaCalculadora(bool cheats)
