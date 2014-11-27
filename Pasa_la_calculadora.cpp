@@ -377,13 +377,14 @@ void fcopy(string origen, string destino)
 	string content;
 	ifstream paso1;
 	ofstream paso2;
+	char 	  word;
 	
 	paso1.open(origen);
 	paso2.open(destino);	
 	while(!paso1.eof())
 	{
-		getline(paso1, content);
-		paso2 << content;
+		paso1.get(word);
+		paso2 <<   word;
 	}
 	paso1.close();
 	paso2.close();
