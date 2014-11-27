@@ -360,12 +360,12 @@ void stats(string nombre)
 	stats >>    perdidas;
 	stats >> abandonadas;
 	
-	cout <<  nombre 		 <<  ":" 			   << endl;
-	cout << "Partidas jugadas: " 	 << (ganadas+perdidas+abandonadas) << endl; 
-	cout << "	  ganadas: "     <<  ganadas    		   << endl; 
-	cout << "	  perdidas: "    <<  perdidas    		   << endl; 
-	cout << "	  abandonadas: " <<  abandonadas 		   << endl; 
-	cout <<								      endl;
+	cout << nombre 			   <<  ":" 			     << endl;
+	cout << "Partidas jugadas: " 	   << (ganadas+perdidas+abandonadas) << endl; 
+	cout << setw(9) << "ganadas: "     <<  ganadas    		     << endl; 
+	cout << setw(9) << "perdidas: "    <<  perdidas    		     << endl; 
+	cout << setw(9) << "abandonadas: " <<  abandonadas 		     << endl; 
+	cout <<								        endl;
  
 	stats.close();
 }
