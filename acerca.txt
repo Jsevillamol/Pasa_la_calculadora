@@ -1,16 +1,16 @@
- Acerca de Pasa la calculadora
-Practica 1 Version 3.1 (10/11/2014)
-Fundamentos de Programacion
-Facultad de Informatica
-Universidad Complutense de Madrid
+Acerca de Pasa la calculadora.
+Practica 1 Version 3.1 (10/11/2014).
+Fundamentos de Programacion.
+Facultad de Informatica.
+Universidad Complutense de Madrid.
 
 Autores:
-Jaime Sevilla Molina (primero Doble Grado)
-Victor Gonzalez (primero Doble Grado)
+Jaime Sevilla Molina (primero Doble Grado).
+Victor Gonzalez (primero Doble Grado).
 
 Instrucciones:
 Se trata de un juego de dos jugadores.
-El jugador que empieza introduce un número entre 1 y 9 por la consola.
+El jugador que empieza introduce un numero entre 1 y 9 por la consola.
 El otro jugador debe introducir un numero que se encuentre en la misma fila o columna que el anterior, no pudiendo ser el mismo. 
-Los números introducidos se van sumando consecutivamente. 
+Los numeros introducidos se van sumando consecutivamente. 
 El jugador que alcance, o supere la suma total de 31 habra perdido la partida.
