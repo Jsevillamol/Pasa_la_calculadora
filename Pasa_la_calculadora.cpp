@@ -596,7 +596,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 
 	actualizar.open("backup.txt");
 
-	if(stats.is_open())
+	if(stats.good())
 	{
 		//Copia de stats a backup, hasta la info del usuario
 		do
@@ -678,10 +678,11 @@ void stats(string nombre)
 	
 	cout << nombre  <<  ":" 								    	     << endl;
 	cout << "Partidas jugadas: " 	   << (ganadas+perdidas+abandonadas) << endl; 
-	cout << setw(9) << "ganadas: "     <<  ganadas    				     << endl; 
-	cout << setw(9) << "perdidas: "    <<  perdidas    				     << endl; 
-	cout << setw(9) << "abandonadas: " <<  abandonadas 				     << endl; 
-	cout																 << endl;
+	cout << right
+		 << setw(18) << "ganadas: "     <<  ganadas    				     << endl 
+		 << setw(18) << "perdidas: "    <<  perdidas    				     << endl 
+		 << setw(18) << "abandonadas: " <<  abandonadas 				     << endl 
+		 																 << endl;
  
 	stats.close();
 }
