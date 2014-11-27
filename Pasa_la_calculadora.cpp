@@ -106,7 +106,7 @@ int main()
 
 		else if(opcion == 4) nombre = iniciar_sesion();
 
-		else if (opcion == 5) 
+		else if(opcion == 5) 
 		{
 			cheats = true;
 			cout << "Trampas activadas" << endl;
@@ -114,7 +114,7 @@ int main()
 	}
 	while(opcion != 0);
 	
-	cout << "Hasta la proxima " << nombre << " (pulsa enter)" << endl;
+	cout << "Hasta la proxima " << nombre << endl;
 	pause();
 
 	return 0;
@@ -676,14 +676,14 @@ void stats(string nombre)
 	stats >>    perdidas;
 	stats >> abandonadas;
 	
-	cout << nombre  <<  ":" 								    	     << endl;
-	cout << "Partidas jugadas: " 	   << (ganadas+perdidas+abandonadas) << endl; 
+	cout << nombre                      <<  ":"                           << endl;
+	cout << "Partidas jugadas: "        << (ganadas+perdidas+abandonadas) << endl; 
 	cout << right
-		 << setw(18) << "ganadas: "     <<  ganadas    				     << endl 
-		 << setw(18) << "perdidas: "    <<  perdidas    				     << endl 
-		 << setw(18) << "abandonadas: " <<  abandonadas 				     << endl 
-		 																 << endl;
- 
+	     << setw(18) << "ganadas: "     <<  ganadas                       << endl 
+	     << setw(18) << "perdidas: "    <<  perdidas                      << endl
+	     << setw(18) << "abandonadas: " <<  abandonadas                   << endl
+	     << endl;
+	     
 	stats.close();
 }
 
