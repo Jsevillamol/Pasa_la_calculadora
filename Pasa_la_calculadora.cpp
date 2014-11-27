@@ -147,7 +147,6 @@ string iniciar_sesion()
 		restore_from_backup();
 		stats.open("stats.txt");
 	}
-
 	
 
 	if (stats.good())
@@ -164,12 +163,12 @@ string iniciar_sesion()
 		{
 			cout << "Usuario no encontrado. Se creara un nuevo perfil" << endl;
 			
-			backup.open("backup",ios::app);
-				backup << nombre;
-				backup << 0;
-				backup << 0;
-				backup << 0;
-				backup << endl;
+			backup.open("backup.txt",ios::app);
+				backup << nombre << endl;
+				backup << 0      << endl;
+				backup << 0      << endl;
+				backup << 0      << endl;
+				backup           << endl;
 			backup.close();
 		}
 		else
@@ -181,12 +180,12 @@ string iniciar_sesion()
 		//Si el archivo stats no existe y no hay backup, creamos un nuevo archivo 
 		//y agregamos el perfil del nuevo usuario
 	{
-		backup.open("backup",ios::app);
-			backup << nombre;
-			backup << 0;
-			backup << 0;
-			backup << 0;
-			backup << endl;
+		backup.open("backup.txt",ios::app);
+			backup << nombre << endl;
+			backup << 0      << endl;
+			backup << 0      << endl;
+			backup << 0      << endl;
+			backup           << endl;
 		backup.close();
 	}
 
@@ -381,7 +380,7 @@ void fcopy(string origen, string destino)
 	
 	paso1.open(origen);
 	paso2.open(destino);	
-	while(!origen.eof)
+	while(!paso1.eof())
 	{
 		getline(paso1, content);
 		paso2 << content;
@@ -711,16 +710,17 @@ bool restore_from_backup()
 	backup.open("backup.txt");
 	if (backup.good())
 	{
-		backup.close();
 		fcopy("backup.txt", "stats.txt");
 		ok = true;
 	}
 	else
 	{
-		backup.close();
+		
 		cout << "El backup no ha sido encontrado" << endl;
 		ok = false;
 	}
+
+	backup.close();
 
 	return ok;
 }
