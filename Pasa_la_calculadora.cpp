@@ -37,13 +37,7 @@ typedef enum tDificultad
 };
 
 //FUNCIONES
-
-
 void despedirse (tJugador ganador, string nombre);
-
-//MENUS
-int menu();
-tDificultad seleccionar_dificultad();
 
 //FUNCIONES DE JUEGO
 tJugador pasaCalculadora(bool cheats);
@@ -52,6 +46,10 @@ tJugador quienEmpieza(tDificultad dificultad, bool cheats);
 bool mismaFila(int ultimo, int nuevo);
 bool mismaColumna(int ultimo, int nuevo);
 bool digitoValido(int ultimo, int nuevo);
+
+//MENUS
+int menu();
+tDificultad seleccionar_dificultad();
 
 //FUNCIONES DE IA
 int digitoAleatorio();
@@ -106,7 +104,7 @@ int main()
 
 		else if(opcion == 3) stats(nombre);
 
-		else if(opcion == 4) iniciar_sesion();
+		else if(opcion == 4) nombre = iniciar_sesion();
 
 		else if (opcion == 5) 
 		{
@@ -116,7 +114,7 @@ int main()
 	}
 	while(opcion != 0);
 	
-	cout << "Hasta la proxima " << nombre << " (pulsa enter)";
+	cout << "Hasta la proxima " << nombre << " (pulsa enter)" << endl;
 	pause();
 
 	return 0;
@@ -180,7 +178,9 @@ string iniciar_sesion()
 		//Si el archivo stats no existe y no hay backup, creamos un nuevo archivo 
 		//y agregamos el perfil del nuevo usuario
 	{
-		backup.open("backup.txt",ios::app);
+		cout << "Un nuevo archivo sera creado." << endl;
+
+		backup.open("backup.txt");
 			backup << nombre << endl;
 			backup << 0      << endl;
 			backup << 0      << endl;
@@ -201,13 +201,13 @@ string iniciar_sesion()
 void despedirse(tJugador ganador, string nombre)
 {
 	if (ganador == Nadie){
-		cout << "Abandonas, " << nombre << "? Ohhh..." << endl << endl;
+		cout << "Abandonas, "  << nombre << "? Ohhh..."     << endl << endl;
 	}
 	else if (ganador == Jugador){
 		cout << "Enhorabuena " << nombre << ", has ganado!" << endl << endl;
 	}
 	else /*if (ganador == Automata)*/{
-		cout << "Lo siento " << nombre << ", he ganado" << endl << endl;
+		cout << "Lo siento "   << nombre << ", he ganado"   << endl << endl;
 	}
 }
 
@@ -278,6 +278,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 
 		stats.open("stats.txt");
 	}
+
 	actualizar.open("backup.txt");
 
 	if(stats.is_open())
@@ -286,7 +287,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		do
 		{
 			getline(stats, linea);
-			actualizar <<   linea;
+			actualizar << linea << endl;
 		}
 		while(linea != usuario);
 
@@ -302,14 +303,14 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		actualizar << ganadas     << endl;
 		actualizar << perdidas    << endl;
 		actualizar << abandonadas << endl;
-		actualizar << endl;
 		
 		//Copia el resto del archivo
 		getline(stats, linea);
+		actualizar << linea << endl;
 		while (!stats.eof())
 		{
 			getline(stats, linea);
-			actualizar <<   linea;
+			actualizar << linea << endl;
 		}
 
 		ok = true;
@@ -324,19 +325,19 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		actualizar << ganadas     << endl;
 		actualizar << perdidas    << endl;
 		actualizar << abandonadas << endl;
-		actualizar << 		     endl;
+		actualizar << 	     	     endl;
 		
 		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo" << endl;
 		
 		ok = false;
 	}
 	
-	//Ahora copiamos la informacion actualizada en el archivo original
-	fcopy("backup.txt", "stats.txt");
-	
 	stats.close();
 	actualizar.close();
 
+	//Ahora copiamos la informacion actualizada en el archivo original
+	fcopy("backup.txt", "stats.txt");
+	
 	return ok;
 }
 
@@ -365,7 +366,7 @@ void stats(string nombre)
 	cout << "	  ganadas: "     <<  ganadas    		   << endl; 
 	cout << "	  perdidas: "    <<  perdidas    		   << endl; 
 	cout << "	  abandonadas: " <<  abandonadas 		   << endl; 
-	cout <<								      endl;
+	cout <<												      endl;
  
 	stats.close();
 }
@@ -381,11 +382,13 @@ void fcopy(string origen, string destino)
 	
 	paso1.open(origen);
 	paso2.open(destino);	
+
 	while(!paso1.eof())
 	{
 		paso1.get(word);
 		paso2 <<   word;
 	}
+
 	paso1.close();
 	paso2.close();
 }
