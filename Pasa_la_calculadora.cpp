@@ -238,11 +238,11 @@ bool digitoValido(int ultimo, int nuevo)
 //cambiar de usuario, o salir.
 int menu()
 {
-	cout << "1 - Jugar" << endl;
-	cout << "2 - Acerca de" << endl;
-	cout << "3 - Estadisticas" << endl;
-	cout << "4 - Iniciar sesion con otro usuario" << endl;
-	cout << "0 - Salir" << endl;
+	cout << "1 - Jugar"                           << endl
+	     << "2 - Acerca de"                       << endl
+	     << "3 - Estadisticas"                    << endl
+	     << "4 - Iniciar sesion con otro usuario" << endl
+	     << "0 - Salir"                           << endl;
 	
 	int seleccionar = digitoEntre(0,5);
 
@@ -252,10 +252,10 @@ int menu()
 //Permite al jugador seleccionar la dificultad del juego
 tDificultad seleccionar_dificultad()
 {
-	cout << "Elige dificultad:" << endl;
-	cout << "1 - Facil"         << endl;
-	cout << "2 - Dificil"       << endl;
-	cout << "3 - Imposible"     << endl;
+	cout << "Elige dificultad:" << endl
+	     << "1 - Facil"         << endl
+	     << "2 - Dificil"       << endl
+	     << "3 - Imposible"     << endl;
 
 	int opcion = digitoEntre(1,3);
 
@@ -413,10 +413,12 @@ int digitoPersona(int ultimo)
 	
 	mostrarCalculadora(ultimo);
 
+	cout << "Escoge un numero (0 para abandonar)" << endl;
+
 	do
 	{
 		digito = digitoEntre(0,9);
-		if (!digitoValido(ultimo, digito))
+		if (!digitoValido(ultimo, digito) && digito !=0)
 		{
 			cout << "Error! El digito debe estar en la misma fila y columna que el ultimo" << endl;
 			digito = -1;
@@ -538,11 +540,11 @@ string iniciar_sesion()
 			cout << "Usuario no encontrado. Se creara un nuevo perfil" << endl;
 			
 			backup.open("backup.txt",ios::app);
-				backup << nombre << endl;
-				backup << 0      << endl;
-				backup << 0      << endl;
-				backup << 0      << endl;
-				backup           << endl;
+				backup << nombre << endl
+				       << 0      << endl
+				       << 0      << endl
+				       << 0      << endl
+				                 << endl;
 			backup.close();
 		}
 		else
@@ -557,11 +559,11 @@ string iniciar_sesion()
 		cout << "Un nuevo archivo sera creado." << endl;
 
 		backup.open("backup.txt");
-			backup << nombre << endl;
-			backup << 0      << endl;
-			backup << 0      << endl;
-			backup << 0      << endl;
-			backup           << endl;
+			backup << nombre << endl
+			       << 0      << endl
+			       << 0      << endl
+			       << 0      << endl
+			                 << endl;
 		backup.close();
 	}
 
