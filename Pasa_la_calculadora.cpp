@@ -117,7 +117,7 @@ int main()
 	}
 	while(opcion != 0);
 	
-	cout << "Hasta la proxima " << nombre << endl;
+	cout << "Hasta la proxima " << nombre << "." << endl;
 	pause();
 
 	return 0;
@@ -241,7 +241,8 @@ bool digitoValido(int ultimo, int nuevo)
 //cambiar de usuario, o salir.
 int menu()
 {
-	cout << "1 - Jugar"                           << endl
+	cout << setfill('-') << setw(79) << '-'       << endl
+		 << "1 - Jugar"                           << endl
 	     << "2 - Acerca de"                       << endl
 	     << "3 - Estadisticas"                    << endl
 	     << "4 - Iniciar sesion con otro usuario" << endl
@@ -505,12 +506,12 @@ void registrar_nueva_ejecucion()
 {
 	int ejecuciones; string line;
 
-	ifstream stats("stats.txt");
-	ofstream backup("backup.txt");
+	ifstream stats("stats.txt", ios::in);
+	ofstream backup("backup.txt", ios::out);
 	//Las comprobaciones de backup ya se han hecho en iniciar_sesion()
 
 	stats >> ejecuciones;
-	backup << ejecuciones+1;
+	backup << ejecuciones+1 << endl;
 	
 	//Quitar el linefeed que deja <<
 	stats.ignore(10000,'\n');
