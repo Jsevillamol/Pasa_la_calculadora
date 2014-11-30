@@ -511,10 +511,12 @@ void registrar_nueva_ejecucion()
 
 	stats >> ejecuciones;
 	backup << ejecuciones+1;
+	
+	//Quitar el linefeed que deja <<
+	stats.ignore(10000,'\n');
 
-	while (!stats.eof())
+	while (getline(stats,line))
 	{
-		getline(stats,line);
 		backup << line << endl;
 	}
 
@@ -647,11 +649,13 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		actualizar << ganadas     << endl;
 		actualizar << perdidas    << endl;
 		actualizar << abandonadas;
+
+		//Quitar el linefeed que deja <<
+		stats.ignore(10000,'\n');
 		
 		//Copia el resto del archivo
-		while (!stats.eof())
+		while (getline(stats, linea))
 		{
-			getline(stats, linea);
 			actualizar << linea << endl;	
 		}
 
