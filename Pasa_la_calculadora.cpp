@@ -78,6 +78,10 @@ void stats(string usuario);
 void fcopy(string origen, string destino);
 bool restore_from_backup();
 
+string reset(string usuario);
+void hard_reset();
+void soft_reset(string usuario);
+
 //FUNCIONES DE SISTEMA
 void pause();
 
@@ -109,7 +113,9 @@ int main()
 
 		else if(opcion == 4) nombre = iniciar_sesion();
 
-		else if(opcion == 5) 
+		else if(opcion == 5) nombre = reset(nombre);
+
+		else if(opcion == 6) 
 		{
 			cheats = true;
 			cout << "Trampas activadas" << endl;
@@ -246,9 +252,11 @@ int menu()
 	     << "2 - Acerca de"                       << endl
 	     << "3 - Estadisticas"                    << endl
 	     << "4 - Iniciar sesion con otro usuario" << endl
-	     << "0 - Salir"                           << endl;
+		 << "5 - Resetear estadisticas"           << endl
+	     << "0 - Salir"                           << endl
+		 << setfill(' ');
 	
-	int seleccionar = digitoEntre(0,5);
+	int seleccionar = digitoEntre(0,6);
 
 	return seleccionar;
 }
@@ -536,7 +544,6 @@ string iniciar_sesion()
 	cout << "Bienvenido a Pasa la calculadora!" << endl;
 	cout << "Como te llamas? ";
 	cin >> nombre;
-	cout << "Hola " << nombre << endl << endl;
 
 	string line;
 	ofstream backup;
@@ -547,12 +554,11 @@ string iniciar_sesion()
 	//Restauracion desde backup, si es necesaria
 	if (!stats.good())
 	{
-		cout << "stats.txt no existe. Buscando backup." << endl;
+		cout << "\"stats.txt\" no existe. Buscando backup." << endl;
 		stats.close();
 		restore_from_backup();
 		stats.open("stats.txt");
 	}
-	
 
 	if (stats.good())
 	{
@@ -566,14 +572,14 @@ string iniciar_sesion()
 		//Si el usuario no existe, creamos un nuevo perfil de usuario.
 		if (stats.eof())
 		{
-			cout << "Usuario no encontrado. Se creara un nuevo perfil" << endl;
+			cout << "Usuario no encontrado. Se creara un nuevo perfil." << endl;
 			
 			backup.open("backup.txt",ios::app);
 				backup << nombre << endl
-				       << 0      << endl
-				       << 0      << endl
-				       << 0      << endl
-				                 << endl;
+				       << 0      << endl  //Ganadas
+				       << 0      << endl  //Perdidas
+				       << 0      << endl; //Abandonadas
+			//	                 << endl;
 			backup.close();
 		}
 		else
@@ -592,8 +598,8 @@ string iniciar_sesion()
 				   << nombre << endl         //Usuario
 			       << 0      << endl         //Ganadas
 			       << 0      << endl         //Perdidas
-			       << 0      << endl         //Abandonadas
-			                 << endl;
+			       << 0      << endl;        //Abandonadas
+		//	                 << endl;
 		backup.close();
 	}
 
@@ -672,8 +678,8 @@ bool actualizar_stats(tJugador ganador, string usuario)
 			       << usuario     << endl
 		           << ganadas     << endl
 		           << perdidas    << endl
-		           << abandonadas << endl
-		           << 	     	     endl;
+		           << abandonadas << endl;
+		          // << 	     	     endl;
 		
 		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo" << endl;
 		
@@ -689,7 +695,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 	return ok;
 }
 
-//Muestra las estadisticas de cada jugador
+//Muestra las estadisticas del jugador actual
 void stats(string nombre) 
 { 
 	ifstream stats; 
@@ -724,7 +730,6 @@ void stats(string nombre)
 //por si fuera necesario restaurar un archivo
 void fcopy(string origen, string destino)
 {
-	string content;
 	ifstream paso1;
 	ofstream paso2;
 	char 	  word;
@@ -763,6 +768,35 @@ bool restore_from_backup()
 	backup.close();
 
 	return ok;
+}
+
+string reset(string usuario)
+{
+	cout << "1 - Borrar estadisticas del jugador actual" << endl
+	     << "2 - Borrar todas las estadisticas"          << endl
+		 << "0 - Volver al menu"                         << endl;
+	
+	int opcion = digitoEntre(0,2);
+
+	if (opcion == 1) 
+		soft_reset(usuario);
+	else if (opcion == 2){ 
+		hard_reset();
+		usuario = iniciar_sesion();
+	}
+
+	return usuario;
+}
+
+void hard_reset()
+{
+	remove("backup.txt");
+	remove("stats.txt");
+}
+
+void soft_reset(string usuario)
+{
+
 }
 
 //FUNCIONES DE SISTEMA
