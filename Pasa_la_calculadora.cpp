@@ -5,7 +5,7 @@ Jaime Sevilla Molina
 Victor Gonzalez del Hierro
 Fecha
 2014/11
-Version: 2.0
+Version: 5.0
 ---------------------------------*/
 
 //BIBLIOTECAS
@@ -68,8 +68,9 @@ char mNumero(int ultimo, int n);
 void mostrarCalculadora(int ultimo);
 
 //FUNCIONES DE ARCHIVO
-bool acerca();
+bool mostrar(string archivo);
 
+void registrar_nueva_ejecucion();
 string iniciar_sesion();
 bool actualizar_stats(tJugador ganador, string usuario);
 void stats(string usuario);
@@ -87,6 +88,8 @@ int main()
 	bool cheats = false;
 	
 	string nombre = iniciar_sesion();	
+	registrar_nueva_ejecucion();
+
 	//Bucle Menu
 	do
 	{
@@ -100,7 +103,7 @@ int main()
 
 		}
 
-		else if(opcion == 2) acerca();
+		else if(opcion == 2) mostrar("acerca.txt");
 
 		else if(opcion == 3) stats(nombre);
 
@@ -467,13 +470,13 @@ void mostrarCalculadora(int ultimo)
 
 //FUNCIONES DE ARCHIVO
 //Muestra el archivo "acerca.txt" siempre que este no contenga errores
-bool acerca()
+bool mostrar(string archivo)
 {
 	bool ok;
 	ifstream acerca;
 	char c;
 
-	acerca.open("acerca.txt");
+	acerca.open(archivo);
 	
 	if(acerca.is_open())
 	{
@@ -496,6 +499,29 @@ bool acerca()
 	}
 
 	return ok;
+}
+
+void registrar_nueva_ejecucion()
+{
+	int ejecuciones; string line;
+
+	ifstream stats("stats.txt");
+	ofstream backup("backup.txt");
+	//Las comprobaciones de backup ya se han hecho en iniciar_sesion()
+
+	stats >> ejecuciones;
+	backup << ejecuciones+1;
+
+	while (!stats.eof())
+	{
+		getline(stats,line);
+		backup << line << endl;
+	}
+
+	stats.close();
+	backup.close();
+
+	fcopy("backup.txt", "stats.txt");
 }
 
 //Devuelve el nombre de usuario, y crea su perfil 
@@ -559,10 +585,11 @@ string iniciar_sesion()
 		cout << "Un nuevo archivo sera creado." << endl;
 
 		backup.open("backup.txt");
-			backup << nombre << endl
-			       << 0      << endl
-			       << 0      << endl
-			       << 0      << endl
+			backup << 0      << endl << endl //Ejecuciones
+				   << nombre << endl         //Usuario
+			       << 0      << endl         //Ganadas
+			       << 0      << endl         //Perdidas
+			       << 0      << endl         //Abandonadas
 			                 << endl;
 		backup.close();
 	}
@@ -619,15 +646,13 @@ bool actualizar_stats(tJugador ganador, string usuario)
 
 		actualizar << ganadas     << endl;
 		actualizar << perdidas    << endl;
-		actualizar << abandonadas << endl;
+		actualizar << abandonadas;
 		
 		//Copia el resto del archivo
-		getline(stats, linea);
-		actualizar << linea << endl;
 		while (!stats.eof())
 		{
 			getline(stats, linea);
-			actualizar << linea << endl;
+			actualizar << linea << endl;	
 		}
 
 		ok = true;
@@ -638,11 +663,12 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		perdidas = (ganador == Automata) ?1 :0;
 		abandonadas = (ganador == Nadie) ?1 :0;
 
-		actualizar << usuario     << endl;
-		actualizar << ganadas     << endl;
-		actualizar << perdidas    << endl;
-		actualizar << abandonadas << endl;
-		actualizar << 	     	     endl;
+		actualizar << 1   << endl << endl //Ejecuciones
+			       << usuario     << endl
+		           << ganadas     << endl
+		           << perdidas    << endl
+		           << abandonadas << endl
+		           << 	     	     endl;
 		
 		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo" << endl;
 		
