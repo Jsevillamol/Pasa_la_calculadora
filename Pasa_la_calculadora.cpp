@@ -524,10 +524,14 @@ void registrar_nueva_ejecucion()
 	//Quitar el linefeed que deja <<
 	stats.ignore(10000,'\n');
 
-	while (getline(stats,line))
+	/*while (getline(stats,line))
 	{
 		backup << line << endl;
-	}
+	}*/
+
+	char c;
+	while (stats.get(c))
+		backup << c;
 
 	stats.close();
 	backup.close();
@@ -578,8 +582,8 @@ string iniciar_sesion()
 				backup << nombre << endl
 				       << 0      << endl  //Ganadas
 				       << 0      << endl  //Perdidas
-				       << 0      << endl; //Abandonadas
-			//	                 << endl;
+				       << 0      << endl  //Abandonadas
+				                 << endl;
 			backup.close();
 		}
 		else
@@ -598,8 +602,8 @@ string iniciar_sesion()
 				   << nombre << endl         //Usuario
 			       << 0      << endl         //Ganadas
 			       << 0      << endl         //Perdidas
-			       << 0      << endl;        //Abandonadas
-		//	                 << endl;
+			       << 0      << endl         //Abandonadas
+			                 << endl;
 		backup.close();
 	}
 
@@ -661,10 +665,14 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		stats.ignore(10000,'\n');
 		
 		//Copia el resto del archivo
-		while (getline(stats, linea))
+		/*while (getline(stats, linea))
 		{
 			actualizar << linea << endl;	
-		}
+		}*/
+
+		char c;
+		while (stats.get(c))
+			actualizar << c;
 
 		ok = true;
 	}
@@ -678,8 +686,8 @@ bool actualizar_stats(tJugador ganador, string usuario)
 			       << usuario     << endl
 		           << ganadas     << endl
 		           << perdidas    << endl
-		           << abandonadas << endl;
-		          // << 	     	     endl;
+		           << abandonadas << endl
+		           << 	     	     endl;
 		
 		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo" << endl;
 		
@@ -755,17 +763,17 @@ bool restore_from_backup()
 	backup.open("backup.txt");
 	if (backup.good())
 	{
+		backup.close();
 		fcopy("backup.txt", "stats.txt");
 		ok = true;
 	}
 	else
 	{
 		
+		backup.close();
 		cout << "El backup no ha sido encontrado" << endl;
 		ok = false;
 	}
-
-	backup.close();
 
 	return ok;
 }
