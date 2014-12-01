@@ -91,7 +91,7 @@ int main()
 	int opcion;
 	bool cheats = false;
 	
-	string nombre = iniciar_sesion();	
+	string usuario = iniciar_sesion();	
 	registrar_nueva_ejecucion();
 
 	//Bucle Menu
@@ -108,11 +108,11 @@ int main()
 
 		else if(opcion == 2) mostrar("acerca.txt");
 
-		else if(opcion == 3) stats(nombre);
+		else if(opcion == 3) stats(usuario);
 
-		else if(opcion == 4) nombre = iniciar_sesion();
+		else if(opcion == 4) usuario = iniciar_sesion();
 
-		else if(opcion == 5) nombre = reset(usuario);
+		else if(opcion == 5) usuario = reset(usuario);
 
 		else if(opcion == 6) 
 		{
@@ -125,7 +125,7 @@ int main()
 	while(opcion != 0);
 	
 	cout << setfill('-') << setw(79) << '-'      << endl
-	     << "Hasta la proxima " << nombre << "." << endl
+	     << "Hasta la proxima " << usuario << "." << endl
 	     << setfill(' ');
 	pause();
 
@@ -579,7 +579,7 @@ string iniciar_sesion()
 	{
 		//Busqueda de la info del usuario
 		getline(stats,line);
-		while (line!=nombre && !stats.eof())
+		while (line!=usuario && !stats.eof())
 		{
 			getline(stats,line);
 		}
@@ -815,25 +815,7 @@ void hard_reset()
 
 void soft_reset(string usuario)
 {
-ifstream stats;
-string line;
 
-stats.open("stats.txt");
-
-getline(stats, line);
-	
-while(line != usuario)
-{
-	getline(stats, line);
-}
-	
-	stats >>     ganadas;
-	stats >>    perdidas;
-	stats >> abandonadas;
-	
-	ganadas = 0;
-	perdidas = 0;
-	abandonadas = 0;
 }
 
 //FUNCIONES DE SISTEMA
