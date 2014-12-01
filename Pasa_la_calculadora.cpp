@@ -815,7 +815,25 @@ void hard_reset()
 
 void soft_reset(string usuario)
 {
+ifstream stats;
+string line;
 
+stats.open("stats.txt");
+
+getline(stats, line);
+	
+while(line != nombre)
+{
+	getline(stats, line);
+}
+	
+	stats >>     ganadas;
+	stats >>    perdidas;
+	stats >> abandonadas;
+	
+	ganadas = 0;
+	perdidas = 0;
+	abandonadas = 0;
 }
 
 //FUNCIONES DE SISTEMA
