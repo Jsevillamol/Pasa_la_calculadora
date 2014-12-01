@@ -37,7 +37,7 @@ typedef enum tDificultad
 };
 
 //FUNCIONES
-void despedirse (tJugador ganador, string nombre);
+void despedirse (tJugador ganador, string usuario);
 
 //FUNCIONES DE JUEGO
 tJugador pasaCalculadora(bool cheats);
@@ -102,8 +102,8 @@ int main()
 		if(opcion == 1)
 		{
 			ganador = pasaCalculadora(cheats);
-			actualizar_stats(ganador, nombre);
-			despedirse(ganador, nombre);
+			actualizar_stats(ganador, usuario);
+			despedirse(ganador, usuario);
 		}
 
 		else if(opcion == 2) mostrar("acerca.txt");
@@ -112,7 +112,7 @@ int main()
 
 		else if(opcion == 4) nombre = iniciar_sesion();
 
-		else if(opcion == 5) nombre = reset(nombre);
+		else if(opcion == 5) nombre = reset(usuario);
 
 		else if(opcion == 6) 
 		{
@@ -135,16 +135,16 @@ int main()
 //FUNCIONES
 //Se despide del jugador, la despedida varia segun gane el jugador, 
 //el automata o ninguno de ellos (el jugador abandone)
-void despedirse(tJugador ganador, string nombre)
+void despedirse(tJugador ganador, string usuario)
 {
 	if (ganador == Nadie){
-		cout << "Abandonas, "  << nombre << "? Ohhh..."     << endl << endl;
+		cout << "Abandonas, "  << usuario << "? Ohhh..."     << endl << endl;
 	}
 	else if (ganador == Jugador){
-		cout << "Enhorabuena " << nombre << ", has ganado!" << endl << endl;
+		cout << "Enhorabuena " << usuario << ", has ganado!" << endl << endl;
 	}
 	else /*if (ganador == Automata)*/{
-		cout << "Lo siento "   << nombre << ", he ganado"   << endl << endl;
+		cout << "Lo siento "   << usuario << ", he ganado"   << endl << endl;
 	}
 }
 
@@ -554,12 +554,12 @@ void registrar_nueva_ejecucion()
 string iniciar_sesion()
 {
 	//Conseguimos el nombre de usuario
-	string nombre;
+	string usuario;
 	cout << setfill('-') << setw(79) << '-'     << endl
 	     << "Bienvenido a Pasa la calculadora!" << endl
 	     << "Como te llamas? "
 	     << setfill(' ');
-	cin >> nombre;
+	cin >> usuario;
 
 	string line;
 	ofstream backup;
@@ -589,16 +589,16 @@ string iniciar_sesion()
 			cout << "Usuario no encontrado. Se creara un nuevo perfil." << endl;
 			
 			backup.open("backup.txt",ios::app);
-				backup << nombre << endl
-				       << 0      << endl  //Ganadas
-				       << 0      << endl  //Perdidas
-				       << 0      << endl  //Abandonadas
-				                 << endl;
+				backup << usuario << endl
+				       << 0       << endl  //Ganadas
+				       << 0       << endl  //Perdidas
+				       << 0       << endl  //Abandonadas
+				                  << endl;
 			backup.close();
 		}
 		else
 		{
-			cout << "Bienvenido de nuevo " << nombre << endl;
+			cout << "Bienvenido de nuevo " << usuario << endl;
 		}
 	}
 	else
@@ -608,19 +608,19 @@ string iniciar_sesion()
 		cout << "Un nuevo archivo sera creado." << endl;
 
 		backup.open("backup.txt");
-			backup << 0      << endl << endl //Ejecuciones
-			       << nombre << endl         //Usuario
-			       << 0      << endl         //Ganadas
-			       << 0      << endl         //Perdidas
-			       << 0      << endl         //Abandonadas
-			                 << endl;
+			backup << 0       << endl << endl //Ejecuciones
+			       << usuario << endl         //Usuario
+			       << 0       << endl         //Ganadas
+			       << 0       << endl         //Perdidas
+			       << 0       << endl         //Abandonadas
+			                  << endl;
 		backup.close();
 	}
 	stats.close();
 
 	fcopy("backup.txt", "stats.txt");
 
-	return nombre;
+	return usuario;
 }
 
 //Actualiza las estadisticas
@@ -712,7 +712,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 }
 
 //Muestra las estadisticas del jugador actual
-void stats(string nombre) 
+void stats(string usuario) 
 { 
 	ifstream stats; 
 	string line;
@@ -724,7 +724,7 @@ void stats(string nombre)
 	
 	getline(stats, line);
 	
-	while(line != nombre)
+	while(line != usuario)
 	{
 		getline(stats, line);
 	}
@@ -736,7 +736,7 @@ void stats(string nombre)
 	cout << setfill('-')   << setw(79)                  << '-'                            << endl;
 	cout << "Numero de ejecuciones del programa: "      <<  ejecuciones                   << endl;
 	cout << endl;
-	cout << "Partidas de " << nombre << ": "            << (ganadas+perdidas+abandonadas) << endl; 
+	cout << "Partidas de " << usuario << ": "            << (ganadas+perdidas+abandonadas) << endl; 
 	cout << right
 	     << setfill(' ') << setw(22) << "ganadas: "     <<  ganadas                       << endl 
 	     << setfill(' ') << setw(22) << "perdidas: "    <<  perdidas                      << endl
