@@ -670,7 +670,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		actualizar << perdidas    << endl;
 		actualizar << abandonadas;
 
-		//Quitar el linefeed que deja <<
+		//Quitar el linefeed que deja >>
 		stats.ignore(10000,'\n');
 		
 		//Copia el resto del archivo
@@ -815,7 +815,75 @@ void hard_reset()
 
 void soft_reset(string usuario)
 {
+	int i;
+	string linea;
+	ifstream stats;
+	ofstream actualizar;
+	
+	stats.open("stats.txt");
 
+	//Restauracion con el backup, si es necesaria
+	if (!stats.good())
+	{
+		cout << "Error! stats.txt no existe. Buscando backup..."<<endl;
+		stats.close();
+
+		restore_from_backup();
+
+		stats.open("stats.txt");
+	}
+
+	actualizar.open("backup.txt");
+
+	if(stats.good())
+	{
+		//Copia de stats a backup, hasta la info del usuario
+		do
+		{
+			getline(stats, linea);
+			actualizar << linea << endl;
+		}
+		while(linea != usuario);
+
+		//Ignoramos los datos anteriores...
+		stats >> i;
+		stats >> i;
+		stats >> i;
+		 //...y los sutituimos por 0
+		actualizar << 0 << endl; //Ganadas
+		actualizar << 0 << endl; //Perdidas
+		actualizar << 0;         //Abandonadas
+
+		//Quitar el linefeed que deja >>
+		stats.ignore(10000,'\n');
+		
+		//Copia el resto del archivo
+		/*while (getline(stats, linea))
+		{
+			actualizar << linea << endl;	
+		}*/
+
+		char c;
+		while (stats.get(c))
+			actualizar << c;
+	}
+	else
+	{
+
+		actualizar << 1   << endl << endl //Ejecuciones
+			   << usuario     << endl
+		           << 0 << endl
+		           << 0 << endl
+		           << 0 << endl
+		           <<endl;
+		
+		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo" << endl;
+	}
+	stats.close();
+	actualizar.close();
+
+	//Ahora copiamos la informacion actualizada en el archivo original
+	fcopy("backup.txt", "stats.txt");
 }
 
 //FUNCIONES DE SISTEMA
