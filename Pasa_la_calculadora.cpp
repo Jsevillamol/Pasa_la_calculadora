@@ -822,7 +822,7 @@ stats.open("stats.txt");
 
 getline(stats, line);
 	
-while(line != nombre)
+while(line != usuario)
 {
 	getline(stats, line);
 }
