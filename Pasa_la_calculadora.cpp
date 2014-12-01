@@ -104,7 +104,6 @@ int main()
 			ganador = pasaCalculadora(cheats);
 			actualizar_stats(ganador, nombre);
 			despedirse(ganador, nombre);
-
 		}
 
 		else if(opcion == 2) mostrar("acerca.txt");
@@ -118,12 +117,16 @@ int main()
 		else if(opcion == 6) 
 		{
 			cheats = true;
-			cout << "Trampas activadas" << endl;
+			cout << setfill('-') << setw(79) << '-' << endl
+		             << "Trampas activadas"             << endl
+			     << setfill(' ');
 		}
 	}
 	while(opcion != 0);
 	
-	cout << "Hasta la proxima " << nombre << "." << endl;
+	cout << setfill('-') << setw(79) << '-'      << endl
+	     << "Hasta la proxima " << nombre << "." << endl
+	     << setfill(' ');
 	pause();
 
 	return 0;
@@ -206,12 +209,17 @@ tJugador quienEmpieza(tDificultad dificultad, bool cheats)
 {
 	if ((rand() % 2 && dificultad != Imposible) || cheats)
 	{
-		cout << "Tu empiezas" << endl;
+		cout << setfill('-') << setw(79) << '-' << endl
+		     << "Tu empiezas"            << endl
+		     << setfill(' ');
 		return Jugador;
 	}
 	else
 	{
-		cout << "Empiezo yo" << endl;
+		cout << setfill('-') << setw(79) << '-' << endl
+		     << "Empiezo yo"             << endl
+	             << setfill(' ');
+	             
 		return Automata;
 	}
 }
@@ -248,13 +256,13 @@ bool digitoValido(int ultimo, int nuevo)
 int menu()
 {
 	cout << setfill('-') << setw(79) << '-'       << endl
-		 << "1 - Jugar"                           << endl
+	     << "1 - Jugar"                           << endl
 	     << "2 - Acerca de"                       << endl
 	     << "3 - Estadisticas"                    << endl
 	     << "4 - Iniciar sesion con otro usuario" << endl
-		 << "5 - Resetear estadisticas"           << endl
+	     << "5 - Resetear estadisticas"           << endl
 	     << "0 - Salir"                           << endl
-		 << setfill(' ');
+	     << setfill(' ');
 	
 	int seleccionar = digitoEntre(0,6);
 
@@ -264,10 +272,12 @@ int menu()
 //Permite al jugador seleccionar la dificultad del juego
 tDificultad seleccionar_dificultad()
 {
-	cout << "Elige dificultad:" << endl
-	     << "1 - Facil"         << endl
-	     << "2 - Dificil"       << endl
-	     << "3 - Imposible"     << endl;
+	cout << setfill('-') << setw(79) << '-' << endl
+	     << "Elige dificultad:"             << endl
+	     << "1 - Facil"                     << endl
+	     << "2 - Dificil"                   << endl
+	     << "3 - Imposible"                 << endl
+	     << setfill(' ');
 
 	int opcion = digitoEntre(1,3);
 
@@ -351,7 +361,8 @@ int botImposible(int ultimoDigito, int total)
 //Esta funcion devuelve true si el movimiento es optimo
 bool minimax(int ultimoDigito, int total, bool maximizing)
 {
-	if (total >= META) {
+	if (total >= META) 
+	{
 		//cout << "Encontrado nodo terminal " << maximizing << endl;
 		return maximizing;
 	}
@@ -449,7 +460,6 @@ char mNumero(int ultimo, int n)
 	if(digitoValido(ultimo, n))
 	{
 		return char (n+int('0'));
-		
 	}
 	else
 	{
@@ -484,7 +494,10 @@ bool mostrar(string archivo)
 	bool ok;
 	ifstream acerca;
 	char c;
-
+	
+	cout << setfill('-') << setw(79) << '-' << endl;
+	cout << setfill(' ');
+	
 	acerca.open(archivo);
 	
 	if(acerca.is_open())
@@ -496,17 +509,14 @@ bool mostrar(string archivo)
 			cout << c;
 			acerca.get(c); //Lee el siguiente caracter
 		}
-
 		ok = true;
 		acerca.close();
-
 	}
 	else
 	{
 		ok = false;
 		cout << "Error, el archivo 'acerca.txt' no existe" << endl;
 	}
-
 	return ok;
 }
 
@@ -545,8 +555,10 @@ string iniciar_sesion()
 {
 	//Conseguimos el nombre de usuario
 	string nombre;
-	cout << "Bienvenido a Pasa la calculadora!" << endl;
-	cout << "Como te llamas? ";
+	cout << setfill('-') << setw(79) << '-'     << endl
+	     << "Bienvenido a Pasa la calculadora!" << endl
+	     << "Como te llamas? "
+	     << setfill(' ');
 	cin >> nombre;
 
 	string line;
@@ -563,7 +575,6 @@ string iniciar_sesion()
 		restore_from_backup();
 		stats.open("stats.txt");
 	}
-
 	if (stats.good())
 	{
 		//Busqueda de la info del usuario
@@ -572,7 +583,6 @@ string iniciar_sesion()
 		{
 			getline(stats,line);
 		}
-
 		//Si el usuario no existe, creamos un nuevo perfil de usuario.
 		if (stats.eof())
 		{
@@ -599,14 +609,13 @@ string iniciar_sesion()
 
 		backup.open("backup.txt");
 			backup << 0      << endl << endl //Ejecuciones
-				   << nombre << endl         //Usuario
+			       << nombre << endl         //Usuario
 			       << 0      << endl         //Ganadas
 			       << 0      << endl         //Perdidas
 			       << 0      << endl         //Abandonadas
 			                 << endl;
 		backup.close();
 	}
-
 	stats.close();
 
 	fcopy("backup.txt", "stats.txt");
@@ -683,7 +692,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		abandonadas = (ganador == Nadie) ?1 :0;
 
 		actualizar << 1   << endl << endl //Ejecuciones
-			       << usuario     << endl
+			   << usuario     << endl
 		           << ganadas     << endl
 		           << perdidas    << endl
 		           << abandonadas << endl
@@ -693,7 +702,6 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		
 		ok = false;
 	}
-	
 	stats.close();
 	actualizar.close();
 
@@ -708,10 +716,12 @@ void stats(string nombre)
 { 
 	ifstream stats; 
 	string line;
-	int ganadas, perdidas, abandonadas; 
+	int ganadas, perdidas, abandonadas, ejecuciones; 
 	 
 	stats.open("stats.txt"); 
 
+	stats >> ejecuciones;
+	
 	getline(stats, line);
 	
 	while(line != nombre)
@@ -723,12 +733,14 @@ void stats(string nombre)
 	stats >>    perdidas;
 	stats >> abandonadas;
 	
-	cout << nombre                      <<  ":"                           << endl;
-	cout << "Partidas jugadas: "        << (ganadas+perdidas+abandonadas) << endl; 
+	cout << setfill('-')   << setw(79)                  << '-'                            << endl;
+	cout << "Numero de ejecuciones del programa: "      <<  ejecuciones                   << endl;
+	cout << endl;
+	cout << "Partidas de " << nombre << ": "            << (ganadas+perdidas+abandonadas) << endl; 
 	cout << right
-	     << setw(18) << "ganadas: "     <<  ganadas                       << endl 
-	     << setw(18) << "perdidas: "    <<  perdidas                      << endl
-	     << setw(18) << "abandonadas: " <<  abandonadas                   << endl
+	     << setfill(' ') << setw(22) << "ganadas: "     <<  ganadas                       << endl 
+	     << setfill(' ') << setw(22) << "perdidas: "    <<  perdidas                      << endl
+	     << setfill(' ') << setw(22) << "abandonadas: " <<  abandonadas                   << endl
 	     << endl;
 	     
 	stats.close();
@@ -750,7 +762,6 @@ void fcopy(string origen, string destino)
 		paso1.get(word);
 		paso2 <<   word;
 	}
-
 	paso1.close();
 	paso2.close();
 }
@@ -769,30 +780,30 @@ bool restore_from_backup()
 	}
 	else
 	{
-		
 		backup.close();
 		cout << "El backup no ha sido encontrado" << endl;
 		ok = false;
 	}
-
 	return ok;
 }
 
 string reset(string usuario)
 {
-	cout << "1 - Borrar estadisticas del jugador actual" << endl
+	cout << setfill('-') << setw(79) << '-'              << endl
+	     << "1 - Borrar estadisticas del jugador actual" << endl
 	     << "2 - Borrar todas las estadisticas"          << endl
-		 << "0 - Volver al menu"                         << endl;
+	     << "0 - Volver al menu"                         << endl;
+	cout << setfill(' ');
 	
 	int opcion = digitoEntre(0,2);
 
 	if (opcion == 1) 
 		soft_reset(usuario);
-	else if (opcion == 2){ 
+	else if (opcion == 2)
+	{ 
 		hard_reset();
 		usuario = iniciar_sesion();
 	}
-
 	return usuario;
 }
 
