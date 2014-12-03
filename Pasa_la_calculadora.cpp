@@ -85,7 +85,8 @@ bool mostrar(string archivo);
 
 void registrar_nueva_ejecucion();
 string iniciar_sesion1();
-string iniciar_sesion2();
+string iniciar_sesion2(usuario1);
+void cambio_sesion(string usuario1, string usuario2);
 bool actualizar_stats(tJugador ganador, string usuario);
 void actualizar_stats_doble (tJugador ganador, string usuario1, string usuario2);
 void stats(string usuario1);
@@ -157,7 +158,7 @@ int main()
 
 		else if(modo == Double)
 		{
-			string usuario2 = iniciar_sesion2();
+			string usuario2 = iniciar_sesion2(usuario1);
 			do
 			{
 				opcion = menu();
@@ -173,11 +174,8 @@ int main()
 	
 				else if(opcion == 3) stats2(usuario1, usuario2);
 	
-				else if(opcion == 4) 
-				{
-					usuario1 = iniciar_sesion1();
-					usuario2 = iniciar_sesion2();
-				}
+				else if(opcion == 4) cambio_sesion(usuario1, usuario2);
+				
 				else if(opcion == 5) reset2(usuario1, usuario2);
 	
 				else if(opcion == 6) 
@@ -798,7 +796,7 @@ string iniciar_sesion1()
 
 //Devuelve el nombre de usuario, y crea su perfil 
 //en las estadisticas si no existe
-string iniciar_sesion2()
+string iniciar_sesion2(string usuario1)
 {
 	//Conseguimos el nombre de usuario
 	string usuario2;
@@ -806,7 +804,12 @@ string iniciar_sesion2()
 	     << "Contra quien vas a jugar?"     << endl
 	     << setfill(' ');
 	cin >> usuario2;
-
+	
+	while(usuario2 == usuario1)
+	{
+		cout << "Error, no puedes jugar contra ti mismo";
+		cin >> usuario2;
+	}
 	string line;
 	ofstream backup;
 	//Abrimos el archivo stats
@@ -867,6 +870,18 @@ string iniciar_sesion2()
 	fcopy("backup.txt", "stats.txt");
 
 	return usuario2;
+}
+
+void cambio_sesion(string usuario1, string usuario2)
+{
+	cout << setfill('-') << setw(79) << '-' << endl
+		 << "0- " << usuario1               << endl
+		 << "1- " << usuario2               << endl
+		 << setfill(' ');
+	int sesion = digitoEntre(0,1);
+
+	if(sesion == 0) iniciar_sesion1();
+	else /*if(sesion == 1)*/ iniciar_sesion2(usuario1);
 }
 
 //Actualiza las estadisticas
