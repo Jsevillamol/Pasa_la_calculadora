@@ -141,22 +141,22 @@ int main()
 					if(cheats == true)
 					{
 						cout << setfill('-') << setw(79) << '-' << endl
-							 << "Trampas activadas"             << endl
-							 << setfill(' ');
+						     << "Trampas activadas"             << endl
+						     << setfill(' ');
 					}
 					if(!cheats == true)
 					{
 						cout << setfill('-') << setw(79) << '-' << endl
-							 << "Trampas desactivadas"          << endl
-							 << setfill(' ');
+						     << "Trampas desactivadas"          << endl
+						     << setfill(' ');
 					}
 				}
 			}
 			while(opcion != 0);
 		
 			cout << setfill('-') << setw(79) << '-'        << endl
-				 << "Hasta la proxima " << usuario1 << "." << endl
-				 << setfill(' ');
+			     << "Hasta la proxima " << usuario1 << "." << endl
+			     << setfill(' ');
 			pause();
 		}
 		//En el modo de dos jugadores, el segundo
@@ -204,7 +204,6 @@ int main()
 				}
 			}
 			while(opcion != 0);
-		
 			cout << setfill('-') << setw(79) << '-'        << endl
 			     << "Hasta la proxima " << usuario2 << "." << endl
 			     << setfill(' ');
