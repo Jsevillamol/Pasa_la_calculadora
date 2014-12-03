@@ -240,7 +240,7 @@ void despedirse(tJugador ganador, string usuario)
 void despedirseDoble(tJugador ganador, string usuario1, string usuario2)
 {
 	if (ganador == Nadie){
-		cout << "Abandonas, "  << usuario1 << "? Ohhh..."     << endl << endl;
+		cout << "Abandonas? Ohhh..."                          << endl << endl;
 	}
 	else if (ganador == Jugador1){
 		cout << "Enhorabuena " << usuario1 << ", has ganado!" << endl << endl;
