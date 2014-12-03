@@ -153,14 +153,8 @@ int main()
 				}
 			}
 			while(opcion != 0);
-		
-			cout << setfill('-') << setw(79) << '-'        << endl
-			     << "Hasta la proxima " << usuario1 << "." << endl
-			     << setfill(' ');
-			pause();
 		}
-		//En el modo de dos jugadores, el segundo
-		//toma el control del menu
+
 		else if(modo == Double)
 		{
 			string usuario2 = iniciar_sesion2();
@@ -181,8 +175,8 @@ int main()
 	
 				else if(opcion == 4) 
 				{
-				iniciar_sesion1();
-				iniciar_sesion2();
+					usuario1 = iniciar_sesion1();
+					usuario2 = iniciar_sesion2();
 				}
 				else if(opcion == 5) reset2(usuario1, usuario2);
 	
@@ -1119,7 +1113,7 @@ void reset2(string &usuario1, string &usuario2)
 	{ 
 		hard_reset();
 		usuario1 = iniciar_sesion1();
-		iniciar_sesion2();
+		usuario2 = iniciar_sesion2();
 	}
 }
 
