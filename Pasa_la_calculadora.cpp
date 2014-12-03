@@ -974,8 +974,8 @@ void actualizar_stats_doble(tJugador ganador, string usuario1, string usuario2)
 	}
 	else if (ganador == Jugador2)
 	{
-		actualizar_stats(Jugador, usuario1);
-		actualizar_stats(Automata, usuario2);
+		actualizar_stats(Jugador, usuario2);
+		actualizar_stats(Automata, usuario1);
 	}
 	else /*if ganador == Nadie*/
 	{
