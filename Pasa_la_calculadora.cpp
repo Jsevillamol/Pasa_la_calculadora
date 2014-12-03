@@ -206,9 +206,8 @@ int main()
 			while(opcion != 0);
 		
 			cout << setfill('-') << setw(79) << '-'        << endl
-				 << "Hasta la proxima " << usuario1 << "." << endl
-				 << "Hasta la proxima " << usuario2 << "." << endl
-				 << setfill(' ');
+			     << "Hasta la proxima " << usuario2 << "." << endl
+			     << setfill(' ');
 			pause();
 		}
 	}
