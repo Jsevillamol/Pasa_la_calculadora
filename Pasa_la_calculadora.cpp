@@ -95,7 +95,7 @@ void fcopy(string origen, string destino);
 bool restore_from_backup();
 
 string reset(string usuario1);
-string reset2(string usuario1, string usuario2);
+void reset2(string &usuario1, string &usuario2);
 void hard_reset();
 void soft_reset(string usuario1);
 
@@ -161,7 +161,7 @@ int main()
 		}
 		//En el modo de dos jugadores, el segundo
 		//toma el control del menu
-		else /*if(modo == Double)*/
+		else if(modo == Double)
 		{
 			string usuario2 = iniciar_sesion2();
 			do
@@ -189,13 +189,13 @@ int main()
 				else if(opcion == 6) 
 				{
 					cheats = !cheats;
-					if(cheats == true)
+					if(cheats)
 					{
 						cout << setfill('-') << setw(79) << '-' << endl
 							 << "Trampas activadas"             << endl
 							 << setfill(' ');
 					}
-					if(!cheats == true)
+					if(!cheats)
 					{
 						cout << setfill('-') << setw(79) << '-' << endl
 							 << "Trampas desactivadas"          << endl
@@ -454,7 +454,7 @@ tDificultad seleccionar_dificultad()
 int seleccionar_modo_de_juego()
 {
 	cout << setfill('-') << setw(79) << '-' << endl
-	     << "selecciona el modo de juego"   << endl
+	     << "Selecciona el modo de juego:"   << endl
 	     << "1 - Un jugador"                << endl
 	     << "2 - Dos jugadores"             << endl
 		 << "0 - Salir"                     << endl
@@ -597,8 +597,8 @@ int digitoEntre(int a, int b)
 
 		else if (digito < a || digito > b)
 		{
-		cout << "Error! Introduce un digito entre " << a << " y " << b << endl;
-		digito = -1;
+			cout << "Error! Introduce un digito entre " << a << " y " << b << endl;
+			digito = -1;
 		}
 		
 	}
@@ -1020,13 +1020,15 @@ void stats(string usuario)
 void stats2(string usuario1, string usuario2) 
 { 
 	cout << setfill('-') << setw(79) << '-' << endl
-	     << "0- " << usuario1               << endl
-	     << "1- " << usuario2               << endl
+	     << "1- " << usuario1               << endl
+	     << "2- " << usuario2               << endl
+		 << "3- Salir"                      << endl
 		 << setfill(' ');
-	int muestra = digitoEntre(0,1);
+
+	int muestra = digitoEntre(0,2);
 	
-	if(muestra == 0) stats(usuario1);
-	else /*if(muestra == 1)*/ stats(usuario2);
+	if(muestra == 1) stats(usuario1);
+	else if(muestra == 2) stats(usuario2);
 }
 
 //Copia el contenido de un archivo en otro 
@@ -1090,7 +1092,7 @@ string reset(string usuario)
 	return usuario;
 }
 
-string reset2(string usuario1, string usuario2)
+void reset2(string &usuario1, string &usuario2)
 {
 	cout << setfill('-') << setw(79) << '-'              << endl
 	     << "1 - Borrar estadisticas de un jugador" << endl
@@ -1103,21 +1105,22 @@ string reset2(string usuario1, string usuario2)
 	if (opcion == 1) 
 	{
 		cout << setfill('-') << setw(79) << '-' << endl
-			 << "0- " << usuario1               << endl
-			 << "1- " << usuario2               << endl
+			 << "1- Borrar estadisticas de " << usuario1 << endl
+			 << "2- Borrar estadisticas de " << usuario2 << endl
+			 << "0- Salir"                               << endl
 			 << setfill(' ');
-		int muestra = digitoEntre(0,1);
+
+		int option = digitoEntre(0,2);
 	
-		if(muestra == 0) soft_reset(usuario1);
-		else /*if(muestra == 1)*/ soft_reset(usuario2);
+		if     (option == 0) soft_reset(usuario1);
+		else if(option == 1) soft_reset(usuario2);
 	}
 	else if (opcion == 2)
 	{ 
 		hard_reset();
-		iniciar_sesion1();
+		usuario1 = iniciar_sesion1();
 		iniciar_sesion2();
 	}
-	return usuario1;
 }
 
 void hard_reset()
@@ -1192,6 +1195,7 @@ void soft_reset(string usuario)
 		
 		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo" << endl;
 	}
+
 	stats.close();
 	actualizar.close();
 
