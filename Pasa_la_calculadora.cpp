@@ -85,8 +85,8 @@ bool mostrar(string archivo);
 
 void registrar_nueva_ejecucion();
 string iniciar_sesion1();
-string iniciar_sesion2(usuario1);
-void cambio_sesion(string usuario1, string usuario2);
+string iniciar_sesion2(string usuario1);
+void cambio_sesion(string &usuario1, string &usuario2);
 bool actualizar_stats(tJugador ganador, string usuario);
 void actualizar_stats_doble (tJugador ganador, string usuario1, string usuario2);
 void stats(string usuario1);
@@ -108,6 +108,8 @@ int main()
 	tJugador ganador;
 	int opcion, modo;
 	bool cheats = false;
+	
+	cout << "Bienvenido a Pasa la calculadora!" << endl;
 	
 	string usuario1 = iniciar_sesion1();
 	registrar_nueva_ejecucion();
@@ -726,8 +728,7 @@ string iniciar_sesion1()
 {
 	//Conseguimos el nombre de usuario
 	string usuario1;
-	cout << setfill('-') << setw(79) << '-'     << endl
-	     << "Bienvenido a Pasa la calculadora!" << endl
+	cout << setfill('-') << setw(79) << '-' << endl
 	     << "Como te llamas? "
 	     << setfill(' ');
 	cin >> usuario1;
@@ -807,9 +808,10 @@ string iniciar_sesion2(string usuario1)
 	
 	while(usuario2 == usuario1)
 	{
-		cout << "Error, no puedes jugar contra ti mismo";
+		cout << "Error, no puedes jugar contra ti mismo" << endl;
 		cin >> usuario2;
 	}
+
 	string line;
 	ofstream backup;
 	//Abrimos el archivo stats
@@ -872,16 +874,17 @@ string iniciar_sesion2(string usuario1)
 	return usuario2;
 }
 
-void cambio_sesion(string usuario1, string usuario2)
+void cambio_sesion(string &usuario1, string &usuario2)
 {
 	cout << setfill('-') << setw(79) << '-' << endl
-		 << "0- " << usuario1               << endl
-		 << "1- " << usuario2               << endl
+		 << "1- " << usuario1               << endl
+		 << "2- " << usuario2               << endl
+		 << "0- Volver al menu"                      << endl
 		 << setfill(' ');
-	int sesion = digitoEntre(0,1);
+	int sesion = digitoEntre(0,2);
 
-	if(sesion == 0) iniciar_sesion1();
-	else /*if(sesion == 1)*/ iniciar_sesion2(usuario1);
+	if     (sesion == 1) usuario1 = iniciar_sesion1();
+	else if(sesion == 2) usuario2 = iniciar_sesion2(usuario1);
 }
 
 //Actualiza las estadisticas
@@ -1128,7 +1131,7 @@ void reset2(string &usuario1, string &usuario2)
 	{ 
 		hard_reset();
 		usuario1 = iniciar_sesion1();
-		usuario2 = iniciar_sesion2();
+		usuario2 = iniciar_sesion2(usuario1);
 	}
 }
 
