@@ -89,11 +89,13 @@ string iniciar_sesion2();
 bool actualizar_stats(tJugador ganador, string usuario);
 void actualizar_stats_doble (tJugador ganador, string usuario1, string usuario2);
 void stats(string usuario1);
+void stats2(string usuario1, string usuario2);
 
 void fcopy(string origen, string destino);
 bool restore_from_backup();
 
 string reset(string usuario1);
+string reset2(string usuario1, string usuario2);
 void hard_reset();
 void soft_reset(string usuario1);
 
@@ -135,15 +137,24 @@ int main()
 	
 				else if(opcion == 6) 
 				{
-					cheats = true;
-					cout << setfill('-') << setw(79) << '-' << endl
+					cheats = !cheats;
+					if(cheats == true)
+					{
+						cout << setfill('-') << setw(79) << '-' << endl
 							 << "Trampas activadas"             << endl
-						 << setfill(' ');
+							 << setfill(' ');
+					}
+					if(!cheats == true)
+					{
+						cout << setfill('-') << setw(79) << '-' << endl
+							 << "Trampas desactivadas"          << endl
+							 << setfill(' ');
+					}
 				}
 			}
 			while(opcion != 0);
 		
-			cout << setfill('-') << setw(79) << '-'      << endl
+			cout << setfill('-') << setw(79) << '-'        << endl
 				 << "Hasta la proxima " << usuario1 << "." << endl
 				 << setfill(' ');
 			pause();
@@ -166,18 +177,30 @@ int main()
 	
 				else if(opcion == 2) mostrar("acerca.txt");
 	
-				else if(opcion == 3) stats(usuario1);
+				else if(opcion == 3) stats2(usuario1, usuario2);
 	
-				else if(opcion == 4) usuario2 = iniciar_sesion1();
-	
-				else if(opcion == 5) usuario2 = reset(usuario1);
+				else if(opcion == 4) 
+				{
+				iniciar_sesion1();
+				iniciar_sesion2();
+				}
+				else if(opcion == 5) reset2(usuario1, usuario2);
 	
 				else if(opcion == 6) 
 				{
-					cheats = true;
-					cout << setfill('-') << setw(79) << '-' << endl
+					cheats = !cheats;
+					if(cheats == true)
+					{
+						cout << setfill('-') << setw(79) << '-' << endl
 							 << "Trampas activadas"             << endl
-						 << setfill(' ');
+							 << setfill(' ');
+					}
+					if(!cheats == true)
+					{
+						cout << setfill('-') << setw(79) << '-' << endl
+							 << "Trampas desactivadas"          << endl
+							 << setfill(' ');
+					}
 				}
 			}
 			while(opcion != 0);
@@ -190,6 +213,10 @@ int main()
 		}
 	}
 	while(modo != 0);
+	cout << setfill('-') << setw(79) << '-'        << endl
+		 << "Hasta la proxima " << usuario1 << "." << endl
+		 << setfill(' ');
+	pause();
 }
 
 //FUNCIONES
@@ -294,12 +321,14 @@ tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2)
 		//Turno jugador
 		if (turno == Jugador1)
 		{
+			cout << "Te toca, " << usuario1 << ":" << endl;
 			ultimoDigito = digitoPersona(ultimoDigito);
 			turno = Jugador2;
 		}
 		//Turno bot
 		else /*if (turno == Jugador2)*/
 		{
+			cout << "Te toca, " << usuario2 << ":" << endl;
 			ultimoDigito = digitoPersona(ultimoDigito);
 			turno = Jugador1;
 		}
@@ -980,7 +1009,7 @@ void stats(string usuario)
 	cout << setfill('-')   << setw(79)                  << '-'                            << endl;
 	cout << "Numero de ejecuciones del programa: "      <<  ejecuciones                   << endl;
 	cout << endl;
-	cout << "Partidas de " << usuario << ": "            << (ganadas+perdidas+abandonadas) << endl; 
+	cout << "Partidas de " << usuario << ": "           << (ganadas+perdidas+abandonadas) << endl; 
 	cout << right
 	     << setfill(' ') << setw(22) << "ganadas: "     <<  ganadas                       << endl 
 	     << setfill(' ') << setw(22) << "perdidas: "    <<  perdidas                      << endl
@@ -988,6 +1017,18 @@ void stats(string usuario)
 	     << endl;
 	     
 	stats.close();
+}
+
+void stats2(string usuario1, string usuario2) 
+{ 
+	cout << setfill('-') << setw(79) << '-' << endl
+	     << "0- " << usuario1               << endl
+	     << "1- " << usuario2               << endl
+		 << setfill(' ');
+	int muestra = digitoEntre(0,1);
+	
+	if(muestra == 0) stats(usuario1);
+	else /*if(muestra == 1)*/ stats(usuario2);
 }
 
 //Copia el contenido de un archivo en otro 
@@ -1049,6 +1090,36 @@ string reset(string usuario)
 		usuario = iniciar_sesion1();
 	}
 	return usuario;
+}
+
+string reset2(string usuario1, string usuario2)
+{
+	cout << setfill('-') << setw(79) << '-'              << endl
+	     << "1 - Borrar estadisticas de un jugador" << endl
+	     << "2 - Borrar todas las estadisticas"          << endl
+	     << "0 - Volver al menu"                         << endl;
+	cout << setfill(' ');
+	
+	int opcion = digitoEntre(0,2);
+
+	if (opcion == 1) 
+	{
+		cout << setfill('-') << setw(79) << '-' << endl
+			 << "0- " << usuario1               << endl
+			 << "1- " << usuario2               << endl
+			 << setfill(' ');
+		int muestra = digitoEntre(0,1);
+	
+		if(muestra == 0) soft_reset(usuario1);
+		else /*if(muestra == 1)*/ soft_reset(usuario2);
+	}
+	else if (opcion == 2)
+	{ 
+		hard_reset();
+		iniciar_sesion1();
+		iniciar_sesion2();
+	}
+	return usuario1;
 }
 
 void hard_reset()
@@ -1115,7 +1186,7 @@ void soft_reset(string usuario)
 	{
 
 		actualizar << 1   << endl << endl //Ejecuciones
-			   << usuario     << endl
+			       << usuario     << endl
 		           << 0 << endl
 		           << 0 << endl
 		           << 0 << endl
