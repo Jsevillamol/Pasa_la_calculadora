@@ -1117,8 +1117,8 @@ void reset2(string &usuario1, string &usuario2)
 
 		int option = digitoEntre(0,2);
 	
-		if     (option == 0) soft_reset(usuario1);
-		else if(option == 1) soft_reset(usuario2);
+		if     (option == 1) soft_reset(usuario1);
+		else if(option == 2) soft_reset(usuario2);
 	}
 	else if (opcion == 2)
 	{ 
