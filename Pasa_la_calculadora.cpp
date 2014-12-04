@@ -75,9 +75,11 @@ bool minimax(int ultimoDigito, int total, bool maximizing);
 
 int digitoEntre(int a, int b);
 
+int digitoPersona();
 int digitoPersona(int ultimo);
 
 char mNumero(int ultimo, int n);
+void mostrarCalculadora();
 void mostrarCalculadora(int ultimo);
 
 //FUNCIONES DE ARCHIVO
@@ -108,10 +110,11 @@ int main()
 	tJugador ganador;
 	int opcion, modo;
 	bool cheats = false;
+	string usuario1, usuario2;
 	
 	cout << "Bienvenido a Pasa la calculadora!" << endl;
 	
-	string usuario1 = iniciar_sesion1();
+	usuario1 = iniciar_sesion1();
 	registrar_nueva_ejecucion();
 
 	//Bucle Menu
@@ -160,7 +163,7 @@ int main()
 
 		else if(modo == Double)
 		{
-			string usuario2 = iniciar_sesion2(usuario1);
+			usuario2 = iniciar_sesion2(usuario1);
 			do
 			{
 				opcion = menu();
@@ -258,8 +261,36 @@ tJugador pasaCalculadora(bool cheats)
 	srand(time(NULL));//Semilla
 	turno = quienEmpieza(dificultad, cheats);
 
+	//Primer turno
+	if (turno == Jugador)
+	{
+		ultimoDigito = digitoPersona();
+		turno = Automata;
+	}
+	else /*if (turno == Automata)*/
+	{
+		if (dificultad == Facil)
+		{
+			ultimoDigito = digitoAleatorio();
+		}
+		else if (dificultad == Dificil)
+		{
+			ultimoDigito = botDificil(total, ultimoDigito);
+		}
+		else /*if dificultad == Imposible*/
+		{
+			ultimoDigito = botImposible(ultimoDigito, total);
+		}
+
+		cout << "Elijo el numero " << ultimoDigito << endl;
+
+		turno = Jugador;
+	}
+	total += ultimoDigito;
+	cout << "Total = " << total << endl << endl;
+
 	//Bucle de juego
-	do
+	while ((total < META) && (ultimoDigito != 0))
 	{
 		//Turno jugador
 		if (turno == Jugador)
@@ -290,12 +321,11 @@ tJugador pasaCalculadora(bool cheats)
 		total += ultimoDigito;
 		cout << "Total = " << total << endl << endl;
 	}
-	while ((total < META) && (ultimoDigito != 0));
 	
 	if (ultimoDigito == 0) turno = Nadie; 
 	//Si el jugador abandona, no gana nadie
 
-	return turno;
+return turno;
 }
 tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2)
 {
@@ -304,11 +334,27 @@ tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2)
 	int total = 0, ultimoDigito = 0;
 
 	srand(time(NULL));//Semilla
-		
+	
 	turno = quienEmpiezaDoble(cheats, usuario1, usuario2);
-		
+	
+	//Primer turno
+	if (turno == Jugador1)
+	{
+		cout << "Te toca, " << usuario1 << ":" << endl;
+		ultimoDigito = digitoPersona();
+		turno = Jugador2;
+	}
+	else /*if (turno == Jugador2)*/
+	{
+		cout << "Te toca, " << usuario2 << ":" << endl;
+		ultimoDigito = digitoPersona();
+		turno = Jugador1;
+	}
+	total += ultimoDigito;
+	cout << "Total = " << total << endl << endl;
+
 	//Bucle de juego
-	do
+	while ((total < META) && (ultimoDigito != 0))
 	{
 		//Turno jugador
 		if (turno == Jugador1)
@@ -327,12 +373,12 @@ tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2)
 		total += ultimoDigito;
 		cout << "Total = " << total << endl << endl;
 	}
-	while ((total < META) && (ultimoDigito != 0));
+	
 	
 	if (ultimoDigito == 0) turno = Nadie; 
 	//Si un jugador abandona, no gana nadie
 
-	return turno;
+return turno;
 }
 //Decide aleatoriamente quien empieza la partida, si el automata o el jugador
 tJugador quienEmpieza(tDificultad dificultad, bool cheats)
@@ -355,7 +401,7 @@ tJugador quienEmpieza(tDificultad dificultad, bool cheats)
 		jugador = Automata;
 	}
 
-	return jugador;
+return jugador;
 }
 
 //Decide aleatoriamente quien empieza la partida, si el jugador 1 o el jugador 2
@@ -378,7 +424,7 @@ tJugador quienEmpiezaDoble(bool cheats, string usuario1, string usuario2)
 		jugador = Jugador2;
 	}
 
-	return jugador;
+return jugador;
 }
 
 //Define que numeros se encuentran en la misma fila que el ultimo pulsado
@@ -387,7 +433,7 @@ bool mismaFila(int ultimo, int nuevo)
 	int filaUltimo, filaNuevo;
 	filaUltimo = ((ultimo - 1)/3);
 	filaNuevo = ((nuevo - 1)/3);
-	return (filaUltimo) == (filaNuevo);
+return (filaUltimo) == (filaNuevo);
 }
 
 //Define que numeros se encuentran en la misma columna que el ultimo
@@ -396,14 +442,12 @@ bool mismaColumna(int ultimo, int nuevo)
 	int columnaUltimo, columnaNuevo;
 	columnaUltimo = (ultimo % 3);
 	columnaNuevo = (nuevo % 3);
-	return columnaUltimo == columnaNuevo;
+return columnaUltimo == columnaNuevo;
 }
 
 //Determina que digitos se pueden pulsar en funcion de las reglas del juego
 bool digitoValido(int ultimo, int nuevo)
 {
-	if (ultimo == 0) return true;//Si es el primer turno, todos los numeros valen
-
 	return ((mismaFila(ultimo, nuevo))||(mismaColumna(ultimo, nuevo)))&&(ultimo!=nuevo);
 }
 
@@ -423,7 +467,7 @@ int menu()
 	
 	int seleccionar = digitoEntre(0,6);
 
-	return seleccionar;
+return seleccionar;
 }
 
 //Permite al jugador seleccionar la dificultad del juego
@@ -437,10 +481,13 @@ tDificultad seleccionar_dificultad()
 	     << setfill(' ');
 
 	int opcion = digitoEntre(1,3);
+	tDificultad dificultad;
 
-	if        (opcion == 1)   return Facil;
-	else if   (opcion == 2)   return Dificil;
-	else /*if (opcion == 3)*/ return Imposible;
+	if        (opcion == 1)   dificultad = Facil;
+	else if   (opcion == 2)   dificultad = Dificil;
+	else /*if (opcion == 3)*/ dificultad = Imposible;
+
+return dificultad;
 }
 
 //Permite selecionar al jugador si quiere jugar 
@@ -456,7 +503,7 @@ int seleccionar_modo_de_juego()
 	
 	int modo = digitoEntre(0,2);
 
-	return modo;
+return modo;
 }
 
 //FUNCIONES DE IA
@@ -477,12 +524,12 @@ int digitoAutomata(int ultimo)
 	}
 	while (!digitoValido(ultimo, digito));
 
-	return digito;
+return digito;
 }
 
 int botDificil(int total, int ultimo)
 {
-	int ganamos = 0, menos_da_una_piedra = 0;
+	int ganamos = 0, menos_da_una_piedra = 0, movimiento;
 
 	//Empezamos a jugar en serio cuando la partida esta a punto de acabarse
 	if (total > 20)
@@ -507,27 +554,37 @@ int botDificil(int total, int ultimo)
 	//Si la busqueda tiene exito, devolvemos el resultado. 
 	//En otro caso, jugamos aleatoriamente.
 	if (ganamos)
-		return ganamos;
+		movimiento = ganamos;
 	else if (menos_da_una_piedra)
-		return menos_da_una_piedra;
+		movimiento = menos_da_una_piedra;
 	else
-		return digitoAutomata(ultimo);
+		movimiento = digitoAutomata(ultimo);
+
+return movimiento;
 }
 
 int botImposible(int ultimoDigito, int total)
 {
-	//if (total == 0) return 9;
-	for (int digito=1; digito<10; digito++)
+	int movimiento=-1;
+	if (total == 0) movimiento=9;
+	else
 	{
-		if (digitoValido(ultimoDigito, digito))
+		//Buscamos un movimiento optimo
+		for (int digito=1; digito<10 && movimiento == -1; digito++)
 		{
-			//cout << "Empezando minimax para " << digito << endl;
-			if (minimax(digito, total+digito, false))
-				return digito;
-			//cout << "Minimax acabado. Movimiento no optimo" << endl;
+			if (digitoValido(ultimoDigito, digito))
+			{
+				//cout << "Empezando minimax para " << digito << endl;
+				if (minimax(digito, total+digito, false))
+					movimiento = digito;
+				//cout << "Minimax acabado. Movimiento no optimo" << endl;
+			}
 		}
 	}
-	return digitoAutomata(ultimoDigito);
+	//Si no encontramos un movimiento optimo, devolvemos uno de botDificil
+	if (movimiento == -1) movimiento = botDificil(total, ultimoDigito);
+
+return movimiento;
 }
 
 //Lets start the backtracking party.
@@ -598,7 +655,20 @@ int digitoEntre(int a, int b)
 	}
 	while (digito == -1);
 
-	return digito;
+return digito;
+}
+
+int digitoPersona()
+{
+	mostrarCalculadora();
+
+	cout << "Escoge un numero (0 para abandonar)" << endl;
+
+	int digito = digitoEntre(0,9);
+
+	cout << "Has elegido el " << digito << endl;
+
+return digito;
 }
 
 //Pide un digito al jugador mostrando el teclado. Solo devolvera un valor 
@@ -624,19 +694,30 @@ int digitoPersona(int ultimo)
 
 	cout << "Has elegido el " << digito << endl;
 
-	return digito;
+return digito;
 }
 
 //Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
 char mNumero(int ultimo, int n)
 {
+	char c;
 	if(digitoValido(ultimo, n))
-	{
-		return char (n+int('0'));
-	}
+		c = char (n+int('0'));
 	else
+		c = ' ';
+
+return c;
+}
+
+void mostrarCalculadora()
+{
+	for (int j=2; j>=0; j--)
 	{
-		return ' ';
+		for (int i = 1; i<4; i++)
+		{
+			cout << setw(3) << 3*j+i;
+		}
+		cout << endl;
 	}
 }
 
@@ -690,7 +771,7 @@ bool mostrar(string archivo)
 		ok = false;
 		cout << "Error, el archivo 'acerca.txt' no existe" << endl;
 	}
-	return ok;
+return ok;
 }
 
 void registrar_nueva_ejecucion()
@@ -787,7 +868,7 @@ string iniciar_sesion1()
 
 	fcopy("backup.txt", "stats.txt");
 
-	return usuario1;
+return usuario1;
 }
 
 //Devuelve el nombre de usuario, y crea su perfil 
@@ -866,7 +947,7 @@ string iniciar_sesion2(string usuario1)
 
 	fcopy("backup.txt", "stats.txt");
 
-	return usuario2;
+return usuario2;
 }
 
 void cambio_sesion(string &usuario1, string &usuario2)
@@ -876,6 +957,7 @@ void cambio_sesion(string &usuario1, string &usuario2)
 		 << "2- " << usuario2               << endl
 		 << "0- Volver al menu"                      << endl
 		 << setfill(' ');
+
 	int sesion = digitoEntre(0,2);
 
 	if     (sesion == 1) usuario1 = iniciar_sesion1();
@@ -962,7 +1044,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 	//Ahora copiamos la informacion actualizada en el archivo original
 	fcopy("backup.txt", "stats.txt");
 	
-	return ok;
+return ok;
 }
 
 void actualizar_stats_doble(tJugador ganador, string usuario1, string usuario2)
@@ -1029,7 +1111,7 @@ void stats2(string usuario1, string usuario2)
 
 	int muestra = digitoEntre(0,2);
 	
-	if(muestra == 1) stats(usuario1);
+	if     (muestra == 1) stats(usuario1);
 	else if(muestra == 2) stats(usuario2);
 }
 
@@ -1074,7 +1156,7 @@ bool restore_from_backup()
 		cout << "El backup no ha sido encontrado" << endl;
 		ok = false;
 	}
-	return ok;
+return ok;
 }
 
 string reset(string usuario)
@@ -1094,7 +1176,7 @@ string reset(string usuario)
 		hard_reset();
 		usuario = iniciar_sesion1();
 	}
-	return usuario;
+return usuario;
 }
 
 void reset2(string &usuario1, string &usuario2)
