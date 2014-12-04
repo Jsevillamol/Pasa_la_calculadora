@@ -5,7 +5,7 @@ Jaime Sevilla Molina
 Victor Gonzalez del Hierro
 Fecha
 2014/11
-Version: 5.0
+Version: 6.0
 ---------------------------------*/
 
 //BIBLIOTECAS
@@ -695,26 +695,21 @@ bool mostrar(string archivo)
 
 void registrar_nueva_ejecucion()
 {
-	int ejecuciones; string line;
+	int ejecuciones; char c;
 
 	ifstream stats("stats.txt", ios::in);
 	ofstream backup("backup.txt", ios::out);
 	//Las comprobaciones de backup ya se han hecho en iniciar_sesion()
 
 	stats >> ejecuciones;
-	backup << ejecuciones+1 << endl;
-	
-	//Quitar el linefeed que deja <<
-	stats.ignore(10000,'\n');
+	backup << ejecuciones+1;
 
-	/*while (getline(stats,line))
+	stats.get(c);
+	while (!stats.eof())
 	{
-		backup << line << endl;
-	}*/
-
-	char c;
-	while (stats.get(c))
-		backup << c;
+		backup.put(c);
+		stats.get(c);
+	}
 
 	stats.close();
 	backup.close();
@@ -934,18 +929,13 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		actualizar << perdidas    << endl;
 		actualizar << abandonadas;
 
-		//Quitar el linefeed que deja >>
-		stats.ignore(10000,'\n');
-		
-		//Copia el resto del archivo
-		/*while (getline(stats, linea))
-		{
-			actualizar << linea << endl;	
-		}*/
-
 		char c;
-		while (stats.get(c))
-			actualizar << c;
+		stats.get(c);
+		while (!stats.eof())
+		{
+			actualizar.put(c);
+			stats.get(c);
+		}
 
 		ok = true;
 	}
@@ -1052,13 +1042,16 @@ void fcopy(string origen, string destino)
 	char 	  word;
 	
 	paso1.open(origen);
-	paso2.open(destino);	
+	paso2.open(destino);
+
+	paso1.get(word);
 
 	while(!paso1.eof())
 	{
+		paso2.put(word);
 		paso1.get(word);
-		paso2 <<   word;
 	}
+
 	paso1.close();
 	paso2.close();
 }
@@ -1182,18 +1175,13 @@ void soft_reset(string usuario)
 		actualizar << 0 << endl; //Perdidas
 		actualizar << 0;         //Abandonadas
 
-		//Quitar el linefeed que deja >>
-		stats.ignore(10000,'\n');
-		
-		//Copia el resto del archivo
-		/*while (getline(stats, linea))
-		{
-			actualizar << linea << endl;	
-		}*/
-
 		char c;
-		while (stats.get(c))
-			actualizar << c;
+		stats.get(c);
+		while (!stats.eof())
+		{
+			actualizar.put(c);
+			stats.get(c);
+		}
 	}
 	else
 	{
