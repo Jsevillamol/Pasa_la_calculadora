@@ -124,7 +124,7 @@ int main()
 		{
 			do
 			{
-				cout << setw(79) << right << usuario1 << " VS BOT";
+				cout << usuario1 << " VS BOT" << endl;
 
 				opcion = menu();
 	
@@ -168,7 +168,7 @@ int main()
 			usuario2 = iniciar_sesion2(usuario1);
 			do
 			{
-				cout << setw(79) << right << usuario1 << " VS " << usuario2;
+				cout << usuario1 << " VS " << usuario2 << endl;
 				
 				opcion = menu();
 	
