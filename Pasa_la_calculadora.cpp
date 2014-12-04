@@ -124,6 +124,8 @@ int main()
 		{
 			do
 			{
+				cout << setw(79) << right << usuario1 << " VS BOT";
+
 				opcion = menu();
 	
 				if(opcion == 1)
@@ -166,6 +168,8 @@ int main()
 			usuario2 = iniciar_sesion2(usuario1);
 			do
 			{
+				cout << setw(79) << right << usuario1 << " VS " << usuario2;
+				
 				opcion = menu();
 	
 				if(opcion == 1)
@@ -955,12 +959,12 @@ void cambio_sesion(string &usuario1, string &usuario2)
 	cout << setfill('-') << setw(79) << '-' << endl
 		 << "1- " << usuario1               << endl
 		 << "2- " << usuario2               << endl
-		 << "0- Volver al menu"                      << endl
+		 << "0- Volver al menu"             << endl
 		 << setfill(' ');
 
 	int sesion = digitoEntre(0,2);
 
-	if     (sesion == 1) usuario1 = iniciar_sesion1();
+	if     (sesion == 1) usuario1 = iniciar_sesion2(usuario2);
 	else if(sesion == 2) usuario2 = iniciar_sesion2(usuario1);
 }
 
