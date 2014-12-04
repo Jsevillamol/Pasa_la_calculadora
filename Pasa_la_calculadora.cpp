@@ -5,7 +5,7 @@ Jaime Sevilla Molina
 Victor Gonzalez del Hierro
 Fecha
 2014/11
-Version: 5.0
+Version: 6.0
 ---------------------------------*/
 
 //BIBLIOTECAS
@@ -26,22 +26,34 @@ typedef enum tJugador
 {
 	Nadie,
 	Jugador,
-	Automata
+	Automata,
+	Jugador1,
+	Jugador2
 };
 
 typedef enum tDificultad
 {
-		Facil,
-		Dificil,
-		Imposible
+	Facil,
+	Dificil,
+	Imposible
+};
+
+typedef enum tModo
+{
+	Salir,
+	Single,
+	Double
 };
 
 //FUNCIONES
 void despedirse (tJugador ganador, string usuario);
+void despedirseDoble(tJugador ganador, string usuario1, string usuario2);
 
 //FUNCIONES DE JUEGO
 tJugador pasaCalculadora(bool cheats);
+tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2);
 tJugador quienEmpieza(tDificultad dificultad, bool cheats);
+tJugador quienEmpiezaDoble(bool cheats, string usuario1, string usuario2);
 
 bool mismaFila(int ultimo, int nuevo);
 bool mismaColumna(int ultimo, int nuevo);
@@ -50,6 +62,7 @@ bool digitoValido(int ultimo, int nuevo);
 //MENUS
 int menu();
 tDificultad seleccionar_dificultad();
+int seleccionar_modo_de_juego();
 
 //FUNCIONES DE IA
 int digitoAleatorio();
@@ -71,16 +84,21 @@ void mostrarCalculadora(int ultimo);
 bool mostrar(string archivo);
 
 void registrar_nueva_ejecucion();
-string iniciar_sesion();
+string iniciar_sesion1();
+string iniciar_sesion2(string usuario1);
+void cambio_sesion(string &usuario1, string &usuario2);
 bool actualizar_stats(tJugador ganador, string usuario);
-void stats(string usuario);
+void actualizar_stats_doble (tJugador ganador, string usuario1, string usuario2);
+void stats(string usuario1);
+void stats2(string usuario1, string usuario2);
 
 void fcopy(string origen, string destino);
 bool restore_from_backup();
 
-string reset(string usuario);
+string reset(string usuario1);
+void reset2(string &usuario1, string &usuario2);
 void hard_reset();
-void soft_reset(string usuario);
+void soft_reset(string usuario1);
 
 //FUNCIONES DE SISTEMA
 void pause();
@@ -88,48 +106,109 @@ void pause();
 int main()
 {
 	tJugador ganador;
-	int opcion;
+	int opcion, modo;
 	bool cheats = false;
 	
-	string usuario = iniciar_sesion();	
+	cout << "Bienvenido a Pasa la calculadora!" << endl;
+	
+	string usuario1 = iniciar_sesion1();
 	registrar_nueva_ejecucion();
 
 	//Bucle Menu
-	do
-	{
-		opcion = menu();
-
-		if(opcion == 1)
+	do{
+		modo = seleccionar_modo_de_juego();
+		if(modo == Single)
 		{
-			ganador = pasaCalculadora(cheats);
-			actualizar_stats(ganador, usuario);
-			despedirse(ganador, usuario);
+			do
+			{
+				opcion = menu();
+	
+				if(opcion == 1)
+				{
+					ganador = pasaCalculadora(cheats);
+					actualizar_stats(ganador, usuario1);
+					despedirse(ganador, usuario1);
+				}
+	
+				else if(opcion == 2) mostrar("acerca.txt");
+	
+				else if(opcion == 3) stats(usuario1);
+	
+				else if(opcion == 4) usuario1 = iniciar_sesion1();
+	
+				else if(opcion == 5) usuario1 = reset(usuario1);
+	
+				else if(opcion == 6) 
+				{
+					cheats = !cheats;
+					if(cheats == true)
+					{
+						cout << setfill('-') << setw(79) << '-' << endl
+						     << "Trampas activadas"             << endl
+						     << setfill(' ');
+					}
+					if(!cheats == true)
+					{
+						cout << setfill('-') << setw(79) << '-' << endl
+						     << "Trampas desactivadas"          << endl
+						     << setfill(' ');
+					}
+				}
+			}
+			while(opcion != 0);
 		}
 
-		else if(opcion == 2) mostrar("acerca.txt");
-
-		else if(opcion == 3) stats(usuario);
-
-		else if(opcion == 4) usuario = iniciar_sesion();
-
-		else if(opcion == 5) usuario = reset(usuario);
-
-		else if(opcion == 6) 
+		else if(modo == Double)
 		{
-			cheats = true;
-			cout << setfill('-') << setw(79) << '-' << endl
-		             << "Trampas activadas"             << endl
+			string usuario2 = iniciar_sesion2(usuario1);
+			do
+			{
+				opcion = menu();
+	
+				if(opcion == 1)
+				{
+					ganador = pasaCalculadora2(cheats, usuario1, usuario2);
+					actualizar_stats_doble(ganador, usuario1, usuario2);
+					despedirseDoble(ganador, usuario1, usuario2);
+				}
+	
+				else if(opcion == 2) mostrar("acerca.txt");
+	
+				else if(opcion == 3) stats2(usuario1, usuario2);
+	
+				else if(opcion == 4) cambio_sesion(usuario1, usuario2);
+				
+				else if(opcion == 5) reset2(usuario1, usuario2);
+	
+				else if(opcion == 6) 
+				{
+					cheats = !cheats;
+					if(cheats)
+					{
+						cout << setfill('-') << setw(79) << '-' << endl
+							 << "Trampas activadas"             << endl
+							 << setfill(' ');
+					}
+					if(!cheats)
+					{
+						cout << setfill('-') << setw(79) << '-' << endl
+							 << "Trampas desactivadas"          << endl
+							 << setfill(' ');
+					}
+				}
+			}
+			while(opcion != 0);
+			cout << setfill('-') << setw(79) << '-'        << endl
+			     << "Hasta la proxima " << usuario2 << "." << endl
 			     << setfill(' ');
+			pause();
 		}
 	}
-	while(opcion != 0);
-	
-	cout << setfill('-') << setw(79) << '-'      << endl
-	     << "Hasta la proxima " << usuario << "." << endl
-	     << setfill(' ');
+	while(modo != 0);
+	cout << setfill('-') << setw(79) << '-'        << endl
+		 << "Hasta la proxima " << usuario1 << "." << endl
+		 << setfill(' ');
 	pause();
-
-	return 0;
 }
 
 //FUNCIONES
@@ -145,6 +224,21 @@ void despedirse(tJugador ganador, string usuario)
 	}
 	else /*if (ganador == Automata)*/{
 		cout << "Lo siento "   << usuario << ", he ganado"   << endl << endl;
+	}
+}
+
+//Se despide del jugador, la despedida varia segun gane el jugador 1, 
+//el jugador 2 o ninguno de ellos (el uno de los abandone)
+void despedirseDoble(tJugador ganador, string usuario1, string usuario2)
+{
+	if (ganador == Nadie){
+		cout << "Abandonas? Ohhh..."                          << endl << endl;
+	}
+	else if (ganador == Jugador1){
+		cout << "Enhorabuena " << usuario1 << ", has ganado!" << endl << endl;
+	}
+	else /*if (ganador == Jugador2)*/{
+		cout << "Enhorabuena " << usuario2 << ", has ganado!" << endl << endl;
 	}
 }
 
@@ -203,16 +297,54 @@ tJugador pasaCalculadora(bool cheats)
 
 	return turno;
 }
+tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2)
+{
+	tJugador turno;
+		
+	int total = 0, ultimoDigito = 0;
 
+	srand(time(NULL));//Semilla
+		
+	turno = quienEmpiezaDoble(cheats, usuario1, usuario2);
+		
+	//Bucle de juego
+	do
+	{
+		//Turno jugador
+		if (turno == Jugador1)
+		{
+			cout << "Te toca, " << usuario1 << ":" << endl;
+			ultimoDigito = digitoPersona(ultimoDigito);
+			turno = Jugador2;
+		}
+		//Turno bot
+		else /*if (turno == Jugador2)*/
+		{
+			cout << "Te toca, " << usuario2 << ":" << endl;
+			ultimoDigito = digitoPersona(ultimoDigito);
+			turno = Jugador1;
+		}
+		total += ultimoDigito;
+		cout << "Total = " << total << endl << endl;
+	}
+	while ((total < META) && (ultimoDigito != 0));
+	
+	if (ultimoDigito == 0) turno = Nadie; 
+	//Si un jugador abandona, no gana nadie
+
+	return turno;
+}
 //Decide aleatoriamente quien empieza la partida, si el automata o el jugador
 tJugador quienEmpieza(tDificultad dificultad, bool cheats)
 {
+	tJugador jugador;
+
 	if ((rand() % 2 && dificultad != Imposible) || cheats)
 	{
 		cout << setfill('-') << setw(79) << '-' << endl
 		     << "Tu empiezas"            << endl
 		     << setfill(' ');
-		return Jugador;
+		jugador = Jugador;
 	}
 	else
 	{
@@ -220,8 +352,33 @@ tJugador quienEmpieza(tDificultad dificultad, bool cheats)
 		     << "Empiezo yo"             << endl
 	             << setfill(' ');
 	             
-		return Automata;
+		jugador = Automata;
 	}
+
+	return jugador;
+}
+
+//Decide aleatoriamente quien empieza la partida, si el jugador 1 o el jugador 2
+tJugador quienEmpiezaDoble(bool cheats, string usuario1, string usuario2)
+{
+	tJugador jugador;
+
+	if ((rand() % 2 || cheats))
+	{
+		cout << setfill('-') << setw(79) << '-' << endl
+		     << "Empieza " << usuario1          << endl
+		     << setfill(' ');
+		jugador = Jugador1;
+	}
+	else
+	{
+		cout << setfill('-') << setw(79) << '-' << endl
+		     << "Empieza "   << usuario2        << endl
+	         << setfill(' ');             
+		jugador = Jugador2;
+	}
+
+	return jugador;
 }
 
 //Define que numeros se encuentran en la misma fila que el ultimo pulsado
@@ -261,7 +418,7 @@ int menu()
 	     << "3 - Estadisticas"                    << endl
 	     << "4 - Iniciar sesion con otro usuario" << endl
 	     << "5 - Resetear estadisticas"           << endl
-	     << "0 - Salir"                           << endl
+	     << "0 - Cambiar modo de juego / Salir"   << endl
 	     << setfill(' ');
 	
 	int seleccionar = digitoEntre(0,6);
@@ -284,6 +441,22 @@ tDificultad seleccionar_dificultad()
 	if        (opcion == 1)   return Facil;
 	else if   (opcion == 2)   return Dificil;
 	else /*if (opcion == 3)*/ return Imposible;
+}
+
+//Permite selecionar al jugador si quiere jugar 
+//contra el automata o contra otro jugador
+int seleccionar_modo_de_juego()
+{
+	cout << setfill('-') << setw(79) << '-' << endl
+	     << "Selecciona el modo de juego:"   << endl
+	     << "1 - Un jugador"                << endl
+	     << "2 - Dos jugadores"             << endl
+		 << "0 - Salir"                     << endl
+	     << setfill(' ');
+	
+	int modo = digitoEntre(0,2);
+
+	return modo;
 }
 
 //FUNCIONES DE IA
@@ -418,8 +591,8 @@ int digitoEntre(int a, int b)
 
 		else if (digito < a || digito > b)
 		{
-		cout << "Error! Introduce un digito entre " << a << " y " << b << endl;
-		digito = -1;
+			cout << "Error! Introduce un digito entre " << a << " y " << b << endl;
+			digito = -1;
 		}
 		
 	}
@@ -522,26 +695,21 @@ bool mostrar(string archivo)
 
 void registrar_nueva_ejecucion()
 {
-	int ejecuciones; string line;
+	int ejecuciones; char c;
 
 	ifstream stats("stats.txt", ios::in);
 	ofstream backup("backup.txt", ios::out);
 	//Las comprobaciones de backup ya se han hecho en iniciar_sesion()
 
 	stats >> ejecuciones;
-	backup << ejecuciones+1 << endl;
-	
-	//Quitar el linefeed que deja <<
-	stats.ignore(10000,'\n');
+	backup << ejecuciones+1;
 
-	/*while (getline(stats,line))
+	stats.get(c);
+	while (!stats.eof())
 	{
-		backup << line << endl;
-	}*/
-
-	char c;
-	while (stats.get(c))
-		backup << c;
+		backup.put(c);
+		stats.get(c);
+	}
 
 	stats.close();
 	backup.close();
@@ -551,15 +719,14 @@ void registrar_nueva_ejecucion()
 
 //Devuelve el nombre de usuario, y crea su perfil 
 //en las estadisticas si no existe
-string iniciar_sesion()
+string iniciar_sesion1()
 {
 	//Conseguimos el nombre de usuario
-	string usuario;
-	cout << setfill('-') << setw(79) << '-'     << endl
-	     << "Bienvenido a Pasa la calculadora!" << endl
+	string usuario1;
+	cout << setfill('-') << setw(79) << '-' << endl
 	     << "Como te llamas? "
 	     << setfill(' ');
-	cin >> usuario;
+	cin >> usuario1;
 
 	string line;
 	ofstream backup;
@@ -579,7 +746,7 @@ string iniciar_sesion()
 	{
 		//Busqueda de la info del usuario
 		getline(stats,line);
-		while (line!=usuario && !stats.eof())
+		while (line!=usuario1 && !stats.eof())
 		{
 			getline(stats,line);
 		}
@@ -589,16 +756,16 @@ string iniciar_sesion()
 			cout << "Usuario no encontrado. Se creara un nuevo perfil." << endl;
 			
 			backup.open("backup.txt",ios::app);
-				backup << usuario << endl
-				       << 0       << endl  //Ganadas
-				       << 0       << endl  //Perdidas
-				       << 0       << endl  //Abandonadas
-				                  << endl;
+				backup << usuario1 << endl
+				       << 0        << endl  //Ganadas
+				       << 0        << endl  //Perdidas
+				       << 0        << endl  //Abandonadas
+				                   << endl;
 			backup.close();
 		}
 		else
 		{
-			cout << "Bienvenido de nuevo " << usuario << endl;
+			cout << "Bienvenido de nuevo " << usuario1 << endl;
 		}
 	}
 	else
@@ -608,19 +775,111 @@ string iniciar_sesion()
 		cout << "Un nuevo archivo sera creado." << endl;
 
 		backup.open("backup.txt");
-			backup << 0       << endl << endl //Ejecuciones
-			       << usuario << endl         //Usuario
-			       << 0       << endl         //Ganadas
-			       << 0       << endl         //Perdidas
-			       << 0       << endl         //Abandonadas
-			                  << endl;
+			backup << 0        << endl << endl //Ejecuciones
+			       << usuario1 << endl         //Usuario
+			       << 0        << endl         //Ganadas
+			       << 0        << endl         //Perdidas
+			       << 0        << endl         //Abandonadas
+			                   << endl;
 		backup.close();
 	}
 	stats.close();
 
 	fcopy("backup.txt", "stats.txt");
 
-	return usuario;
+	return usuario1;
+}
+
+//Devuelve el nombre de usuario, y crea su perfil 
+//en las estadisticas si no existe
+string iniciar_sesion2(string usuario1)
+{
+	//Conseguimos el nombre de usuario
+	string usuario2;
+	cout << setfill('-') << setw(79) << '-' << endl
+	     << "Contra quien vas a jugar?"     << endl
+	     << setfill(' ');
+	cin >> usuario2;
+	
+	while(usuario2 == usuario1)
+	{
+		cout << "Error, no puedes jugar contra ti mismo" << endl;
+		cin >> usuario2;
+	}
+
+	string line;
+	ofstream backup;
+	//Abrimos el archivo stats
+	ifstream stats;
+	stats.open("stats.txt");
+
+	//Restauracion desde backup, si es necesaria
+	if (!stats.good())
+	{
+		cout << "\"stats.txt\" no existe. Buscando backup." << endl;
+		stats.close();
+		restore_from_backup();
+		stats.open("stats.txt");
+	}
+	if (stats.good())
+	{
+		//Busqueda de la info del usuario
+		getline(stats,line);
+		while (line!=usuario2 && !stats.eof())
+		{
+			getline(stats,line);
+		}
+		//Si el usuario no existe, creamos un nuevo perfil de usuario.
+		if (stats.eof())
+		{
+			cout << "Usuario no encontrado. Se creara un nuevo perfil." << endl;
+			
+			backup.open("backup.txt",ios::app);
+				backup << usuario2 << endl
+				       << 0        << endl  //Ganadas
+				       << 0        << endl  //Perdidas
+				       << 0        << endl  //Abandonadas
+				                   << endl;
+			backup.close();
+		}
+		else
+		{
+			cout << "Bienvenido de nuevo " << usuario2 << endl;
+		}
+	}
+	else
+		//Si el archivo stats no existe y no hay backup, creamos un nuevo archivo 
+		//y agregamos el perfil del nuevo usuario
+	{
+		cout << "Un nuevo archivo sera creado." << endl;
+
+		backup.open("backup.txt");
+			backup << 0        << endl << endl //Ejecuciones
+			       << usuario2 << endl         //Usuario
+			       << 0        << endl         //Ganadas
+			       << 0        << endl         //Perdidas
+			       << 0        << endl         //Abandonadas
+			                   << endl;
+		backup.close();
+	}
+	stats.close();
+
+	fcopy("backup.txt", "stats.txt");
+
+	return usuario2;
+}
+
+void cambio_sesion(string &usuario1, string &usuario2)
+{
+	cout << setfill('-') << setw(79) << '-' << endl
+		 << "1- " << usuario1               << endl
+		 << "2- " << usuario2               << endl
+		 << "0- Volver al menu"                      << endl
+		 << setfill(' ');
+	int sesion = digitoEntre(0,2);
+
+	if     (sesion == 1) usuario1 = iniciar_sesion1();
+	else if(sesion == 2) usuario2 = iniciar_sesion2(usuario1);
 }
 
 //Actualiza las estadisticas
@@ -670,18 +929,13 @@ bool actualizar_stats(tJugador ganador, string usuario)
 		actualizar << perdidas    << endl;
 		actualizar << abandonadas;
 
-		//Quitar el linefeed que deja >>
-		stats.ignore(10000,'\n');
-		
-		//Copia el resto del archivo
-		/*while (getline(stats, linea))
-		{
-			actualizar << linea << endl;	
-		}*/
-
 		char c;
-		while (stats.get(c))
-			actualizar << c;
+		stats.get(c);
+		while (!stats.eof())
+		{
+			actualizar.put(c);
+			stats.get(c);
+		}
 
 		ok = true;
 	}
@@ -711,6 +965,25 @@ bool actualizar_stats(tJugador ganador, string usuario)
 	return ok;
 }
 
+void actualizar_stats_doble(tJugador ganador, string usuario1, string usuario2)
+{
+	if (ganador == Jugador1)
+	{
+		actualizar_stats(Jugador, usuario1);
+		actualizar_stats(Automata, usuario2);
+	}
+	else if (ganador == Jugador2)
+	{
+		actualizar_stats(Jugador, usuario2);
+		actualizar_stats(Automata, usuario1);
+	}
+	else /*if ganador == Nadie*/
+	{
+		actualizar_stats(Nadie, usuario1);
+		actualizar_stats(Nadie, usuario2);
+	}
+}
+
 //Muestra las estadisticas del jugador actual
 void stats(string usuario) 
 { 
@@ -736,7 +1009,7 @@ void stats(string usuario)
 	cout << setfill('-')   << setw(79)                  << '-'                            << endl;
 	cout << "Numero de ejecuciones del programa: "      <<  ejecuciones                   << endl;
 	cout << endl;
-	cout << "Partidas de " << usuario << ": "            << (ganadas+perdidas+abandonadas) << endl; 
+	cout << "Partidas de " << usuario << ": "           << (ganadas+perdidas+abandonadas) << endl; 
 	cout << right
 	     << setfill(' ') << setw(22) << "ganadas: "     <<  ganadas                       << endl 
 	     << setfill(' ') << setw(22) << "perdidas: "    <<  perdidas                      << endl
@@ -744,6 +1017,20 @@ void stats(string usuario)
 	     << endl;
 	     
 	stats.close();
+}
+
+void stats2(string usuario1, string usuario2) 
+{ 
+	cout << setfill('-') << setw(79) << '-' << endl
+	     << "1- " << usuario1               << endl
+	     << "2- " << usuario2               << endl
+		 << "3- Salir"                      << endl
+		 << setfill(' ');
+
+	int muestra = digitoEntre(0,2);
+	
+	if(muestra == 1) stats(usuario1);
+	else if(muestra == 2) stats(usuario2);
 }
 
 //Copia el contenido de un archivo en otro 
@@ -755,13 +1042,16 @@ void fcopy(string origen, string destino)
 	char 	  word;
 	
 	paso1.open(origen);
-	paso2.open(destino);	
+	paso2.open(destino);
+
+	paso1.get(word);
 
 	while(!paso1.eof())
 	{
+		paso2.put(word);
 		paso1.get(word);
-		paso2 <<   word;
 	}
+
 	paso1.close();
 	paso2.close();
 }
@@ -802,9 +1092,40 @@ string reset(string usuario)
 	else if (opcion == 2)
 	{ 
 		hard_reset();
-		usuario = iniciar_sesion();
+		usuario = iniciar_sesion1();
 	}
 	return usuario;
+}
+
+void reset2(string &usuario1, string &usuario2)
+{
+	cout << setfill('-') << setw(79) << '-'              << endl
+	     << "1 - Borrar estadisticas de un jugador" << endl
+	     << "2 - Borrar todas las estadisticas"          << endl
+	     << "0 - Volver al menu"                         << endl;
+	cout << setfill(' ');
+	
+	int opcion = digitoEntre(0,2);
+
+	if (opcion == 1) 
+	{
+		cout << setfill('-') << setw(79) << '-' << endl
+			 << "1- Borrar estadisticas de " << usuario1 << endl
+			 << "2- Borrar estadisticas de " << usuario2 << endl
+			 << "0- Salir"                               << endl
+			 << setfill(' ');
+
+		int option = digitoEntre(0,2);
+	
+		if     (option == 0) soft_reset(usuario1);
+		else if(option == 1) soft_reset(usuario2);
+	}
+	else if (opcion == 2)
+	{ 
+		hard_reset();
+		usuario1 = iniciar_sesion1();
+		usuario2 = iniciar_sesion2(usuario1);
+	}
 }
 
 void hard_reset()
@@ -854,24 +1175,19 @@ void soft_reset(string usuario)
 		actualizar << 0 << endl; //Perdidas
 		actualizar << 0;         //Abandonadas
 
-		//Quitar el linefeed que deja >>
-		stats.ignore(10000,'\n');
-		
-		//Copia el resto del archivo
-		/*while (getline(stats, linea))
-		{
-			actualizar << linea << endl;	
-		}*/
-
 		char c;
-		while (stats.get(c))
-			actualizar << c;
+		stats.get(c);
+		while (!stats.eof())
+		{
+			actualizar.put(c);
+			stats.get(c);
+		}
 	}
 	else
 	{
 
 		actualizar << 1   << endl << endl //Ejecuciones
-			   << usuario     << endl
+			       << usuario     << endl
 		           << 0 << endl
 		           << 0 << endl
 		           << 0 << endl
@@ -879,6 +1195,7 @@ void soft_reset(string usuario)
 		
 		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo" << endl;
 	}
+
 	stats.close();
 	actualizar.close();
 
