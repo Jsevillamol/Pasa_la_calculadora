@@ -139,8 +139,11 @@ int main()
 	
 				else if(opcion == 3) stats(usuario1);
 	
-				else if(opcion == 4) usuario1 = iniciar_sesion1();
-	
+				else if (opcion == 4)
+				{
+					cout << "Hasta la proxima, " << usuario1 << endl;
+					usuario1 = iniciar_sesion1();
+				}
 				else if(opcion == 5) usuario1 = reset(usuario1);
 	
 				else if(opcion == 6) 
@@ -193,14 +196,14 @@ int main()
 					if(cheats)
 					{
 						cout << setfill('-') << setw(79) << '-' << endl
-							 << "Trampas activadas"             << endl
-							 << setfill(' ');
+						     << "Trampas activadas"             << endl
+						     << setfill(' ');
 					}
 					if(!cheats)
 					{
 						cout << setfill('-') << setw(79) << '-' << endl
-							 << "Trampas desactivadas"          << endl
-							 << setfill(' ');
+						     << "Trampas desactivadas"          << endl
+						     << setfill(' ');
 					}
 				}
 			}
@@ -213,8 +216,8 @@ int main()
 	}
 	while(modo != 0);
 	cout << setfill('-') << setw(79) << '-'        << endl
-		 << "Hasta la proxima " << usuario1 << "." << endl
-		 << setfill(' ');
+	     << "Hasta la proxima " << usuario1 << "." << endl
+	     << setfill(' ');
 	pause();
 }
 
@@ -502,7 +505,7 @@ int seleccionar_modo_de_juego()
 	     << "Selecciona el modo de juego:"   << endl
 	     << "1 - Un jugador"                << endl
 	     << "2 - Dos jugadores"             << endl
-		 << "0 - Salir"                     << endl
+	     << "0 - Salir"                     << endl
 	     << setfill(' ');
 	
 	int modo = digitoEntre(0,2);
@@ -964,8 +967,16 @@ void cambio_sesion(string &usuario1, string &usuario2)
 
 	int sesion = digitoEntre(0,2);
 
-	if     (sesion == 1) usuario1 = iniciar_sesion2(usuario2);
-	else if(sesion == 2) usuario2 = iniciar_sesion2(usuario1);
+	if (sesion == 1)
+	{
+		cout << "Hasta la proxima, " << usuario1 << endl;
+		usuario1 = iniciar_sesion2(usuario2);
+	}
+	else if (sesion == 2)
+	{
+		cout << "Hasta la proxima, " << usuario2 << endl;
+		usuario2 = iniciar_sesion2(usuario1);
+	}
 }
 
 //Actualiza las estadisticas
