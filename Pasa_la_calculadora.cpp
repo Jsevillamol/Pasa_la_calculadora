@@ -1024,7 +1024,7 @@ void stats2(string usuario1, string usuario2)
 	cout << setfill('-') << setw(79) << '-' << endl
 	     << "1- " << usuario1               << endl
 	     << "2- " << usuario2               << endl
-	     << "0- Salir"                      << endl
+	     << "0- Volver al menu"             << endl
 	     << setfill(' ');
 
 	int muestra = digitoEntre(0,2);
