@@ -47,11 +47,11 @@ typedef enum tModo
 
 //FUNCIONES
 void despedirse (tJugador ganador, string usuario);
-void despedirseDoble(tJugador ganador, string usuario1, string usuario2);
+void despedirseDoble(tJugador ganador, string usuario1, string usuario2, tJugador turno);
 
 //FUNCIONES DE JUEGO
 tJugador pasaCalculadora(bool cheats);
-tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2);
+tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2, tJugador &turno);
 tJugador quienEmpieza(tDificultad dificultad, bool cheats);
 tJugador quienEmpiezaDoble(bool cheats, string usuario1, string usuario2);
 
@@ -88,6 +88,7 @@ bool mostrar(string archivo);
 void registrar_nueva_ejecucion();
 string iniciar_sesion1();
 string iniciar_sesion2(string usuario1);
+string usuario_valido();
 void cambio_sesion(string &usuario1, string &usuario2);
 bool actualizar_stats(tJugador ganador, string usuario);
 void actualizar_stats_doble (tJugador ganador, string usuario1, string usuario2);
@@ -107,9 +108,9 @@ void pause();
 
 int main()
 {
-	tJugador ganador;
 	int opcion, modo;
 	bool cheats = false;
+	tJugador ganador, turno;
 	string usuario1, usuario2;
 	
 	cout << "Bienvenido a Pasa la calculadora!" << endl;
@@ -177,9 +178,9 @@ int main()
 	
 				if(opcion == 1)
 				{
-					ganador = pasaCalculadora2(cheats, usuario1, usuario2);
+					ganador = pasaCalculadora2(cheats, usuario1, usuario2, &turno);
 					actualizar_stats_doble(ganador, usuario1, usuario2);
-					despedirseDoble(ganador, usuario1, usuario2);
+					despedirseDoble(ganador, usuario1, usuario2, turno);
 				}
 	
 				else if(opcion == 2) mostrar("acerca.txt");
@@ -239,16 +240,26 @@ void despedirse(tJugador ganador, string usuario)
 
 //Se despide del jugador, la despedida varia segun gane el jugador 1, 
 //el jugador 2 o ninguno de ellos (el uno de los abandone)
-void despedirseDoble(tJugador ganador, string usuario1, string usuario2)
+void despedirseDoble(tJugador ganador, string usuario1, string usuario2, tJugador turno)
 {
-	if (ganador == Nadie){
-		cout << "Abandonas? Ohhh..."                          << endl << endl;
+	if (ganador == Nadie)
+	{
+		if (turno == Jugador1)
+		{
+			cout << "Abandonas? " << usuario1 << "Ohhh..." << endl << endl;
+		}
+		else /*if (turno == Jugador2)*/ 
+		{
+			cout << "Abandonas? " << usuario2 << "Ohhh..." << endl << endl;
+		}
 	}
-	else if (ganador == Jugador1){
-		cout << "Enhorabuena " << usuario1 << ", has ganado!" << endl << endl;
+	else if (ganador == Jugador1)
+	{
+		cout << "Enhorabuena " << usuario1 << ", has ganado!"  << endl << endl;
 	}
-	else /*if (ganador == Jugador2)*/{
-		cout << "Enhorabuena " << usuario2 << ", has ganado!" << endl << endl;
+	else /*if (ganador == Jugador2)*/
+	{
+		cout << "Enhorabuena " << usuario2 << ", has ganado!"  << endl << endl;
 	}
 }
 
@@ -334,9 +345,9 @@ tJugador pasaCalculadora(bool cheats)
 
 return turno;
 }
-tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2)
+tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2, tJugador &turno)
 {
-	tJugador turno;
+	tJugador ganador;
 		
 	int total = 0, ultimoDigito = 0;
 
@@ -363,14 +374,14 @@ tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2)
 	//Bucle de juego
 	while ((total < META) && (ultimoDigito != 0))
 	{
-		//Turno jugador
+		//Turno jugador1
 		if (turno == Jugador1)
 		{
 			cout << "Te toca, " << usuario1 << ":" << endl;
 			ultimoDigito = digitoPersona(ultimoDigito);
 			turno = Jugador2;
 		}
-		//Turno bot
+		//Turno jugador2
 		else /*if (turno == Jugador2)*/
 		{
 			cout << "Te toca, " << usuario2 << ":" << endl;
@@ -382,10 +393,11 @@ tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2)
 	}
 	
 	
-	if (ultimoDigito == 0) turno = Nadie; 
+	if (ultimoDigito == 0) ganador = Nadie; 
+	else ganador = turno:
 	//Si un jugador abandona, no gana nadie
 
-return turno;
+return ganador;
 }
 //Decide aleatoriamente quien empieza la partida, si el automata o el jugador
 tJugador quienEmpieza(tDificultad dificultad, bool cheats)
@@ -814,7 +826,7 @@ string iniciar_sesion1()
 	cout << setfill('-') << setw(79) << '-' << endl
 	     << "Como te llamas? "
 	     << setfill(' ');
-	cin >> usuario1;
+	usuario1 = usuario_valido();
 
 	string line;
 	ofstream backup;
@@ -887,12 +899,12 @@ string iniciar_sesion2(string usuario1)
 	cout << setfill('-') << setw(79) << '-' << endl
 	     << "Contra quien vas a jugar?"     << endl
 	     << setfill(' ');
-	cin >> usuario2;
+	usuario2 = usuario_valido();
 	
 	while(usuario2 == usuario1)
 	{
 		cout << "Error, no puedes jugar contra ti mismo" << endl;
-		cin >> usuario2;
+		usuario2 = usuario_valido();
 	}
 
 	string line;
@@ -957,13 +969,32 @@ string iniciar_sesion2(string usuario1)
 return usuario2;
 }
 
+//Evita que el nombre de usuario empiece por un numero, para evitar 
+//errores a la hora de buscar a ese usuario en el archivo stats.txt
+string usuario_valido()
+{
+	string nombre;
+	
+	cin >> nombre;
+	
+	while(isdigit(nombre[0]))
+	{
+		cout << "Error, el nombre de usuario no puede empezar por un digito" << endl;
+		cin >> nombre;
+	}
+	return nombre;
+}
+
+//En el modo 2P permite seleccionar que jugador quiere cambiar su usuario
 void cambio_sesion(string &usuario1, string &usuario2)
 {
-	cout << setfill('-') << setw(79) << '-' << endl
-		 << "1- " << usuario1               << endl
-		 << "2- " << usuario2               << endl
-		 << "0- Volver al menu"             << endl
-		 << setfill(' ');
+	cout << setfill('-') << setw(79) << '-'              << endl
+	     << "Que jugador quiere cambiar sesion?" << endl << endl
+	     << "1- " << usuario1                            << endl
+             << "2- " << usuario2                            << endl
+	     << "3- Ambos"                                   << endl
+	     << "0- Volver al menu"                          << endl
+	     << setfill(' ');
 
 	int sesion = digitoEntre(0,2);
 
@@ -975,6 +1006,13 @@ void cambio_sesion(string &usuario1, string &usuario2)
 	else if (sesion == 2)
 	{
 		cout << "Hasta la proxima, " << usuario2 << endl;
+		usuario2 = iniciar_sesion2(usuario1);
+	}
+	else if (sesion == 3)
+	{
+		cout << "Hasta la proxima, " << usuario1 << endl
+		     << "Hasta la proxima, " << usuario2 << endl;
+		usuario1 = iniciar_sesion1();
 		usuario2 = iniciar_sesion2(usuario1);
 	}
 }
