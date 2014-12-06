@@ -229,11 +229,11 @@ void despedirseDoble(tJugador ganador, string usuario1, string usuario2, tJugado
 	{
 		if (turno == Jugador1)
 		{
-			cout << "Abandonas? " << usuario2 << "Ohhh..." << endl << endl;
+			cout << "Abandonas " << usuario2 << "? Ohhh..." << endl << endl;
 		}
 		else /*if (turno == Jugador2)*/ 
 		{
-			cout << "Abandonas? " << usuario1 << "Ohhh..." << endl << endl;
+			cout << "Abandonas " << usuario1 << "? Ohhh..." << endl << endl;
 		}
 	}
 	else if (ganador == Jugador1)
