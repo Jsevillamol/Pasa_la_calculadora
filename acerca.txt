@@ -14,3 +14,5 @@ El jugador que empieza introduce un umero entre 1 y 9 por la consola.
 El otro jugador debe introducir un numero que se encuentre en la misma fila o columna que el anterior (en el teclado numerico), distinto de este. 
 Los numeros introducidos se van sumando consecutivamente. 
 El jugador que alcance o supere la suma total de 31 habra perdido la partida.
+
+Easter egg: Pulsa 6 en el menu! (Es la unica manera de ganar a la dificultad imposible. Pero tendras que jugar impecablemente para alzarte con la victoria!
