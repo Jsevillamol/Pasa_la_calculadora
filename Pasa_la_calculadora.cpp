@@ -93,7 +93,7 @@ string iniciar_sesion2(string usuario1);
 string usuario_valido();
 void cambio_sesion(string &usuario1, string &usuario2);
 bool actualizar_stats(tJugador ganador, string usuario);
-void actualizar_stats_doble (tJugador ganador, string usuario1, string usuario2);
+void actualizar_stats_doble (tJugador ganador, tJugador turno, string usuario1, string usuario2);
 void stats(string usuario1);
 void stats2(string usuario1, string usuario2);
 
@@ -171,7 +171,7 @@ int main()
 				if(opcion == 1)
 				{
 					ganador = pasaCalculadora2(cheats, usuario1, usuario2, turno);
-					actualizar_stats_doble(ganador, usuario1, usuario2);
+					actualizar_stats_doble(ganador, turno, usuario1, usuario2);
 					despedirseDoble(ganador, usuario1, usuario2, turno);
 				}
 	
@@ -1078,7 +1078,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 return ok;
 }
 
-void actualizar_stats_doble(tJugador ganador, string usuario1, string usuario2)
+void actualizar_stats_doble(tJugador ganador, tJugador turno, string usuario1, string usuario2)
 {
 	if (ganador == Jugador1)
 	{
@@ -1087,13 +1087,21 @@ void actualizar_stats_doble(tJugador ganador, string usuario1, string usuario2)
 	}
 	else if (ganador == Jugador2)
 	{
-		actualizar_stats(Jugador, usuario2);
 		actualizar_stats(Automata, usuario1);
+		actualizar_stats(Jugador, usuario2);
 	}
 	else /*if ganador == Nadie*/
 	{
-		actualizar_stats(Nadie, usuario1);
-		actualizar_stats(Nadie, usuario2);
+		if (turno == Jugador1)
+		{
+			actualizar_stats(Jugador, usuario1);
+			actualizar_stats(Nadie, usuario2);
+		}
+		else /* if (turno == Jugador2)*/
+		{
+			actualizar_stats(Nadie, usuario1);
+			actualizar_stats(Jugador, usuario2);
+		}
 	}
 }
 
