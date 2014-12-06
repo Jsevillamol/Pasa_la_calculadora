@@ -981,12 +981,12 @@ void cambio_sesion(string &usuario1, string &usuario2)
 	if (sesion == 1)
 	{
 		cout << "Hasta la proxima, " << usuario1 << endl;
-		usuario1 = iniciar_sesion2(usuario1);
+		usuario1 = iniciar_sesion2(usuario2);
 	}
 	else if (sesion == 2)
 	{
 		cout << "Hasta la proxima, " << usuario2 << endl;
-		usuario2 = iniciar_sesion2(usuario2);
+		usuario2 = iniciar_sesion2(usuario1);
 	}
 	else if (sesion == 3)
 	{
