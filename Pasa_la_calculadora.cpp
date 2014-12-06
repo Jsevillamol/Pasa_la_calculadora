@@ -139,8 +139,10 @@ int main()
 				}
 	
 				else if(opcion == 2) 
+				{
 					if(!mostrar("acerca.txt")) 
 						cout << "Error, el archivo 'acerca.txt' no existe" << endl;
+				}
 	
 				else if(opcion == 3) stats(usuario1);
 	
@@ -174,8 +176,10 @@ int main()
 				}
 	
 				else if(opcion == 2) 
+				{
 					if(!mostrar("acerca.txt")) 
 						cout << "Error, el archivo 'acerca.txt' no existe" << endl;
+				}
 	
 				else if(opcion == 3) stats2(usuario1, usuario2);
 	
