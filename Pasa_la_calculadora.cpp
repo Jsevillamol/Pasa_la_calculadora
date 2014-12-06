@@ -49,6 +49,8 @@ typedef enum tModo
 void despedirse (tJugador ganador, string usuario);
 void despedirseDoble(tJugador ganador, string usuario1, string usuario2, tJugador turno);
 
+void des_activar_cheats(bool &cheats);
+
 //FUNCIONES DE JUEGO
 tJugador pasaCalculadora(bool cheats);
 tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2, tJugador &turno);
@@ -136,7 +138,9 @@ int main()
 					despedirse(ganador, usuario1);
 				}
 	
-				else if(opcion == 2) mostrar("acerca.txt");
+				else if(opcion == 2) 
+					if(!mostrar("acerca.txt")) 
+						cout << "Error, el archivo 'acerca.txt' no existe" << endl;
 	
 				else if(opcion == 3) stats(usuario1);
 	
@@ -147,22 +151,8 @@ int main()
 				}
 				else if(opcion == 5) usuario1 = reset(usuario1);
 	
-				else if(opcion == 6) 
-				{
-					cheats = !cheats;
-					if(cheats == true)
-					{
-						cout << setfill('-') << setw(79) << '-' << endl
-						     << "Trampas activadas"             << endl
-						     << setfill(' ');
-					}
-					if(!cheats == true)
-					{
-						cout << setfill('-') << setw(79) << '-' << endl
-						     << "Trampas desactivadas"          << endl
-						     << setfill(' ');
-					}
-				}
+				else if(opcion == 6)
+					des_activar_cheats(cheats);
 			}
 			while(opcion != 0);
 		}
@@ -183,7 +173,9 @@ int main()
 					despedirseDoble(ganador, usuario1, usuario2, turno);
 				}
 	
-				else if(opcion == 2) mostrar("acerca.txt");
+				else if(opcion == 2) 
+					if(!mostrar("acerca.txt")) 
+						cout << "Error, el archivo 'acerca.txt' no existe" << endl;
 	
 				else if(opcion == 3) stats2(usuario1, usuario2);
 	
@@ -191,31 +183,18 @@ int main()
 				
 				else if(opcion == 5) reset2(usuario1, usuario2);
 	
-				else if(opcion == 6) 
-				{
-					cheats = !cheats;
-					if(cheats)
-					{
-						cout << setfill('-') << setw(79) << '-' << endl
-						     << "Trampas activadas"             << endl
-						     << setfill(' ');
-					}
-					if(!cheats)
-					{
-						cout << setfill('-') << setw(79) << '-' << endl
-						     << "Trampas desactivadas"          << endl
-						     << setfill(' ');
-					}
-				}
+				else if(opcion == 6)
+					des_activar_cheats(cheats);
 			}
 			while(opcion != 0);
+
 			cout << setfill('-') << setw(79) << '-'        << endl
 			     << "Hasta la proxima " << usuario2 << "." << endl
 			     << setfill(' ');
 			pause();
 		}
 	}
-	while(modo != 0);
+	while(modo != Salir);
 	cout << setfill('-') << setw(79) << '-'        << endl
 	     << "Hasta la proxima " << usuario1 << "." << endl
 	     << setfill(' ');
@@ -263,6 +242,23 @@ void despedirseDoble(tJugador ganador, string usuario1, string usuario2, tJugado
 	}
 }
 
+void des_activar_cheats(bool &cheats)
+{
+	cheats = !cheats;
+
+	if(cheats)
+	{
+		cout << setfill('-') << setw(79) << '-' << endl
+				<< "Trampas activadas"          << endl
+				<< setfill(' ');
+	}
+	else /*if(!cheats)*/
+	{
+		cout << setfill('-') << setw(79) << '-' << endl
+				<< "Trampas desactivadas"          << endl
+				<< setfill(' ');
+	}
+}
 //FUNCIONES DE JUEGO
 //Conduce el desarrollo del juego y devuelve el ganador. 
 //Si se abandona, devuelve Nadie.
@@ -340,10 +336,10 @@ tJugador pasaCalculadora(bool cheats)
 		cout << "Total = " << total << endl << endl;
 	}
 	
-	if (ultimoDigito == 0) turno = Nadie; 
+	if (ultimoDigito == 0) return Nadie; 
 	//Si el jugador abandona, no gana nadie
 
-return turno;
+	return turno;
 }
 tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2, tJugador &turno)
 {
@@ -394,18 +390,17 @@ tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2, tJugado
 	if (ultimoDigito == 0) return Nadie; 
 	else return turno;
 	//Si un jugador abandona, no gana nadie
+
 }
 //Decide aleatoriamente quien empieza la partida, si el automata o el jugador
 tJugador quienEmpieza(tDificultad dificultad, bool cheats)
 {
-	tJugador jugador;
-
 	if ((rand() % 2 && dificultad != Imposible) || cheats)
 	{
 		cout << setfill('-') << setw(79) << '-' << endl
 		     << "Tu empiezas"            << endl
 		     << setfill(' ');
-		jugador = Jugador;
+		return Jugador;
 	}
 	else
 	{
@@ -413,33 +408,27 @@ tJugador quienEmpieza(tDificultad dificultad, bool cheats)
 		     << "Empiezo yo"             << endl
 	             << setfill(' ');
 	             
-		jugador = Automata;
+		return Automata;
 	}
-
-return jugador;
 }
 
 //Decide aleatoriamente quien empieza la partida, si el jugador 1 o el jugador 2
 tJugador quienEmpiezaDoble(bool cheats, string usuario1, string usuario2)
 {
-	tJugador jugador;
-
 	if ((rand() % 2 || cheats))
 	{
 		cout << setfill('-') << setw(79) << '-' << endl
 		     << "Empieza " << usuario1          << endl
 		     << setfill(' ');
-		jugador = Jugador1;
+		return Jugador1;
 	}
 	else
 	{
 		cout << setfill('-') << setw(79) << '-' << endl
 		     << "Empieza "   << usuario2        << endl
 	         << setfill(' ');             
-		jugador = Jugador2;
+		return Jugador2;
 	}
-
-return jugador;
 }
 
 //Define que numeros se encuentran en la misma fila que el ultimo pulsado
@@ -448,7 +437,7 @@ bool mismaFila(int ultimo, int nuevo)
 	int filaUltimo, filaNuevo;
 	filaUltimo = ((ultimo - 1)/3);
 	filaNuevo = ((nuevo - 1)/3);
-return (filaUltimo) == (filaNuevo);
+	return (filaUltimo) == (filaNuevo);
 }
 
 //Define que numeros se encuentran en la misma columna que el ultimo
@@ -457,7 +446,7 @@ bool mismaColumna(int ultimo, int nuevo)
 	int columnaUltimo, columnaNuevo;
 	columnaUltimo = (ultimo % 3);
 	columnaNuevo = (nuevo % 3);
-return columnaUltimo == columnaNuevo;
+	return columnaUltimo == columnaNuevo;
 }
 
 //Determina que digitos se pueden pulsar en funcion de las reglas del juego
@@ -482,7 +471,7 @@ int menu()
 	
 	int seleccionar = digitoEntre(0,6);
 
-return seleccionar;
+	return seleccionar;
 }
 
 //Permite al jugador seleccionar la dificultad del juego
@@ -496,13 +485,10 @@ tDificultad seleccionar_dificultad()
 	     << setfill(' ');
 
 	int opcion = digitoEntre(1,3);
-	tDificultad dificultad;
 
-	if        (opcion == 1)   dificultad = Facil;
-	else if   (opcion == 2)   dificultad = Dificil;
-	else /*if (opcion == 3)*/ dificultad = Imposible;
-
-return dificultad;
+	if        (opcion == 1)   return Facil;
+	else if   (opcion == 2)   return Dificil;
+	else /*if (opcion == 3)*/ return Imposible;
 }
 
 //Permite selecionar al jugador si quiere jugar 
@@ -518,7 +504,7 @@ int seleccionar_modo_de_juego()
 	
 	int modo = digitoEntre(0,2);
 
-return modo;
+	return modo;
 }
 
 //FUNCIONES DE IA
@@ -539,12 +525,12 @@ int digitoAutomata(int ultimo)
 	}
 	while (!digitoValido(ultimo, digito));
 
-return digito;
+	return digito;
 }
 
 int botDificil(int total, int ultimo)
 {
-	int ganamos = 0, menos_da_una_piedra = 0, movimiento;
+	int ganamos = 0, menos_da_una_piedra = 0;
 
 	//Empezamos a jugar en serio cuando la partida esta a punto de acabarse
 	if (total > 20)
@@ -569,13 +555,11 @@ int botDificil(int total, int ultimo)
 	//Si la busqueda tiene exito, devolvemos el resultado. 
 	//En otro caso, jugamos aleatoriamente.
 	if (ganamos)
-		movimiento = ganamos;
+		return ganamos;
 	else if (menos_da_una_piedra)
-		movimiento = menos_da_una_piedra;
+		return menos_da_una_piedra;
 	else
-		movimiento = digitoAutomata(ultimo);
-
-return movimiento;
+		return digitoAutomata(ultimo);
 }
 
 int botImposible(int ultimoDigito, int total)
@@ -599,7 +583,7 @@ int botImposible(int ultimoDigito, int total)
 	//Si no encontramos un movimiento optimo, devolvemos uno de botDificil
 	if (movimiento == -1) movimiento = botDificil(total, ultimoDigito);
 
-return movimiento;
+	return movimiento;
 }
 
 //Lets start the backtracking party.
@@ -670,7 +654,7 @@ int digitoEntre(int a, int b)
 	}
 	while (digito == -1);
 
-return digito;
+	return digito;
 }
 
 int digitoPersona()
@@ -683,7 +667,7 @@ int digitoPersona()
 
 	cout << "Has elegido el " << digito << endl;
 
-return digito;
+	return digito;
 }
 
 //Pide un digito al jugador mostrando el teclado. Solo devolvera un valor 
@@ -709,19 +693,16 @@ int digitoPersona(int ultimo)
 
 	cout << "Has elegido el " << digito << endl;
 
-return digito;
+	return digito;
 }
 
 //Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
 char mNumero(int ultimo, int n)
 {
-	char c;
 	if(digitoValido(ultimo, n))
-		c = char (n+int('0'));
+		return char(n+int('0'));
 	else
-		c = ' ';
-
-return c;
+		return ' ';
 }
 
 void mostrarCalculadora()
@@ -784,9 +765,8 @@ bool mostrar(string archivo)
 	else
 	{
 		ok = false;
-		cout << "Error, el archivo 'acerca.txt' no existe" << endl;
 	}
-return ok;
+	return ok;
 }
 
 void registrar_nueva_ejecucion()
