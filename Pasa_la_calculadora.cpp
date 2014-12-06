@@ -178,7 +178,7 @@ int main()
 	
 				if(opcion == 1)
 				{
-					ganador = pasaCalculadora2(cheats, usuario1, usuario2, &turno);
+					ganador = pasaCalculadora2(cheats, usuario1, usuario2, turno);
 					actualizar_stats_doble(ganador, usuario1, usuario2);
 					despedirseDoble(ganador, usuario1, usuario2, turno);
 				}
@@ -347,8 +347,6 @@ return turno;
 }
 tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2, tJugador &turno)
 {
-	tJugador ganador;
-		
 	int total = 0, ultimoDigito = 0;
 
 	srand(time(NULL));//Semilla
@@ -393,11 +391,9 @@ tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2, tJugado
 	}
 	
 	
-	if (ultimoDigito == 0) ganador = Nadie; 
-	else ganador = turno:
+	if (ultimoDigito == 0) return Nadie; 
+	else return turno;
 	//Si un jugador abandona, no gana nadie
-
-return ganador;
 }
 //Decide aleatoriamente quien empieza la partida, si el automata o el jugador
 tJugador quienEmpieza(tDificultad dificultad, bool cheats)
