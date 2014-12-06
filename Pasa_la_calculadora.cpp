@@ -246,17 +246,15 @@ void des_activar_cheats(bool &cheats)
 {
 	cheats = !cheats;
 
+	cout << setfill('-') << setw(79) << '-' << endl << setfill(' ');
+
 	if(cheats)
 	{
-		cout << setfill('-') << setw(79) << '-' << endl
-				<< "Trampas activadas"          << endl
-				<< setfill(' ');
+		cout << "Trampas activadas" << endl << endl;
 	}
 	else /*if(!cheats)*/
 	{
-		cout << setfill('-') << setw(79) << '-' << endl
-				<< "Trampas desactivadas"          << endl
-				<< setfill(' ');
+		cout << "Trampas desactivadas" << endl << endl;
 	}
 }
 //FUNCIONES DE JUEGO
