@@ -247,6 +247,7 @@ void despedirseDoble(tJugador ganador, string usuario1, string usuario2, tJugado
 	}
 }
 
+//Activa y desactiva las trampas. Si estan activadas, el primer jugador siempre empieza.
 void des_activar_cheats(bool &cheats)
 {
 	cheats = !cheats;
@@ -344,6 +345,8 @@ tJugador pasaCalculadora(bool cheats)
 
 	return turno;
 }
+
+//Modo multiplayer.
 tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2, tJugador &turno)
 {
 	int total = 0, ultimoDigito = 0;
@@ -395,6 +398,7 @@ tJugador pasaCalculadora2(bool cheats, string usuario1, string usuario2, tJugado
 	//Si un jugador abandona, no gana nadie
 
 }
+
 //Decide aleatoriamente quien empieza la partida, si el automata o el jugador
 tJugador quienEmpieza(tDificultad dificultad, bool cheats)
 {
@@ -531,6 +535,8 @@ int digitoAutomata(int ultimo)
 	return digito;
 }
 
+//Un nivel de dificultad añadido.
+//Piensa las jugadas cuando el total es alto.
 int botDificil(int total, int ultimo)
 {
 	int ganamos = 0, menos_da_una_piedra = 0;
@@ -565,6 +571,8 @@ int botDificil(int total, int ultimo)
 		return digitoAutomata(ultimo);
 }
 
+//El nivel de dificultad mas dificil
+//Usa un algoritmo de backtracking para calcular el movimiento optimo.
 int botImposible(int ultimoDigito, int total)
 {
 	int movimiento=-1;
@@ -660,6 +668,7 @@ int digitoEntre(int a, int b)
 	return digito;
 }
 
+//Obtiene un digito del 0 al 9 del usuario.
 int digitoPersona()
 {
 	mostrarCalculadora();
@@ -699,7 +708,7 @@ int digitoPersona(int ultimo)
 	return digito;
 }
 
-//Determina si el numero de la calculadora se muestra o no, en funcion de si es valido
+//Determina si el numero de la calculadora se muestra o no, en funcion de si es valido.
 char mNumero(int ultimo, int n)
 {
 	if(digitoValido(ultimo, n))
@@ -708,6 +717,7 @@ char mNumero(int ultimo, int n)
 		return ' ';
 }
 
+//Muestra los botones de la calculadora.
 void mostrarCalculadora()
 {
 	for (int j=2; j>=0; j--)
@@ -720,7 +730,7 @@ void mostrarCalculadora()
 	}
 }
 
-//Muestra los botones de la calculadora (solo los que se pueden pulsar en cada turno)
+//Muestra los botones de la calculadora (solo los que se pueden pulsar en cada turno).
 void mostrarCalculadora(int ultimo)
 {
 	for (int i = 7; i<10; i++)
@@ -741,7 +751,7 @@ void mostrarCalculadora(int ultimo)
 }
 
 //FUNCIONES DE ARCHIVO
-//Muestra el archivo "acerca.txt" siempre que este no contenga errores
+//Muestra el archivo "acerca.txt" siempre que este no contenga errores.
 bool mostrar(string archivo)
 {
 	bool ok;
@@ -772,6 +782,7 @@ bool mostrar(string archivo)
 	return ok;
 }
 
+//Actualiza el numero de ejecuciones guardado en el archivo stats.
 void registrar_nueva_ejecucion()
 {
 	int ejecuciones; char c;
@@ -870,7 +881,8 @@ return usuario1;
 }
 
 //Devuelve el nombre de usuario, y crea su perfil 
-//en las estadisticas si no existe
+//en las estadisticas si no existe.
+//Tambien procura que los usuarios no coincidan.
 string iniciar_sesion2(string usuario1)
 {
 	//Conseguimos el nombre de usuario
@@ -1081,6 +1093,7 @@ bool actualizar_stats(tJugador ganador, string usuario)
 return ok;
 }
 
+//Actualiza las estadisticas en modo 2P.
 void actualizar_stats_doble(tJugador ganador, tJugador turno, string usuario1, string usuario2)
 {
 	if (ganador == Jugador1)
@@ -1108,7 +1121,7 @@ void actualizar_stats_doble(tJugador ganador, tJugador turno, string usuario1, s
 	}
 }
 
-//Muestra las estadisticas del jugador actual
+//Muestra las estadisticas del jugador actual.
 void stats(string usuario) 
 { 
 	ifstream stats; 
@@ -1143,12 +1156,13 @@ void stats(string usuario)
 	stats.close();
 }
 
+//Elige de que usuario se muestran las estadisticas.
 void stats2(string usuario1, string usuario2) 
 { 
 	cout << setfill('-') << setw(79) << '-' << endl
-	     << "1 - " << usuario1               << endl
-	     << "2 - " << usuario2               << endl
-	     << "0 - Volver al menu"             << endl
+	     << "1 - " << usuario1              << endl
+	     << "2 - " << usuario2              << endl
+	     << "0 - Volver al menu"            << endl
 	     << setfill(' ');
 
 	int muestra = digitoEntre(0,2);
@@ -1201,6 +1215,7 @@ bool restore_from_backup()
 return ok;
 }
 
+//Menu con opciones de reseteo de estadisticas.
 string reset(string usuario)
 {
 	cout << setfill('-') << setw(79) << '-'              << endl
@@ -1227,6 +1242,7 @@ string reset(string usuario)
 return usuario;
 }
 
+//Igual que reset para el modo 2P.
 void reset2(string &usuario1, string &usuario2)
 {
 	cout << setfill('-') << setw(79) << '-'         << endl
@@ -1280,12 +1296,14 @@ void reset2(string &usuario1, string &usuario2)
 	}
 }
 
+//Borra todas las estadisticas.
 void hard_reset()
 {
 	remove("backup.txt");
 	remove("stats.txt");
 }
 
+//Inicializa a 0 las estadisticas de un usuario.
 void soft_reset(string usuario)
 {
 	int i;
@@ -1355,6 +1373,7 @@ void soft_reset(string usuario)
 	fcopy("backup.txt", "stats.txt");
 }
 
+//Elimina un perfil de usuario en las estadisticas.
 void delete_user(string usuario)
 {
 	string linea;
