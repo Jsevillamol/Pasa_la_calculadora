@@ -976,7 +976,7 @@ void cambio_sesion(string &usuario1, string &usuario2)
 	     << "0- Volver al menu"                          << endl
 	     << setfill(' ');
 
-	int sesion = digitoEntre(0,2);
+	int sesion = digitoEntre(0,3);
 
 	if (sesion == 1)
 	{
