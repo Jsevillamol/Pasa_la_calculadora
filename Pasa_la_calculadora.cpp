@@ -1146,9 +1146,9 @@ void stats(string usuario)
 void stats2(string usuario1, string usuario2) 
 { 
 	cout << setfill('-') << setw(79) << '-' << endl
-	     << "1- " << usuario1               << endl
-	     << "2- " << usuario2               << endl
-	     << "0- Volver al menu"             << endl
+	     << "1 - " << usuario1               << endl
+	     << "2 - " << usuario2               << endl
+	     << "0 - Volver al menu"             << endl
 	     << setfill(' ');
 
 	int muestra = digitoEntre(0,2);
@@ -1241,9 +1241,9 @@ void reset2(string &usuario1, string &usuario2)
 	if (opcion == 1) 
 	{
 		cout << setfill('-') << setw(79) << '-' << endl
-			 << "1- Borrar estadisticas de " << usuario1 << endl
-			 << "2- Borrar estadisticas de " << usuario2 << endl
-			 << "0- Salir"                               << endl
+			 << "1 - Borrar estadisticas de " << usuario1 << endl
+			 << "2 - Borrar estadisticas de " << usuario2 << endl
+			 << "0 - Salir"                               << endl
 			 << setfill(' ');
 
 		int option = digitoEntre(0,2);
@@ -1254,9 +1254,9 @@ void reset2(string &usuario1, string &usuario2)
 	else if(opcion == 2)
 	{
 		cout << setfill('-') << setw(79) << '-' << endl
-			 << "1- Borrar perfil de " << usuario1 << endl
-			 << "2- Borrar perfil de " << usuario2 << endl
-			 << "0- Salir"                               << endl
+			 << "1 - Borrar perfil de " << usuario1 << endl
+			 << "2 - Borrar perfil de " << usuario2 << endl
+			 << "0 - Salir"                               << endl
 			 << setfill(' ');
 
 		int option = digitoEntre(0,2);
