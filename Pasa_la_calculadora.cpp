@@ -104,6 +104,7 @@ string reset(string usuario1);
 void reset2(string &usuario1, string &usuario2);
 void hard_reset();
 void soft_reset(string usuario1);
+void delete_user(string usuario);
 
 //FUNCIONES DE SISTEMA
 void pause();
@@ -1204,15 +1205,21 @@ string reset(string usuario)
 {
 	cout << setfill('-') << setw(79) << '-'              << endl
 	     << "1 - Borrar estadisticas del jugador actual" << endl
-	     << "2 - Borrar todas las estadisticas"          << endl
+		 << "2 - Borrar perfil del jugador actual"       << endl
+	     << "3 - Borrar todas las estadisticas"          << endl
 	     << "0 - Volver al menu"                         << endl;
 	cout << setfill(' ');
 	
-	int opcion = digitoEntre(0,2);
+	int opcion = digitoEntre(0,3);
 
 	if (opcion == 1) 
 		soft_reset(usuario);
-	else if (opcion == 2)
+	else if(opcion == 2)
+	{
+		delete_user(usuario);
+		usuario = iniciar_sesion1();
+	}
+	else if (opcion == 3)
 	{ 
 		hard_reset();
 		usuario = iniciar_sesion1();
@@ -1222,13 +1229,14 @@ return usuario;
 
 void reset2(string &usuario1, string &usuario2)
 {
-	cout << setfill('-') << setw(79) << '-'              << endl
+	cout << setfill('-') << setw(79) << '-'         << endl
 	     << "1 - Borrar estadisticas de un jugador" << endl
-	     << "2 - Borrar todas las estadisticas"          << endl
-	     << "0 - Volver al menu"                         << endl;
+		 << "2 - Borrar perfil de un jugador"       << endl
+	     << "3 - Borrar todas las estadisticas"     << endl
+	     << "0 - Volver al menu"                    << endl;
 	cout << setfill(' ');
 	
-	int opcion = digitoEntre(0,2);
+	int opcion = digitoEntre(0,3);
 
 	if (opcion == 1) 
 	{
@@ -1243,7 +1251,28 @@ void reset2(string &usuario1, string &usuario2)
 		if     (option == 1) soft_reset(usuario1);
 		else if(option == 2) soft_reset(usuario2);
 	}
-	else if (opcion == 2)
+	else if(opcion == 2)
+	{
+		cout << setfill('-') << setw(79) << '-' << endl
+			 << "1- Borrar perfil de " << usuario1 << endl
+			 << "2- Borrar perfil de " << usuario2 << endl
+			 << "0- Salir"                               << endl
+			 << setfill(' ');
+
+		int option = digitoEntre(0,2);
+	
+		if     (option == 1) 
+		{
+			delete_user(usuario1);
+			usuario1 = iniciar_sesion2(usuario2);
+		}
+		else if(option == 2) 
+		{
+			delete_user(usuario2);
+			usuario2 = iniciar_sesion2(usuario1);
+		}
+	}
+	else if (opcion == 3)
 	{ 
 		hard_reset();
 		usuario1 = iniciar_sesion1();
@@ -1314,6 +1343,66 @@ void soft_reset(string usuario)
 		           << 0 << endl
 		           << 0 << endl
 		           << 0 << endl
+		           <<endl;
+		
+		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo" << endl;
+	}
+
+	stats.close();
+	actualizar.close();
+
+	//Ahora copiamos la informacion actualizada en el archivo original
+	fcopy("backup.txt", "stats.txt");
+}
+
+void delete_user(string usuario)
+{
+	string linea;
+	ifstream stats;
+	ofstream actualizar;
+	
+	stats.open("stats.txt");
+
+	//Restauracion con el backup, si es necesaria
+	if (!stats.good())
+	{
+		cout << "Error! stats.txt no existe. Buscando backup..."<<endl;
+		stats.close();
+
+		restore_from_backup();
+
+		stats.open("stats.txt");
+	}
+
+	actualizar.open("backup.txt");
+
+	if(stats.good())
+	{
+		//Copia de stats a backup, hasta la info del usuario
+		getline(stats,linea);
+		while(linea != usuario)
+		{
+			actualizar << linea << endl;
+			getline(stats, linea);
+		}
+
+		//Ignoramos los datos anteriores
+		for (int i=0; i<4;i++)
+			stats.ignore(1000, '\n');
+
+		//Copiamos el resto del archivo
+		char c;
+		stats.get(c);
+		while (!stats.eof())
+		{
+			actualizar.put(c);
+			stats.get(c);
+		}
+	}
+	else
+	{
+
+		actualizar << 1   << endl << endl //Ejecuciones
 		           <<endl;
 		
 		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo" << endl;
