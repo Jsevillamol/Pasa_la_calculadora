@@ -182,8 +182,8 @@ bool stats(int ganadas, int perdidas, int abandonadas)
 	if(stats.is_open())
 	{
 		stats >> ejecuciones;
-		stats >> ganadas2;
 		stats >> totales;
+		stats >> ganadas2;
 		stats >> abandonadas2;
 		
 		ok = true;
@@ -202,8 +202,8 @@ bool stats(int ganadas, int perdidas, int abandonadas)
 	
 	stats.close();
 	
-	ganadas += ganadas2;
 	totales += perdidas+ganadas+abandonadas;
+	ganadas += ganadas2;
 	abandonadas += abandonadas2;
 	
 	actualizar.open("stats.txt");
