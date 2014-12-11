@@ -5,7 +5,7 @@ Jaime Sevilla Molina
 Victor Gonzalez
 Fecha
 2014/11
-Version: 2.0
+Version: 3.0
 ---------------------------------*/
 
 //BIBLIOTECAS
@@ -56,12 +56,12 @@ int digitoPersona(int ultimo);
 
 char mNumero(int ultimo, int n);
 void mostrarCalculadora(int ultimo);
+void mostrarCalculadora();
 
 //FUNCIONES DE ARCHIVO
-bool mostrar();
+bool mostrar(string archivo);
 
-bool actualizar_stats(int ganadas, int perdidas, int abandonadas);
-void stats();
+bool stats(int ganadas, int perdidas, int abandonadas);
 
 //FUNCIONES DE SISTEMA
 void pausa();
@@ -93,7 +93,7 @@ int main()
 	}
 	while(opcion != 0);
 	
-	actualizar_stats(ganadas, perdidas, abandonadas);
+	stats(ganadas, perdidas, abandonadas);
 	
 	cout << "Hasta la proxima " << nombre << " (pulsa enter)";
 	pausa();
@@ -131,10 +131,9 @@ int menu()
 {
 	cout << "1 - Jugar" << endl;
 	cout << "2 - Acerca de" << endl;
-	cout << "3 - Estadisticas" << endl;
 	cout << "0 - Salir" << endl;
 	
-	int seleccionar = digitoEntre(0,3);
+	int seleccionar = digitoEntre(0,2);
 
 	return seleccionar;
 }
@@ -172,26 +171,28 @@ bool mostrar(string archivo)
 }
 
 //Actualiza las estadisticas
-bool actualizar_stats(int ganadas, int perdidas, int abandonadas)
+bool stats(int ganadas, int perdidas, int abandonadas)
 {
 	bool ok;
-	int ganadas2, perdidas2, abandonadas2;
+	int ejecuciones, ganadas2, totales, abandonadas2;
 	ifstream stats;
 	ofstream actualizar;
 	
 	stats.open("stats.txt");
 	if(stats.is_open())
 	{
+		stats >> ejecuciones;
 		stats >> ganadas2;
-		stats >> perdidas2;
+		stats >> totales;
 		stats >> abandonadas2;
 		
 		ok = true;
 	}
 	else
 	{
+		ejecuciones = 0;
 		ganadas2 = 0;
-		perdidas2 = 0;
+		totales = 0;
 		abandonadas2 = 0;
 		
 		cout << "El archivo 'stats.txt' no se encontro, se ha creado un nuevo archivo" << endl;
@@ -202,37 +203,18 @@ bool actualizar_stats(int ganadas, int perdidas, int abandonadas)
 	stats.close();
 	
 	ganadas += ganadas2;
-	perdidas += perdidas2;
+	totales += perdidas+ganadas+abandonadas;
 	abandonadas += abandonadas2;
 	
 	actualizar.open("stats.txt");
 	
+	actualizar << ejecuciones + 1 << endl;
+	actualizar << totales << endl;
 	actualizar << ganadas << endl;
-	actualizar << perdidas << endl;
 	actualizar << abandonadas << endl;
 	
 	actualizar.close();
 	return ok;
-}
-
-//Muestra las estadisticas
-void stats()
-{
-	ifstream stats;
-	int ganadas, perdidas, abandonadas;
-	
-	stats.open("stats.txt");
-	
-	stats >> ganadas;
-	stats >> perdidas;
-	stats >> abandonadas;
-	
-	cout << "Partidas jugadas: " << (ganadas+perdidas+abandonadas) << endl;
-	cout << "	Partidas ganadas: "     << ganadas     << endl;
-	cout << "	Partidas perdidas: "    << perdidas    << endl;
-	cout << "	Partidas abandonadas: " << abandonadas << endl;
-	
-	stats.close();
 }
 
 //Conduce el desarrollo del juego y devuelve el ganador. 
@@ -406,6 +388,7 @@ int digitoPersona(int ultimo)
 
 int digitoPersona()
 {
+	mostrarCalculadora();
 	return digitoEntre(0,9);
 }
 
@@ -446,4 +429,16 @@ void mostrarCalculadora(int ultimo)
 		cout << setw(3) << mNumero(ultimo, i);
 	}
 	cout << endl;
+}
+
+void mostrarCalculadora()
+{
+	for (int j=2; j>=0; j--)
+	{
+		for (int i = 1; i<4; i++)
+		{
+		cout << setw(3) << 3*j+i;
+		}
+		cout << endl;
+	}
 }
